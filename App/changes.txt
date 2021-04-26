@@ -1,0 +1,145 @@
+Change List:
+
+UI/overall
+-Allow seed/difficulty change
+-Force EPs
+-Random audiologs?
+-Enable flashing on all panels
+-Normal triangles buff?
+-Rework triangle ratios?
+-No more diagonal lines
+-Autoscroller speed ups?
+
+Tutorial Normal
+-Always draw seed, options
+-More interesting maze generation?
+-Fix bottom exit cheese
+Tutorial Expert
+-Easier shortcut exit
+-Green set: Better parity tutorial
+
+Symmetry Normal
+-More interesting maze generation?
+-Big maze with gaps on only one side.
+-More interesting blue/yellow generation?
+Symmetry Expert
+-Nerf stars
+-Fix exit direction problem
+
+Desert Normal/Expert
+-Consistent path widths
+-Fix vault colors
+-Fix broken set seed
+
+Quarry Normal
+-Nerf star panel
+-Make 4x5 into 4x4
+-Make stars+shape row 3x6?
+-Remove power off on fail
+Quarry Expert
+-Nerf some negative shape panels
+-Remove power off on fail
+-Nerf double erase+stars+shapes
+-Make stars+neg row 3x6?
+
+Treehouse Normal
+-Better star generation (no more squiggles)
+-Buff/tweak left bridge?
+Treehouse Expert
+-Change pink bridge end to 4x5
+-Introduce big shapes are more variety into tetris set
+-Nerf some of the right bridge 5x5 stars
+
+Swamp Normal
+-Entry panel layered solution & first panel two shapes
+-Change shortcut panel to be 5x5 and 4x4
+-Nerf last 5x5 rotating
+-1/2 less gap in first tan 5x5
+-1 less rotating piece in tan nd green
+-Consider swapping tan d/c back?
+Swamp Expert
+-Entry panel layered solution
+-Maybe add more variety?
+-Change shortcut panel to be 5x5 and 4x4
+-Fewer pieces in red rotating set
+-Fewer pieces in disconnect and maybe big?
+-Nerf full dot 4 tetris panel
+-Underwater blues, incorporate big shapes
+-Harder red bridge?
+-Exit panel change colors
+
+Keep Normal
+-Nerf purple
+-Green/purple unique solution enforcement?
+-No rotating shapes
+-Keep laser panel no rotating -^No shapes in upper right?
+-Swap shipwreck colors
+Keep Expert
+-Green unique solution enforcement
+-Swap shipwreck colors
+
+Town Normal
+-Have church star door open
+Town Expert
+-Have church star door open
+-Fewer squares on RGB
+-Investigate bridge
+-Nerf last sym tetris
+
+Jungle Normal
+-Randomize 1 tri
+-More interesting orders?
+-Make last panel less obvious
+Jungle Expert
+-Remove 2 color with watchdog
+-Make 5th panel more obvious
+-Make last panel less obvious
+
+Mountan Normal
+-Top: More varied perspectives
+-Nerf purple bridge
+-Buff orange tetris dots
+-Buff purple tetris stones
+-Fix unfair dot plecement on greens and last blue
+-Buff last blue?
+-Nerf stars in color set
+-Always allow quick escape?
+-Ensure reset? Goes with EP
+-Rework multi panel
+-Randomize 2 tri
+-Nerf left pillar 4
+Mountain Expert
+-Top: More varied perspectives
+-Fix unfair dot plecement
+-Nerf green 2
+-Nerf colors 2
+-Nerf colors 4
+-Rework right pillar 1?
+-Rework right pillar 3?+colors
+
+UTM Normal
+-Rework tetris+triangles
+-Nerf sym tetris
+-Buff dot triangles
+-Nerf eraser+stone+stars
+-Overhaul trial&error set
+UTM Expert
+-Remove stars from G/M panel?
+-Fix 5x5 perspective cancelation bug
+-Overhaul trial&error set
+
+Future:
+*Auto activation
+*New Jungle Expert set
+*New Challenge
+*Mac/Linux port
+
+Future 2:
+*Arrows variant
+*Advanced mode
+
+Future 3:
+*New Greenhouse
+*New Shadows
+*New Desert
+*New Sound Cues
