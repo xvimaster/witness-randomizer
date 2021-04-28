@@ -2,6 +2,7 @@ Change List:
 
 UI/overall
 -Allow seed/difficulty change
+-Fix seed entry
 -Force EPs
 -Random audiologs?
 -Enable flashing on all panels
@@ -9,6 +10,8 @@ UI/overall
 -Rework triangle ratios?
 -No more diagonal lines
 -Autoscroller speed ups?
+-Double rando mode?
+-New arrow evaluation?
 
 Tutorial Normal
 -Always draw seed, options

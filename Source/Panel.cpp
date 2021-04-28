@@ -353,7 +353,7 @@ bool Panel::LoadPanels(int seed, bool hard)
 		(new BridgeWatchdog(0x09E86, 0x09ED8))->start();
 		(new TreehouseWatchdog(0x17DAE))->start();
 	}
-	Special::drawSeedAndDifficulty(0x00064, seed, hard);
+	Special::drawSeedAndDifficulty(0x00064, seed, hard, true, false);
 	Special::drawGoodLuckPanel(0x00182);
 	return true;
 }

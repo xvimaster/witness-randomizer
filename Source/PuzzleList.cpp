@@ -85,7 +85,7 @@ void PuzzleList::GenerateTutorialN()
 {
 	generator->setLoadingData(L"Tutorial", 21);
 	generator->resetConfig();
-	Special::drawSeedAndDifficulty(0x00064, seedIsRNG ? -1 : seed, false);
+	Special::drawSeedAndDifficulty(0x00064, seed, false, !seedIsRNG, false);
 	Special::drawGoodLuckPanel(0x00182);
 	//Mazes
 	generator->setFlag(Generate::Config::FullGaps);
@@ -968,7 +968,7 @@ void PuzzleList::GenerateTutorialH()
 {
 	generator->setLoadingData(L"Tutorial", 21);
 	generator->resetConfig();
-	Special::drawSeedAndDifficulty(0x00064, seedIsRNG ? -1 : seed, true);
+	Special::drawSeedAndDifficulty(0x00064, seed, true, !seedIsRNG, false);
 	Special::drawGoodLuckPanel(0x00182);
 	generator->setFlag(Generate::Config::WriteDotColor);
 	generator->setFlag(Generate::Config::LongestPath);

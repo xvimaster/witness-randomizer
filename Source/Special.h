@@ -58,7 +58,10 @@ public:
 	void createArrowPuzzle(int id, int x, int y, int dir, int ticks, const std::vector<Point>& gaps);
 	void createArrowSecretDoor(int id);
 	void generateCenterPerspective(int id, const std::vector<std::pair<int, int>>& symbolVec, int symbolType);
-	static void drawSeedAndDifficulty(int id, int seed, bool hard);
+	static void createText(int id, std::string text, std::vector<float>& intersections, std::vector<int>& connectionsA, std::vector<int>& connectionsB,
+		float left, float right, float top, float bottom);
+	static void drawText(int id, std::vector<float>& intersections, std::vector<int>& connectionsA, std::vector<int>& connectionsB, const std::vector<float>& finalLine);
+	static void drawSeedAndDifficulty(int id, int seed, bool hard, bool setSeed, bool options);
 	static void drawGoodLuckPanel(int id);
 
 	void test(); //For testing/debugging purposes only
