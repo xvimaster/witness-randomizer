@@ -10,6 +10,7 @@
 #include <iostream>
 #include <numeric>
 #include "Random.h"
+#include "Quaternion.h"
 
 void Randomizer::GenerateNormal(HWND loadingHandle) {
 	std::shared_ptr<PuzzleList> puzzles = std::make_shared<PuzzleList>();
@@ -74,6 +75,13 @@ void Randomizer::RandomizeDesert() {
 			SwapPanels(puzzles[i], puzzles[target], SWAP::LINES);
 			std::swap(desertPanels[i], desertPanels[target]);
 		}
+	}
+    // This is just a demo, I encourage you to add your own randomness here.
+    for (auto panel : desertPanels) {
+        auto rotationData = _memory->ReadPanelData<float>(panel, ORIENTATION, 4);
+        auto q = Quaternion{rotationData[3], rotationData[0], rotationData[1], rotationData[2]};
+        q = q.Rotate90();
+        _memory->WritePanelData<float>(panel, ORIENTATION, {(float)q.x, (float)q.y, (float)q.z, (float)q.w});
 	}
 }
 
