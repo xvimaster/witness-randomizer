@@ -31,19 +31,23 @@ public:
 	}
 
 	bool Read(LPCVOID lpBaseAddress, LPVOID lpBuffer, SIZE_T nSize) {
+		if (!retryOnFail) return ReadProcessMemory(_handle, lpBaseAddress, lpBuffer, nSize, nullptr);
 		for (int i = 0; i < 1000; i++) {
 			if (ReadProcessMemory(_handle, lpBaseAddress, lpBuffer, nSize, nullptr)) {
 				return true;
 			}
+			Sleep(1);
 		}
 		return false;
 	}
 
 	bool Write(LPVOID lpBaseAddress, LPCVOID lpBuffer, SIZE_T nSize) {
+		if (!retryOnFail) return WriteProcessMemory(_handle, lpBaseAddress, lpBuffer, nSize, nullptr);
 		for (int i = 0; i < 1000; i++) {
 			if (WriteProcessMemory(_handle, lpBaseAddress, lpBuffer, nSize, nullptr)) {
 				return true;
 			}
+			Sleep(1);
 		}
 		return false;
 	}
@@ -99,6 +103,7 @@ public:
 	static int GLOBALS;
 	static bool showMsg;
 	static int globalsTests[3];
+	bool retryOnFail = true;
 
 private:
 	template<class T>

@@ -88,9 +88,7 @@ public:
 		LEFT,
 		RIGHT,
 		UP,
-		DOWN,
-		DIAGONAL,
-		DIAGONAL_DOWN,
+		DOWN
 	};
 
 	Endpoint(int x, int y, Direction dir, int flags) {
@@ -144,8 +142,6 @@ public:
 	void SetGridSymbol(int x, int y, Decoration::Shape symbol, Decoration::Color color);
 	void ClearGridSymbol(int x, int y);
 	void Resize(int width, int height);
-	static void SavePanels(int seed, bool hard);
-	static bool LoadPanels(int seed, bool hard);
 
 	enum Style {
 		SYMMETRICAL = 0x2, //Not on the town symmetry puzzles? IDK why.
@@ -171,6 +167,7 @@ public:
 	enum ColorMode { Default, Reset, Alternate, WriteColors, Treehouse, TreehouseLoad };
 	ColorMode colorMode;
 	bool decorationsOnly;
+	bool enableFlash;
 
 private:
 

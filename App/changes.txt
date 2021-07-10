@@ -1,0 +1,27 @@
+Change List:
+
+UI/overall
+-Autoscroller speed ups? ASK DARKID
+
+Future:
+*Random audiologs?
+*Force EPs (Ensure reset on bridge)
+*Overhaul trial&error set
+*Auto activation
+*Have church star door open? DETECT SOLVE CODE
+*New Jungle Expert set
+*New Challenge
+*Mac/Linux port
+*Un-randomize button
+*New arrow evaluation?
+*Double rando mode
+
+Future 2:
+*Arrows variant
+*Advanced mode
+
+Future 3:
+*New Greenhouse
+*New Shadows
+*New Desert
+*New Sound Cues

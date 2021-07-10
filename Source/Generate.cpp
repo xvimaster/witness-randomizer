@@ -62,7 +62,7 @@ void Generate::generate(int id, const std::vector<std::pair<int, int>>& symbolVe
 void Generate::generateMulti(int id, std::vector<std::shared_ptr<Generate>> gens, std::vector<std::pair<int, int>> symbolVec)
 {
 	MultiGenerate gen;
-	gen.splitStones = hasFlag(Config::SplitStones);
+	gen.splitStones = (id == 0x17C34); //Mountaintop
 	gen.generate(id, gens, symbolVec);
 	incrementProgress();
 }
@@ -71,7 +71,7 @@ void Generate::generateMulti(int id, std::vector<std::shared_ptr<Generate>> gens
 void Generate::generateMulti(int id, int numSolutions, std::vector<std::pair<int, int>> symbolVec)
 {
 	MultiGenerate gen;
-	gen.splitStones = hasFlag(Config::SplitStones);
+	gen.splitStones = (id == 0x17C34); //Mountaintop
 	std::vector<std::shared_ptr<Generate>> gens;
 	for (; numSolutions > 0; numSolutions--) gens.push_back(std::make_shared<Generate>());
 	gen.generate(id, gens, symbolVec);
@@ -263,8 +263,12 @@ void Generate::write(int id)
 		Special::WritePanelData(id, ACTIVE_COLOR, { 1, 1, 1, 1 });
 		Special::WritePanelData(id, REFLECTION_PATH_COLOR, { 1, 1, 1, 1 });
 	}
+	if (hasFlag(Config::TreehouseLayout)) {
+		Special::WritePanelData(id, SPECULAR_ADD, 0.001f);
+	}
 
 	_panel->decorationsOnly = hasFlag(Config::DecorationsOnly);
+	_panel->enableFlash = hasFlag(Config::EnableFlash);
 	_panel->Write(id);
 	
 	if (hasFlag(Config::DisableReset)) _panel->_grid = backupGrid;
@@ -395,7 +399,8 @@ bool Generate::generate_maze(int id, int numStarts, int numExits)
 				return false;
 
 		clear();
-		while (!generate_path_length(_panel->_width + _panel->_height)) clear();
+		while (!generate_path_length((_panel->_width + _panel->_height),
+			min((_panel->_width + _panel->_height) * 2, (_panel->_width / 2 + 1) * (_panel->_height / 2 + 1) * 4 / 5))) clear();
 	}
 	
 	std::set<Point> path = _path; //Backup
@@ -422,7 +427,7 @@ bool Generate::generate_maze(int id, int numStarts, int numExits)
 		//Pick a random extendable point and extend it for some randomly chosen amount of units.
 		Point randomPos = (extraStarts.size() > 0 ? pick_random(extraStarts) : pick_random(check));
 		Point pos = randomPos;
-		for (int i = (extraStarts.size() > 0 ? 7 : Random::rand() % 5); i >= 0; i--) { //False starts are extended by up to 7 units. Other points are extended up to 4 units at a time
+		for (int i = (extraStarts.size() > 0 ? 7 : 1); i >= 0; i--) { //False starts are extended by up to 7 units. Other points are extended 1 unit at a time
 			std::vector<Point> validDir;
 			for (Point dir : _DIRECTIONS2) {
 				if (!off_edge(pos + dir) && get(pos + dir) == 0) {
@@ -592,6 +597,8 @@ bool Generate::place_all_symbols(PuzzleSymbols & symbols)
 		return false;
 	for (std::pair<int, int> s : symbols[Decoration::Star]) if (!place_stars(s.first & 0xf, s.second))
 		return false;
+	if (symbols.style == Panel::Style::HAS_STARS && hasFlag(Generate::Config::TreehouseLayout) && !checkStarZigzag(_panel))
+		return false;
 	if (eraserColors.size() > 0 && !place_erasers(eraserColors, eraseSymbols))
 		return false;
 	for (std::pair<int, int> s : symbols[Decoration::Dot]) if (!place_dots(s.second, (s.first & 0xf), (s.first & ~0xf) == Decoration::Dot_Intersection))
@@ -655,7 +662,7 @@ bool Generate::generate_path(PuzzleSymbols & symbols)
 }
 
 //Generate a random path with the provided minimum length.
-bool Generate::generate_path_length(int minLength)
+bool Generate::generate_path_length(int minLength, int maxLength)
 {
 	int fails = 0;
 	Point pos = adjust_point(pick_random(_starts));
@@ -677,7 +684,7 @@ bool Generate::generate_path_length(int minLength)
 		pos = newPos;
 		fails = 0;
 	}
-	return _path.size() / 2 + 1 >= minLength;
+	return _path.size() / 2 + 1 >= minLength && _path.size() / 2 + 1 <= maxLength;
 }
 
 //Generate a path with the provided number of regions.
@@ -924,7 +931,7 @@ bool Generate::place_start(int amount)
 		if (_panel->symmetry && pos == get_sym_point(pos)) continue;
 		//Highly discourage putting start points adjacent
 		bool adjacent = false;
-		for (Point dir : _8DIRECTIONS2) {
+		for (Point dir : _DIRECTIONS2) {
 			if (!off_edge(pos + dir) && get(pos + dir) == Decoration::Start) {
 				adjacent = true;
 				break;
@@ -1103,6 +1110,7 @@ bool Generate::place_dots(int amount, int color, bool intersectionOnly) {
 	std::set<Point> open = (color == 0 ? _path : color == IntersectionFlags::DOT_IS_BLUE ? _path1 : _path2);
 	for (Point p : _starts) open.erase(p);
 	for (Point p : _exits) open.erase(p);
+	for (Point p : blockPos) open.erase(p);
 	if (intersectionOnly) {
 		std::set<Point> intersections;
 		for (Point p : open) {
@@ -1300,7 +1308,7 @@ int Generate::make_shape_symbol(Shape shape, bool rotated, bool negative, int ro
 bool Generate::place_shapes(const std::vector<int>& colors, const std::vector<int>& negativeColors, int amount, int numRotated, int numNegative)
 {
 	std::set<Point> open = _openpos;
-	int shapeSize = hasFlag(Config::SmallShapes) ? 2 : hasFlag(Config::BigShapes) ? 6 : 4;
+	int shapeSize = hasFlag(Config::SmallShapes) ? 2 : hasFlag(Config::BigShapes) ? amount == 1 ? 8 : 6 : 4;
 	int targetArea = amount * shapeSize * 7 / 8; //Average size must be at least 7/8 of the target size
 	int originalAmount = amount;
 	if (hasFlag(Generate::Config::MountainFloorH) && _panel->_width == 9) { //The 4 small puzzles shape size may vary depending on the path
@@ -1363,7 +1371,8 @@ bool Generate::place_shapes(const std::vector<int>& colors, const std::vector<in
 		if (hasFlag(Config::SplitShapes) && numShapes != 1) continue;
 		if (hasFlag(Config::RequireCombineShapes) && numShapes == 1) continue;
 		bool balance = false;
-		if (numShapes > amount) { //The region is too big for the number of shapes chosen
+		if (numShapes > amount //The region is too big for the number of shapes chosen
+			|| numNegative > 0 && _panel->id == 0x288AA) { //Expert UTM Perspective 4
 			if (numNegative < 2 || hasFlag(Config::DisableCancelShapes)) continue;
 			//Make balancing shapes - Positive and negative will be switched so that code can be reused
 			balance = true;
@@ -1554,6 +1563,24 @@ bool Generate::has_star(const std::set<Point>& region, int color)
 {
 	for (Point p : region) {
 		if (get(p) == (Decoration::Star | color)) return true;
+	}
+	return false;
+}
+
+bool Generate::checkStarZigzag(std::shared_ptr<Panel> panel)
+{
+	if (panel->_width <= 5 || panel->_height <= 5) return true;
+	for (int y = 1; y < panel->_height; y += 2) {
+		std::map<int, int> colorCount;
+		for (int x = 1; x < panel->_width; x += 2) {
+			int color = panel->_grid[x][y];
+			if (color == 0) continue;
+			if (!colorCount.count(color)) colorCount[color] = 0;
+			colorCount[color] += 1;
+		}
+		for (std::pair<int, int> count : colorCount)
+			if (count.second % 2 != 0)
+				return true;
 	}
 	return false;
 }

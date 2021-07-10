@@ -33,6 +33,7 @@ private:
 
 	friend class Panel;
 	friend class PuzzleList;
+	friend class Special;
 };
 
 #define PATH_COLOR 0xC0 
@@ -79,6 +80,7 @@ private:
 #define DOT_FLAGS 0x3C8 
 #define DOT_CONNECTION_A 0x3D0 
 #define DOT_CONNECTION_B 0x3D8 
+#define RANDOMIZE_ON_POWER_ON 0x3E0 
 #define DECORATIONS 0x418 
 #define DECORATION_FLAGS 0x420 
 #define DECORATION_COLORS 0x428 

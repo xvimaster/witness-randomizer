@@ -16,7 +16,6 @@ void Randomizer::GenerateNormal(HWND loadingHandle) {
 	puzzles->setLoadingHandle(loadingHandle);
 	puzzles->setSeed(seed, seedIsRNG);
 	puzzles->GenerateAllN();
-	Panel::SavePanels(seed, false);
 }
 
 void Randomizer::GenerateHard(HWND loadingHandle) {
@@ -24,7 +23,6 @@ void Randomizer::GenerateHard(HWND loadingHandle) {
 	puzzles->setLoadingHandle(loadingHandle);
 	puzzles->setSeed(seed, seedIsRNG);
 	puzzles->GenerateAllH();
-	Panel::SavePanels(seed, true);
 	MessageBox(GetActiveWindow(), L"Hi there! Thanks for trying out Expert Mode. It will be tough, but I hope you have fun!\r\n\r\n"
 		L"Here are some things you should know before you get started:\r\n\r\n"
 		L"- Your first big challenge will involve getting out of the tutorial area. A puzzle that you normally need to solve will be unsolvable the normal way.\r\n\r\n"
@@ -76,6 +74,7 @@ void Randomizer::RandomizeDesert() {
 			SwapPanels(puzzles[i], puzzles[target], SWAP::LINES);
 			std::swap(desertPanels[i], desertPanels[target]);
 		}
+		_memory->WritePanelData<float>(puzzles[i], PATH_WIDTH_SCALE, { 0.8f });
 	}
 }
 
