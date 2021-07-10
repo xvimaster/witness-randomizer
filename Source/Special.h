@@ -83,7 +83,9 @@ public:
 
 	static void setTargetAndDeactivate(int puzzle, int target)
 	{
-		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe"); _memory->WritePanelData<float>(target, POWER, { 0.0, 0.0 });
+		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe");
+		if (_memory->ReadPanelData<float>(0x00295, POWER) < 1) //Only deactivate on a fresh save file (since power state is preserved)
+			_memory->WritePanelData<float>(target, POWER, { 0.0, 0.0 });
 		WritePanelData(puzzle, TARGET, target + 1);
 	}
 	static void setPower(int puzzle, bool power) {

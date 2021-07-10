@@ -229,3 +229,28 @@ void TreehouseWatchdog::action()
 		terminate = true;
 	}
 }
+
+void JungleWatchdog::action()
+{
+	int numTraced = ReadPanelData<int>(id, TRACED_EDGES);
+	if (numTraced == tracedLength) return;
+	tracedLength = numTraced;
+	int tracedptr = ReadPanelData<int>(id, TRACED_EDGE_DATA);
+	if (!tracedptr) return;
+	std::vector<SolutionPoint> traced = ReadArray<SolutionPoint>(id, TRACED_EDGE_DATA, numTraced);
+	int seqIndex = 0;
+	for (SolutionPoint p : traced) {
+		if ((sizes[p.pointA] & IntersectionFlags::DOT) == 0) continue;
+		if (sizes[p.pointA] & (0x1000 << (state ? correctSeq1[seqIndex] : correctSeq2[seqIndex])))
+			seqIndex++;
+		else return;
+		if (seqIndex >= 1) {
+			WritePanelData<long>(id, DOT_SEQUENCE, { state ? ptr1 : ptr2 } );
+			WritePanelData<long>(id, DOT_SEQUENCE_REFLECTION, { state ? ptr2 : ptr1 });
+			WritePanelData<int>(id, DOT_SEQUENCE_LEN, { state ? (int)correctSeq1.size() : (int)correctSeq2.size() });
+			WritePanelData<int>(id, DOT_SEQUENCE_LEN_REFLECTION, { state ? (int)correctSeq2.size() : (int)correctSeq1.size() });
+			state = !state;
+			return;
+		}
+	}
+}

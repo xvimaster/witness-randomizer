@@ -33,6 +33,7 @@ private:
 
 	friend class Panel;
 	friend class PuzzleList;
+	friend class Special;
 };
 
 #define PATH_COLOR 0xC0 
