@@ -135,4 +135,5 @@ bool Memory::showMsg = false;
 int Memory::globalsTests[3] = {
 	0x62D0A0, //Steam and Epic Games
 	0x62B0A0, //Good Old Games
-  0x5B28C0 //Older Versions
+	0x5B28C0 //Older Versions
+};
