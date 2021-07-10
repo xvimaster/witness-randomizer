@@ -52,9 +52,7 @@ void Randomizer::AdjustSpeed() {
 	_memory->WritePanelData<float>(0x17CC1, OPEN_RATE, { 0.8f }); // Mill Elevator, 4x
 	_memory->WritePanelData<float>(0x0061A, OPEN_RATE, { 0.1f }); // Swamp Sliding Bridge, 4x
 	_memory->WritePanelData<float>(0x09EEC, OPEN_RATE, { 0.1f }); // Mountain 2 Elevator, 4x
-	_memory->WritePanelData<float>(0x17E74, OPEN_RATE, { 0.125f }); // Swamp Flood gate (inner), 10x
-	_memory->WritePanelData<float>(0x1802C, OPEN_RATE, { 0.125f }); // Swamp Flood gate (outer), 10x
-	_memory->WritePanelData<float>(0x005A2, OPEN_RATE, { 0.12f }); // Swamp Rotating Bridge, 10x
+	// What I would also like to speed up, but haven't been able to figure it out yet: Swamp Flood Gate, Swamp Rotating Bridge
 }
 
 void Randomizer::RandomizeDesert() {
