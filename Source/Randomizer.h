@@ -36,6 +36,7 @@ private:
 	friend class Special;
 };
 
+#define ORIENTATION 0x34
 #define PATH_COLOR 0xC0 
 #define REFLECTION_PATH_COLOR 0xD0 
 #define DOT_COLOR 0xF0 

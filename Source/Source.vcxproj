@@ -168,6 +168,7 @@
     <ClInclude Include="Panels.h" />
     <ClInclude Include="PuzzleList.h" />
     <ClInclude Include="PuzzleSymbols.h" />
+    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Randomizer.h" />
     <ClInclude Include="Special.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="MultiGenerate.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PuzzleList.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Randomizer.cpp" />
     <ClCompile Include="Special.cpp" />
