@@ -578,7 +578,7 @@ void PuzzleList::GenerateTownN()
 	generator->removeFlag(Generate::Config::EnableFlash);
 	specialCase->generateColorFilterPuzzle(0x28A0D, { 4, 4 }, { std::make_pair<int, int>(Decoration::Star | 1, 6),
 		std::make_pair<int,int>(Decoration::Star | 2, 6), std::make_pair<int,int>(Decoration::Star | 3, 4) }, { 1, 1, 0, 0 });
-	specialCase->setTarget(0x28A0D, 0x03B6F); specialCase->clearTarget(0x28A69); //Set star door to open tower instead of perspective puzzle (to prevent cheesing it)
+	specialCase->setPower(0x28A69, false); (new TownDoorWatchdog())->start();
 	//Soundproof Room
 	std::vector<int> allPitches = { DOT_SMALL, DOT_SMALL, DOT_MEDIUM, DOT_MEDIUM, DOT_LARGE, DOT_LARGE };
 	std::vector<int> pitches;
@@ -1671,26 +1671,27 @@ void PuzzleList::GenerateTreehouseH()
 	generator->removeFlag(Generate::Config::TreehouseColors);
 	generator->setFlag(Generate::Config::AlternateColors);
 	generator->setGridSize(5, 5);
-	generator->pathWidth = 0.8f;
-	generator->generate(0x17E3C, Decoration::Poly | Decoration::Color::White, 4, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 3,
-		Decoration::Star | Decoration::Color::White, 2, Decoration::Star | Decoration::Color::Green, 2);
-	generator->generate(0x17E4D, Decoration::Poly | Decoration::Color::White, 4, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 3,
-		Decoration::Star | Decoration::Color::White, 1, Decoration::Star | Decoration::Color::Green, 3);
-	generator->generate(0x17E4F, Decoration::Poly | Decoration::Color::White, 4, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 2,
-		Decoration::Star | Decoration::Color::White, 2, Decoration::Star | Decoration::Color::Green, 3, Decoration::Star | Decoration::Color::Purple, 4);
+	generator->pathWidth = 0.7f;
+	generator->generate(0x17E3C, Decoration::Poly | Decoration::Color::White, 3, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 1,
+		Decoration::Star | Decoration::Color::White, 5, Decoration::Star | Decoration::Color::Green, 3);
+	generator->generate(0x17E4D, Decoration::Poly | Decoration::Color::Green, 3, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 2,
+		Decoration::Star | Decoration::Color::White, 5, Decoration::Star | Decoration::Color::Green, 3);
+	generator->generate(0x17E4F, Decoration::Poly | Decoration::Color::White, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 1,
+		Decoration::Poly | Decoration::Color::Green, 1, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 1,
+		Decoration::Star | Decoration::Color::White, 5, Decoration::Star | Decoration::Color::Green, 4);
 	generator->setObstructions({ { { 1, 2 },{ 1, 4 },{ 9, 2 },{ 9, 4 },{ 2, 1 },{ 4, 1 },{ 6, 1 },{ 8, 1 } },
 		{ { 1, 2 },{ 1, 4 },{ 1, 6 },{ 0, 7 },{ 9, 2 },{ 9, 4 },{ 9, 6 },{ 10, 7 },{ 4, 1 },{ 6, 1 },{ 8, 1 } },
 		{ { 1, 2 },{ 1, 4 },{ 1, 6 },{ 0, 7 },{ 9, 2 },{ 9, 4 },{ 9, 6 },{ 10, 7 },{ 2, 1 },{ 4, 1 },{ 6, 1 } } });
-	generator->generate(0x17E52, Decoration::Poly | Decoration::Color::Green, 2, Decoration::Poly | Decoration::Color::Black, 1, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 3,
-		Decoration::Star | Decoration::Color::White, 1, Decoration::Star | Decoration::Color::Green, 2, Decoration::Star | Decoration::Color::Black, 1);
-	generator->generate(0x17E5B, Decoration::Poly | Decoration::Color::White, 2, Decoration::Poly | Decoration::Color::Black, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 3, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 3,
-		Decoration::Star | Decoration::Color::White, 1, Decoration::Star | Decoration::Color::Green, 2, Decoration::Star | Decoration::Color::Black, 2);
-	generator->generate(0x17E5F, Decoration::Poly | Decoration::Color::Black, 3, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 3,
+	generator->generate(0x17E52, Decoration::Poly | Decoration::Color::Green, 1, Decoration::Poly | Decoration::Color::Black, 1, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 3,
+		Decoration::Star | Decoration::Color::White, 3, Decoration::Star | Decoration::Color::Green, 2, Decoration::Star | Decoration::Color::Black, 3);
+	generator->generate(0x17E5B, Decoration::Poly | Decoration::Color::White, 1, Decoration::Poly | Decoration::Color::Black, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 2,
+		Decoration::Star | Decoration::Color::White, 3, Decoration::Star | Decoration::Color::Green, 3, Decoration::Star | Decoration::Color::Black, 3);
+	generator->generate(0x17E5F, Decoration::Poly | Decoration::Color::Black, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 2,
 		Decoration::Star | Decoration::Color::Black, 3, Decoration::Star | Decoration::Color::Green, 3,
 		Decoration::Triangle | Decoration::Color::Black, 2, Decoration::Triangle | Decoration::Color::Green, 2);
 	generator->generate(0x17E61, { { Decoration::Poly | Decoration::Color::White, 1 },{ Decoration::Poly | Decoration::Color::Green, 1 },{ Decoration::Poly | Decoration::Color::Cyan, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 1 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Cyan, 1 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Black, 2 },
-		{ Decoration::Star | Decoration::Color::Cyan, 2 },{ Decoration::Star | Decoration::Color::Black, 1 },{ Decoration::Star | Decoration::Color::White, 3 },
+		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 1 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Black, 2 },
+		{ Decoration::Star | Decoration::Color::Cyan, 2 },{ Decoration::Star | Decoration::Color::Black, 1 },{ Decoration::Star | Decoration::Color::White, 1 },{ Decoration::Star | Decoration::Color::Green, 2 },
 		{ Decoration::Triangle | Decoration::Color::Black, 2 },{ Decoration::Triangle | Decoration::Color::White, 1 } ,{ Decoration::Triangle | Decoration::Color::Cyan, 2 } });
 }
 
@@ -1749,8 +1750,9 @@ void PuzzleList::GenerateTownH()
 	specialCase->generateColorFilterPuzzle(0x28A0D, { 5, 5 }, { std::make_pair<int, int>(Decoration::Star | 1, 6), std::make_pair<int, int>(Decoration::Star | 2, 6),
 		std::make_pair<int,int>(Decoration::Star | 3, 6), std::make_pair<int,int>(Decoration::Star | 4, 6) }, { 1, 1, 0, 0 });
 	//Mess with targets
-	specialCase->copyTarget(0x28A0D, 0x28998); specialCase->setTargetAndDeactivate(0x28998, 0x28A0D); specialCase->clearTarget(0x28A69);
-	specialCase->setTargetAndDeactivate(0x03C0C, 0x03C08); specialCase->setTarget(0x03C08, 0x03B6F);
+	specialCase->copyTarget(0x03C08, 0x28A0D); specialCase->copyTarget(0x28A0D, 0x28998);
+	specialCase->setTargetAndDeactivate(0x28998, 0x28A0D); specialCase->setTargetAndDeactivate(0x03C0C, 0x03C08);
+	specialCase->setPower(0x28A69, false); (new TownDoorWatchdog())->start();
 	//Soundproof Room
 	std::vector<int> allPitches = { DOT_SMALL, DOT_SMALL, DOT_MEDIUM, DOT_MEDIUM, DOT_LARGE, DOT_LARGE };
 	std::vector<int> pitches;

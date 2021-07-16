@@ -1,8 +1,5 @@
 Change List:
 
-UI/overall
--Autoscroller speed ups? ASK DARKID
-
 Future:
 *Random audiologs?
 *Force EPs (Ensure reset on bridge)

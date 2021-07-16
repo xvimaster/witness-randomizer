@@ -124,3 +124,12 @@ public:
 	bool state;
 	int tracedLength;
 };
+
+class TownDoorWatchdog : public Watchdog {
+public:
+	TownDoorWatchdog() : Watchdog(0.2f) {
+		this->id = id;
+	}
+	virtual void action();
+	int id;
+};

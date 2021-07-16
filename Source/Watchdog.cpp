@@ -3,6 +3,7 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
 #include "Watchdog.h"
+#include "Quaternion.h"
 #include <thread>
 
 void Watchdog::start()
@@ -252,5 +253,14 @@ void JungleWatchdog::action()
 			state = !state;
 			return;
 		}
+	}
+}
+
+void TownDoorWatchdog::action()
+{
+	if (ReadPanelData<Quaternion>(0x03BB0, ORIENTATION).x < 0.0078f) {
+		WritePanelData<float>(0x28A69, POWER, { 1.0f, 1.0f });
+		WritePanelData<int>(0x28A69, NEEDS_REDRAW, { 1 });
+		terminate = true;
 	}
 }

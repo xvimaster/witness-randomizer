@@ -172,7 +172,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 						break;
 					}
 				}
-				randomizer->seedIsRNG = false;
 				lastHard = (Special::ReadPanelData<int>(0x00182, BACKGROUND_REGION_COLOR + 12) > 1);
 				if (!lastHard && hard) {
 					if (MessageBox(hwnd, L"This save file was previously randomized on Normal. Are you sure you want to switch to Expert?", NULL, MB_YESNO) == IDNO) {
@@ -204,6 +203,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			randomizer->seed = seed;
 			if (hard) randomizer->GenerateHard(hwndLoadingText);
 			else randomizer->GenerateNormal(hwndLoadingText);
+			Special::WritePanelData(0x00064, BACKGROUND_REGION_COLOR + 12, seed);
+			Special::WritePanelData(0x00182, BACKGROUND_REGION_COLOR + 12, hard);
 			file << "SUCCESS!" << std::endl;
 
 			SetWindowText(hwndRandomize, L"Randomized!");
