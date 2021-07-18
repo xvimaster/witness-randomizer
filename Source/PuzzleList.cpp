@@ -734,7 +734,7 @@ void PuzzleList::GenerateMountainN()
 
 	specialCase->generate2Bridge(0x09E86, 0x09ED8);
 
-	specialCase->generateMountainFloor({ 0x09EFF, 0x09F01, 0x09FC1, 0x09F8E }, 0x09FDA);
+	specialCase->generateMountainFloor();
 
 	//Pillar Puzzles
 	generator->setGridSize(6, 3);
@@ -1977,7 +1977,7 @@ void PuzzleList::GenerateMountainH()
 	(new BridgeWatchdog(0x09E86, 0x09ED8))->start();
 
 	generator->resetConfig();
-	specialCase->generateMountainFloorH({ 0x09EFF, 0x09F01, 0x09FC1, 0x09F8E }, 0x09FDA);
+	specialCase->generateMountainFloorH();
 
 	//Pillar Puzzles
 	generator->resetConfig();
@@ -2257,7 +2257,7 @@ void PuzzleList::GenerateKeepH()
 	generator->setSymbol(Decoration::Start, 8, 0);
 	generator->setSymbol(Decoration::Exit, 8, 4);
 	generator->setFlagOnce(Generate::Config::ShortPath);
-	generator->generate(0x01D3F, Decoration::Poly | Decoration::Color::Yellow, 2, Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Blue, 1,
+	generator->generate(0x01D3F, Decoration::Poly | Decoration::Color::Yellow, 2, Decoration::Poly | Decoration::Color::Blue, 1,
 		Decoration::Star | Decoration::Color::Yellow, 2, Decoration::Star | Decoration::Color::Blue, 2,
 		Decoration::Triangle | Decoration::Color::Yellow, 3, Decoration::Triangle | Decoration::Color::Blue, 3
 	);

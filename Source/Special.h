@@ -45,8 +45,8 @@ public:
 	bool generate2Bridge(int id1, int id2, std::vector<std::shared_ptr<Generate>> gens);
 	void generate2BridgeH(int id1, int id2);
 	bool generate2BridgeH(int id1, int id2, std::vector<std::shared_ptr<Generate>> gens);
-	void generateMountainFloor(const std::vector<int>& ids, int idfloor);
-	void generateMountainFloorH(const std::vector<int>& ids, int idfloor);
+	void generateMountainFloor();
+	void generateMountainFloorH();
 	void generatePivotPanel(int id, Point gridSize, const std::vector<std::pair<int, int>>& symbolVec); //Too slow right now, only used a couple times in hard mode
 	void modifyGate(int id);
 	void addDecoyExits(std::shared_ptr<Generate> gen, int amount);

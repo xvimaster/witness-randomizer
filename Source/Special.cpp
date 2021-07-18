@@ -1007,8 +1007,11 @@ bool checkShape(const std::set<Point>& shape, int direction) {
 	return false;
 }
 
-void Special::generateMountainFloor(const std::vector<int>& ids, int idfloor)
+void Special::generateMountainFloor()
 {
+	std::vector<int> ids = { 0x09EFF, 0x09F01, 0x09FC1, 0x09F8E };
+	int idfloor = 0x09FDA;
+	//{ 0x09EFF, 0x09F01, 0x09FC1, 0x09F8E }, 0x09FDA
 	generator->resetConfig();
 	std::vector<Point> floorPos = { { 3, 3 },{ 7, 3 },{ 3, 7 },{ 7, 7 } };
 	generator->openPos = std::set<Point>(floorPos.begin(), floorPos.end());
@@ -1057,19 +1060,23 @@ void Special::generateMountainFloor(const std::vector<int>& ids, int idfloor)
 		gen.setPath({ {0, 0} }); //Just to stop it from trying to make a path
 		gen.setFlag(Generate::Config::DecorationsOnly);
 		gen.setFlag(Generate::Config::DisableWrite);
-		gen.generate(ids[i], Decoration::Poly | (i != rotateIndex ? Decoration::Can_Rotate : 0), 1, Decoration::Eraser | Decoration::Color::Green, 1);
-		std::set<Point> covered;
-		int decoyShape;
-		for (int x = 1; x <= 7; x += 2)
-			for (int y = 1; y <= 7; y += 2)
-				if (gen.get(x, y) != 0) {
-					covered.emplace(Point(x, y));
-					if (gen.get_symbol_type(gen.get(x, y)) == Decoration::Poly) decoyShape = gen.get(x, y);
-				}
-		for (Point p : covered) newShape.erase(p);
-		if (newShape.size() == 0 || decoyShape == symbol) {
-			i--;
-			continue;
+		if (i == rotateIndex) gen.generate(ids[i], { });
+		else
+		{
+			gen.generate(ids[i], Decoration::Poly, 1, Decoration::Eraser | Decoration::Color::Green, 1);
+			std::set<Point> covered;
+			int decoyShape;
+			for (int x = 1; x <= 7; x += 2)
+				for (int y = 1; y <= 7; y += 2)
+					if (gen.get(x, y) != 0) {
+						covered.emplace(Point(x, y));
+						if (gen.get_symbol_type(gen.get(x, y)) == Decoration::Poly) decoyShape = gen.get(x, y);
+					}
+			for (Point p : covered) newShape.erase(p);
+			if (newShape.size() == 0 || decoyShape == symbol) {
+				i--;
+				continue;
+			}
 		}
 		Point pos = pick_random(newShape);
 		gen.setVal(symbol, pos.first, pos.second);
@@ -1080,8 +1087,10 @@ void Special::generateMountainFloor(const std::vector<int>& ids, int idfloor)
 	generator->resetConfig();
 }
 
-void Special::generateMountainFloorH(const std::vector<int>& ids, int idfloor)
+void Special::generateMountainFloorH()
 {
+	const std::vector<int> ids = { 0x09EFF, 0x09F01, 0x09FC1, 0x09F8E };
+	const int idfloor = 0x09FDA;
 	generator->resetConfig();
 	std::vector<Point> floorPos = { { 3, 3 },{ 7, 3 },{ 3, 7 },{ 7, 7 } };
 	generator->openPos = std::set<Point>(floorPos.begin(), floorPos.end());
@@ -1113,7 +1122,7 @@ void Special::generateMountainFloorH(const std::vector<int>& ids, int idfloor)
 		int fails = 0;
 		do {
 			if (fails++ == 50) {
-				generateMountainFloorH(ids, idfloor);
+				generateMountainFloorH();
 				return;
 			}
 			Point shift = Point((Random::rand() % 4) * 2, -(Random::rand() % 4) * 2);
@@ -1147,7 +1156,7 @@ void Special::generateMountainFloorH(const std::vector<int>& ids, int idfloor)
 			gen.removeFlag(Generate::Config::BigShapes);
 		while (!gen.generate(ids[i], symbols)) {
 			if (fails++ > 50) {
-				generateMountainFloorH(ids, idfloor);
+				generateMountainFloorH();
 				return;
 			}
 		}
@@ -1175,7 +1184,7 @@ void Special::generateMountainFloorH(const std::vector<int>& ids, int idfloor)
 		gen.write(ids[i]);
 	}
 	if (combine != 2) {
-		generateMountainFloorH(ids, idfloor);
+		generateMountainFloorH();
 		return;
 	}
 	for (Point p : floorPos) generator->set(p, Decoration::Poly);
@@ -1554,31 +1563,6 @@ int Special::findGlobals() {
 
 //For testing/debugging purposes only
 void Special::test() {
-	generator->removeFlag(Generate::Config::TreehouseColors);
-	generator->setFlag(Generate::Config::AlternateColors);
-	generator->setFlag(Generate::Config::TreehouseLayout);
-	generator->setGridSize(5, 5);
-	generator->pathWidth = 0.7f;
-	generator->generate(0x17E3C, Decoration::Poly | Decoration::Color::White, 3, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 1,
-		Decoration::Star | Decoration::Color::White, 5, Decoration::Star | Decoration::Color::Green, 3);
-	generator->generate(0x17E4D, Decoration::Poly | Decoration::Color::Green, 3, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 2,
-		Decoration::Star | Decoration::Color::White, 5, Decoration::Star | Decoration::Color::Green, 3);
-	generator->generate(0x17E4F, Decoration::Poly | Decoration::Color::White, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 1,
-		Decoration::Poly | Decoration::Color::Green, 1, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 1,
-		Decoration::Star | Decoration::Color::White, 5, Decoration::Star | Decoration::Color::Green, 4);
-	generator->setObstructions({ { { 1, 2 },{ 1, 4 },{ 9, 2 },{ 9, 4 },{ 2, 1 },{ 4, 1 },{ 6, 1 },{ 8, 1 } },
-		{ { 1, 2 },{ 1, 4 },{ 1, 6 },{ 0, 7 },{ 9, 2 },{ 9, 4 },{ 9, 6 },{ 10, 7 },{ 4, 1 },{ 6, 1 },{ 8, 1 } },
-		{ { 1, 2 },{ 1, 4 },{ 1, 6 },{ 0, 7 },{ 9, 2 },{ 9, 4 },{ 9, 6 },{ 10, 7 },{ 2, 1 },{ 4, 1 },{ 6, 1 } } });
-	generator->generate(0x17E52, Decoration::Poly | Decoration::Color::Green, 1, Decoration::Poly | Decoration::Color::Black, 1, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 3,
-		Decoration::Star | Decoration::Color::White, 3, Decoration::Star | Decoration::Color::Green, 2, Decoration::Star | Decoration::Color::Black, 3);
-	generator->generate(0x17E5B, Decoration::Poly | Decoration::Color::White, 1, Decoration::Poly | Decoration::Color::Black, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 2,
-		Decoration::Star | Decoration::Color::White, 3, Decoration::Star | Decoration::Color::Green, 3, Decoration::Star | Decoration::Color::Black, 3);
-	generator->generate(0x17E5F, Decoration::Poly | Decoration::Color::Black, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 2,
-		Decoration::Star | Decoration::Color::Black, 3, Decoration::Star | Decoration::Color::Green, 3,
-		Decoration::Triangle | Decoration::Color::Black, 2, Decoration::Triangle | Decoration::Color::Green, 2);
-	generator->generate(0x17E61, { { Decoration::Poly | Decoration::Color::White, 1 },{ Decoration::Poly | Decoration::Color::Green, 1 },{ Decoration::Poly | Decoration::Color::Cyan, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Green, 1 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Black, 2 },
-		{ Decoration::Star | Decoration::Color::Cyan, 2 },{ Decoration::Star | Decoration::Color::Black, 1 },{ Decoration::Star | Decoration::Color::White, 1 },{ Decoration::Star | Decoration::Color::Green, 2 },
-		{ Decoration::Triangle | Decoration::Color::Black, 2 },{ Decoration::Triangle | Decoration::Color::White, 1 } ,{ Decoration::Triangle | Decoration::Color::Cyan, 2 } });
+
 }
 
