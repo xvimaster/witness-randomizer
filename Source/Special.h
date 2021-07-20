@@ -89,8 +89,9 @@ public:
 		WritePanelData(puzzle, TARGET, target + 1);
 	}
 	static void setPower(int puzzle, bool power) {
-		
+
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe");
+		if (_memory->ReadPanelData<float>(0x00295, POWER) == 1) return; //Only deactivate on a fresh save file (since power state is preserved)
 		if (power) _memory->WritePanelData<float>(puzzle, POWER, { 1.0, 1.0 });
 		else _memory->WritePanelData<float>(puzzle, POWER, { 0.0, 0.0 });
 	}
@@ -104,36 +105,30 @@ public:
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe"); return _memory->ReadArray<T>(panel, offset, size);
 	}
 	static void WritePanelData(int panel, int offset, int data) {
-		writeInt.emplace_back(MemoryWrite<int>(panel, offset, { data }));
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe"); return _memory->WritePanelData<int>(panel, offset, { data });
 	}
 	static void WritePanelData(int panel, int offset, float data) {
-		if (offset != POWER) writeFloat.emplace_back(MemoryWrite<float>(panel, offset, { data }));
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe"); return _memory->WritePanelData<float>(panel, offset, { data });
 	}
 	static void WritePanelData(int panel, int offset, Color data) {
-		writeColor.emplace_back(MemoryWrite<Color>(panel, offset, { data }));
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe"); return _memory->WritePanelData<Color>(panel, offset, { data });
 	}
 	static void WriteArray(int panel, int offset, const std::vector<int>& data) {
 		return WriteArray(panel, offset, data, false);
 	}
 	static void WriteArray(int panel, int offset, const std::vector<int>& data, bool force) {
-		writeIntVec.emplace_back(MemoryWrite<int>(panel, offset, data));
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe"); return _memory->WriteArray<int>(panel, offset, data, force);
 	}
 	static void WriteArray(int panel, int offset, const std::vector<float>& data) {
 		return WriteArray(panel, offset, data, false);
 	}
 	static void WriteArray(int panel, int offset, const std::vector<float>& data, bool force) {
-		writeFloatVec.emplace_back(MemoryWrite<float>(panel, offset, data));
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe"); return _memory->WriteArray<float>(panel, offset, data, force);
 	}
 	static void WriteArray(int panel, int offset, const std::vector<Color>& data) {
 		return WriteArray(panel, offset, data, false);
 	}
 	static void WriteArray(int panel, int offset, const std::vector<Color>& data, bool force) {
-		writeColorVec.emplace_back(MemoryWrite<Color>(panel, offset, data));
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe"); return _memory->WriteArray<Color>(panel, offset, data, force);
 	}
 
@@ -197,13 +192,6 @@ public:
 	}
 
 	static int findGlobals();
-
-	static std::vector<MemoryWrite<int>> writeInt;
-	static std::vector<MemoryWrite<float>> writeFloat;
-	static std::vector<MemoryWrite<Color>> writeColor;
-	static std::vector<MemoryWrite<int>> writeIntVec;
-	static std::vector<MemoryWrite<float>> writeFloatVec;
-	static std::vector<MemoryWrite<Color>> writeColorVec;
 
 private:
 

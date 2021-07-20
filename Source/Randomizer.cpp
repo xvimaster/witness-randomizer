@@ -79,13 +79,17 @@ void Randomizer::RandomizeDesert() {
 		}
 		_memory->WritePanelData<float>(puzzles[i], PATH_WIDTH_SCALE, { 0.8f });
 	}
-    // This is just a demo, I encourage you to add your own randomness here.
-    for (auto panel : desertPanels) {
-        auto rotationData = _memory->ReadPanelData<float>(panel, ORIENTATION, 4);
-        auto q = Quaternion{rotationData[3], rotationData[0], rotationData[1], rotationData[2]};
-        q = q.Rotate90();
-        _memory->WritePanelData<float>(panel, ORIENTATION, {(float)q.x, (float)q.y, (float)q.z, (float)q.w});
-	}
+	/* TODO: Add into v1.3 after doing more experimentation
+	if (_memory->ReadPanelData<float>(0x00295, POWER) < 1)
+		for (auto panel : desertPanels) {
+			auto rotationData = _memory->ReadPanelData<float>(panel, ORIENTATION, 4);
+			auto q = Quaternion{rotationData[3], rotationData[0], rotationData[1], rotationData[2]};
+			q = q.Rotate90();
+			//q = q.Reflect(); Figure this out at some point
+			_memory->WritePanelData<float>(panel, ORIENTATION, {(float)q.x, (float)q.y, (float)q.z, (float)q.w});
+		}*/
+	Special::setPower(0x09F94, false); // Turn off desert surface 8
+	Special::setTargetAndDeactivate(0x17ECA, 0x18076); // Change desert floating target to desert flood final
 }
 
 void Randomizer::Randomize(std::vector<int>& panels, int flags) {
@@ -141,7 +145,6 @@ void Randomizer::SwapPanels(int panel1, int panel2, int flags) {
 		offsets[COLORED_REGIONS] = sizeof(void*);
 	}
 	if (flags & SWAP::LINES) {
-		offsets[TRACED_EDGES] = 16;
 		offsets[AUDIO_PREFIX] = sizeof(void*);
 		offsets[PATH_WIDTH_SCALE] = sizeof(float);
 		offsets[STARTPOINT_SCALE] = sizeof(float);

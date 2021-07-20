@@ -198,14 +198,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 
 			SetWindowText(hwndRandomize, L"Randomizing...");
-			std::ofstream file("errorlog.txt", std::ofstream::app);
-			file << "GENERATING SEED " << seed << " " << (hard ? "EXPERT" : "NORMAL") << "..." << std::endl;
 			randomizer->seed = seed;
 			if (hard) randomizer->GenerateHard(hwndLoadingText);
 			else randomizer->GenerateNormal(hwndLoadingText);
 			Special::WritePanelData(0x00064, BACKGROUND_REGION_COLOR + 12, seed);
 			Special::WritePanelData(0x00182, BACKGROUND_REGION_COLOR + 12, hard);
-			file << "SUCCESS!" << std::endl;
 
 			SetWindowText(hwndRandomize, L"Randomized!");
 			SetWindowText(hwndSeed, std::to_wstring(seed).c_str());

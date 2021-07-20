@@ -894,13 +894,6 @@ void PuzzleList::GenerateOrchardN()
 void PuzzleList::GenerateDesertN()
 {
 	Randomizer().RandomizeDesert();
-	Panel panel;
-	// Turn off desert surface 8
-	panel._memory->WritePanelData<float>(0x09F94, POWER, { 0.0, 0.0 });
-	// Turn off desert flood final
-	panel._memory->WritePanelData<float>(0x18076, POWER, { 0.0, 0.0 });
-	// Change desert floating target to desert flood final
-	specialCase->WritePanelData(0x17ECA, TARGET, 0x18077);
 }
 
 void PuzzleList::GenerateKeepN()
@@ -2206,13 +2199,6 @@ void PuzzleList::GenerateOrchardH()
 void PuzzleList::GenerateDesertH()
 {
 	Randomizer().RandomizeDesert();
-	Panel panel;
-	// Turn off desert surface 8
-	panel._memory->WritePanelData<float>(0x09F94, POWER, { 0.0, 0.0 });
-	// Turn off desert flood final
-	panel._memory->WritePanelData<float>(0x18076, POWER, { 0.0, 0.0 });
-	// Change desert floating target to desert flood final
-	specialCase->WritePanelData(0x17ECA, TARGET, 0x18077);
 }
 
 void PuzzleList::GenerateKeepH()

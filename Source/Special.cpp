@@ -7,13 +7,6 @@
 #include "Quaternion.h"
 #include "../App/Version.h"
 
-std::vector<MemoryWrite<int>> Special::writeInt;
-std::vector<MemoryWrite<float>> Special::writeFloat;
-std::vector<MemoryWrite<Color>> Special::writeColor;
-std::vector<MemoryWrite<int>> Special::writeIntVec;
-std::vector<MemoryWrite<float>> Special::writeFloatVec;
-std::vector<MemoryWrite<Color>> Special::writeColorVec;
-
 void Special::generateReflectionDotPuzzle(std::shared_ptr<Generate> gen, int id1, int id2, std::vector<std::pair<int, int>> symbols, Panel::Symmetry symmetry, bool split)
 {
 	gen->setFlagOnce(Generate::Config::DisableWrite);
@@ -1563,6 +1556,6 @@ int Special::findGlobals() {
 
 //For testing/debugging purposes only
 void Special::test() {
-
+	
 }
 
