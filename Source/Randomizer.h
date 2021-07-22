@@ -27,6 +27,7 @@ private:
 
 	void Randomize(std::vector<int>& panels, int flags);
 	void RandomizeRange(std::vector<int> &panels, int flags, size_t startIndex, size_t endIndex);
+	void RandomizeAudiologs();
 	void SwapPanels(int panel1, int panel2, int flags);
 
 	std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe");

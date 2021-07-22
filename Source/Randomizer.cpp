@@ -110,6 +110,22 @@ void Randomizer::RandomizeRange(std::vector<int> &panels, int flags, size_t star
 	}
 }
 
+void Randomizer::RandomizeAudiologs()
+{
+	std::vector<int> audiologs = {
+		0x3C0F7, 0x3C0FD, 0x32A00, 0x3C0FE, 0x338B0, 0x338B7, 0x338AD,
+		0x338A5, 0x338AE, 0x338AF, 0x338A7, 0x338A3, 0x338A4, 0x3C108,
+		0x338EF, 0x336E5, 0x338A6, 0x3C100, 0x3C0F4, 0x3C102, 0x3C10D,
+		0x3C10E, 0x3C10B, 0x0074F, 0x012C7, 0x329FF, 0x3C106, 0x33AFF,
+		0x011F9, 0x00763, 0x32A08, 0x3C101, 0x3C0FF, 0x3C103, 0x00A0F,
+		0x339A9, 0x015C0, 0x33B36, 0x3C10C, 0x32A0E, 0x329FE, 0x32A07,
+		0x00761, 0x3C109, 0x33B37, 0x3C107, 0x3C0F3, 0x015B7, 0x3C10A,
+		0x32A0A, 0x015C1, 0x3C12A, 0x3C104, 0x3C105, 0x339A8, 0x0050A,
+		0x338BD, 0x3C135, 0x338C9, 0x338D7, 0x338C1, 0x338CA
+	};
+	Randomizer::RandomizeRange(audiologs, SWAP::AUDIO_NAMES, 0, audiologs.size());
+}
+
 void Randomizer::SwapPanels(int panel1, int panel2, int flags) {
 	std::map<int, int> offsets;
 
@@ -117,7 +133,7 @@ void Randomizer::SwapPanels(int panel1, int panel2, int flags) {
 		offsets[TARGET] = sizeof(int);
 	}
 	if (flags & SWAP::AUDIO_NAMES) {
-		offsets[AUDIO_LOG_NAME] = sizeof(void*);
+		offsets[AUDIO_LOG_NAME] = sizeof(void*); //This isn't actually working 
 	}
 	if (flags & SWAP::COLORS) {
 		offsets[PATH_COLOR] = 16;

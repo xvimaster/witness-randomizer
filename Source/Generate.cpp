@@ -1594,6 +1594,7 @@ bool Generate::place_triangles(int color, int amount, int targetCount)
 		_openpos.erase({ 1, 3 });
 	}
 	std::set<Point> open = _openpos;
+	int count1 = 0, count2 = 0, count3 = 0;
 	while (amount > 0) {
 		if (open.size() == 0)
 			return false;
@@ -1614,8 +1615,18 @@ bool Generate::place_triangles(int color, int amount, int targetCount)
 			}
 			if (found) continue;
 		}
-		if (!targetCount && count == 2 && Random::rand() % 2 == 0) //Prevent it from placing so many 2's
-			continue;
+		if (count == 1) {
+			if (!targetCount && count1 * 2 > count2 + count3 && Random::rand() % 2 == 0) continue;
+			count1++;
+		}
+		if (count == 2) {
+			if (!targetCount && count2 * 2 > count1 + count3 && Random::rand() % 2 == 0) continue;
+			count2++;
+		}
+		if (count == 3) {
+			if (!targetCount && count3 * 2 > count1 + count2 && Random::rand() % 2 == 0) continue;
+			count3++;
+		}
 		set(pos, Decoration::Triangle | color | (count << 16));
 		_openpos.erase(pos);
 		amount--;

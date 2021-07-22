@@ -117,7 +117,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDC_TEST:
 			generator->resetConfig();
 			generator->seed(static_cast<unsigned int>(time(NULL)));
-			generator->seed(ctr++);
+			//generator->seed(ctr++);
 			//generator->seed(1);
 			specialCase->test();
 			break;
