@@ -81,7 +81,11 @@ void Memory::ThrowError(const std::vector<int>& offsets, bool rw_flag) {
 		ss << "Error " << (rw_flag ? "writing" : "reading") << " 0x" << offsets[3] << " in panel 0x" << offsets[2] / 8;
 		ThrowError(ss.str());
 	}
-	else if (offsets.size() != 3) { //Don't bother throwing an error for size==3 since it will be thrown anyway by the caller of ComputeOffsets.
+	else if (offsets.size() == 3) {
+		for (int i : offsets) ss << "0x" << i << " ";
+		ThrowError("Error computing offsets: " + ss.str());
+	}
+	else {
 		for (int i : offsets) ss << "0x" << i << " ";
 		ThrowError("Unknown error: " + ss.str());
 	}
@@ -100,7 +104,6 @@ void* Memory::ComputeOffset(std::vector<int> offsets)
 	int final_offset = offsets.back();
 	offsets.pop_back();
 
-	//uintptr_t cumulativeAddress = (offsets.size() == 0 ? 0 : _baseAddress);
 	uintptr_t cumulativeAddress =  _baseAddress;
 	for (const int offset : offsets) {
 		cumulativeAddress += offset;

@@ -633,7 +633,7 @@ void Special::generateKeepLaserPuzzle(int id, const std::set<Point>& path1, cons
 					generator->set(x, y, 0);
 		generator->_openpos = generator->_gridpos;
 		for (int i = 0; i < psymbols.symbols[Decoration::Poly].size(); i++) {
-			psymbols.symbols[Decoration::Poly][i].second = Random::rand() % 4 + 4 - (Random::rand() % 5 == 0);
+			psymbols.symbols[Decoration::Poly][i].second = Random::rand() % 3 + 5 - (Random::rand() % 5 == 0) + (Random::rand() % 5 == 0);
 		}
 	}
 

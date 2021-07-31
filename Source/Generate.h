@@ -118,7 +118,7 @@ private:
 	bool place_exit(int amount);
 	bool can_place_gap(Point pos);
 	bool place_gaps(int amount);
-	bool can_place_dot(Point pos);
+	bool can_place_dot(Point pos, bool intersectionOnly);
 	bool place_dots(int amount, int color, bool intersectionOnly);
 	bool can_place_stone(const std::set<Point>& region, int color);
 	bool place_stones(int color, int amount);

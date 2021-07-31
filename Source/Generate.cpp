@@ -1047,15 +1047,17 @@ bool Generate::place_gaps(int amount) {
 }
 
 //Check if a dot can be placed at pos.
-bool Generate::can_place_dot(Point pos) {
+bool Generate::can_place_dot(Point pos, bool intersectionOnly) {
 	if (get(pos) & DOT)
 		return false;
 	if (_panel->symmetry) {
 		//For symmetry puzzles, make sure the current pos and symmetric pos are both valid
-		if (get_sym_point(pos) == pos) return false;
+		Point symPos = get_sym_point(pos);
+		if (symPos == pos) return false;
 		Panel::Symmetry backupSym = _panel->symmetry;
 		_panel->symmetry = Panel::Symmetry::None; //To prevent endless recursion
-		if (!can_place_dot(get_sym_point(pos))) {
+		//if (!can_place_dot(get_sym_point(pos))) {
+		if (!can_place_dot(symPos, intersectionOnly)) {
 			_panel->symmetry = backupSym;
 			return false;
 		}
@@ -1066,8 +1068,8 @@ bool Generate::can_place_dot(Point pos) {
 	if (hasFlag(Config::DisableDotIntersection)) return true;
 	for (Point dir : _8DIRECTIONS1) {
 		Point p = pos + dir;
-		if (!off_edge(p) && get(p) & DOT) {
-			//Don't allow horizontally adjacent dots
+		if (!off_edge(p) && (get(p) & DOT)) {
+			//Don't allow adjacent dots
 			if (dir.first == 0 || dir.second == 0)
 				return false;
 			//Allow diagonally adjacent placement some of the time
@@ -1075,8 +1077,8 @@ bool Generate::can_place_dot(Point pos) {
 				return false;
 		}
 	}
-	//Allow 2-space horizontally adjacent dots only in rare cases
-	if (Random::rand() % 10 > 0) {
+	//Allow 2-space horizontal/vertical placement some of the time
+	if (Random::rand() % (intersectionOnly ? 10 : 5) > 0) {
 		for (Point dir : _DIRECTIONS2) {
 			Point p = pos + dir;
 			if (!off_edge(p) && (get(p) & DOT)) {
@@ -1133,7 +1135,7 @@ bool Generate::place_dots(int amount, int color, bool intersectionOnly) {
 			return false;
 		Point pos = pick_random(open);
 		open.erase(pos);
-		if (!can_place_dot(pos)) continue;
+		if (!can_place_dot(pos, intersectionOnly)) continue;
 		int symbol = (pos.first & 1) == 1 ? Decoration::Dot_Row : (pos.second & 1) == 1 ? Decoration::Dot_Column : Decoration::Dot_Intersection;
 		set(pos, symbol | color);
 		for (Point dir : _DIRECTIONS1) {
@@ -1750,7 +1752,7 @@ bool Generate::place_erasers(const std::vector<int>& colors, const std::vector<i
 				for (Point dir : _8DIRECTIONS1) {
 					if (toErase == Decoration::Dot_Intersection && (dir.first == 0 || dir.second == 0)) continue;
 					Point p2 = p + dir;
-					if (get(p2) == 0 && (hasFlag(Config::FalseParity) || can_place_dot(p2))) {
+					if (get(p2) == 0 && (hasFlag(Config::FalseParity) || can_place_dot(p2, false))) {
 						openEdge.insert(p2);
 					}
 				}
