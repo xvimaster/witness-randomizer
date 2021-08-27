@@ -7,7 +7,7 @@ double Quaternion::Length() const {
 }
 
 Quaternion Quaternion::Normalize() {
-    double length = Length();
+    float length = (float)Length();
     w /= length;
     x /= length;
     y /= length;
@@ -25,7 +25,7 @@ Quaternion Quaternion::Mul(const Quaternion& other) const {
 }
 
 Quaternion Quaternion::Rotate90() {
-    double angle = M_PI_4;
+    float angle = (float)M_PI_4;
     auto q = Quaternion{std::cos(angle), std::sin(angle), 0, 0};
     return this->Mul(q).Normalize();
 }

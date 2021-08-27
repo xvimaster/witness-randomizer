@@ -409,18 +409,18 @@ void Panel::ReadIntersections() {
 				if (connections_a[j] == i) location = connections_b[j];
 				if (connections_b[j] == i) location = connections_a[j];
 				if (location != -1) {
-					Endpoint::Direction dir;
+					Endpoint::Direction dir = Endpoint::Direction::NONE;
 					if (intersections[2 * i] < intersections[2 * location]) { // Our (i) x coordinate is less than the target's (location)
-						dir = Endpoint::Direction::LEFT;
+						dir = (Endpoint::Direction)(dir | Endpoint::Direction::LEFT);
 					}
-					else if (intersections[2 * i] > intersections[2 * location]) {
-						dir = Endpoint::Direction::RIGHT;
+					if (intersections[2 * i] > intersections[2 * location]) {
+						dir = (Endpoint::Direction)(dir | Endpoint::Direction::RIGHT);
 					}
-					else if (intersections[2 * i + 1] > intersections[2 * location + 1]) { // y coordinate is 0 (bottom) 1 (top), so this check is reversed.
-						dir = Endpoint::Direction::UP;
+					if (intersections[2 * i + 1] < intersections[2 * location + 1]) { // y coordinate is 0 (bottom) 1 (top), so this check is reversed.
+						dir = (Endpoint::Direction)(dir | Endpoint::Direction::DOWN);
 					}
-					else {
-						dir = Endpoint::Direction::DOWN;
+					if (intersections[2 * i + 1] > intersections[2 * location + 1]) {
+						dir = (Endpoint::Direction)(dir | Endpoint::Direction::UP);
 					}
 					xd = (intersections[location * 2] - minx) / unitWidth;
 					yd = (intersections[location * 2 + 1] - miny) / unitHeight;
@@ -523,16 +523,16 @@ void Panel::WriteIntersections() {
 		connections_b.push_back(static_cast<int>(intersectionFlags.size()));  // This endpoint
 		double xPos = minx + endpoint.GetX() * unitWidth;
 		double yPos = miny + (_height - 1 - endpoint.GetY()) * unitHeight;
-		if (endpoint.GetDir() == Endpoint::Direction::LEFT) {
+		if (endpoint.GetDir() & Endpoint::Direction::LEFT) {
 			xPos -= endDist;
 		}
-		else if (endpoint.GetDir() == Endpoint::Direction::RIGHT) {
+		if (endpoint.GetDir() & Endpoint::Direction::RIGHT) {
 			xPos += endDist;
 		}
-		else if (endpoint.GetDir() == Endpoint::Direction::UP) {
+		if (endpoint.GetDir() & Endpoint::Direction::UP) {
 			yPos += endDist;
 		}
-		else if (endpoint.GetDir() == Endpoint::Direction::DOWN) {
+		if (endpoint.GetDir() & Endpoint::Direction::DOWN) {
 			yPos -= endDist;
 		}
 		intersections.push_back(static_cast<float>(xPos));

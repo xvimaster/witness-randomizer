@@ -1,10 +1,10 @@
 #pragma once
 
 struct Quaternion {
-    double w;
-    double x;
-    double y;
-    double z;
+	float x;
+	float y;
+    float z;
+	float w;
 
     // Basic operations
     double Length() const;

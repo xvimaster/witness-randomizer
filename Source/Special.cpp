@@ -581,6 +581,7 @@ void Special::generateApplePuzzle(int id, bool changeExit, bool flip)
 void Special::generateKeepLaserPuzzle(int id, const std::set<Point>& path1, const std::set<Point>& path2, const std::set<Point>& path3, const std::set<Point>& path4, std::vector<std::pair<int, int>> symbols)
 {
 	PuzzleSymbols psymbols(symbols);
+	PuzzleSymbols psymbolsBackup = psymbols;
 	generator->resetConfig();
 	generator->pathWidth = 0.4f;
 	generator->setGridSize(10, 11);
@@ -633,7 +634,8 @@ void Special::generateKeepLaserPuzzle(int id, const std::set<Point>& path1, cons
 					generator->set(x, y, 0);
 		generator->_openpos = generator->_gridpos;
 		for (int i = 0; i < psymbols.symbols[Decoration::Poly].size(); i++) {
-			psymbols.symbols[Decoration::Poly][i].second = Random::rand() % 3 + 5 - (Random::rand() % 5 == 0) + (Random::rand() % 5 == 0);
+			psymbols.symbols[Decoration::Poly][i].second = psymbolsBackup.symbols[Decoration::Poly][i].second + Random::rand() % 3 - Random::rand() % 3;
+			if (psymbols.symbols[Decoration::Poly][i].second < 1) psymbols.symbols[Decoration::Poly][i].second = 1;
 		}
 	}
 
@@ -1556,6 +1558,6 @@ int Special::findGlobals() {
 
 //For testing/debugging purposes only
 void Special::test() {
-	
+
 }
 

@@ -1380,7 +1380,7 @@ bool Generate::place_shapes(const std::vector<int>& colors, const std::vector<in
 			balance = true;
 			std::set<Point> regionN = _gridpos;
 			numShapes = max(2, Random::rand() % numNegative + 1);			//Actually the negative shapes
-			numShapesN = min(amount, numShapes * 2 / 5 + 1);		//Actually the positive shapes
+			numShapesN = min(amount, 1);		//Actually the positive shapes
 			if (numShapesN >= numShapes * 3 || numShapesN * 5 <= numShapes) continue;
 			shapes.clear();
 			shapesN.clear();

@@ -85,10 +85,15 @@ enum IntersectionFlags : int {
 class Endpoint {
 public:
 	enum Direction {
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN
+		NONE = 0,
+		LEFT = 1,
+		RIGHT = 2,
+		UP = 4,
+		DOWN = 8,
+		UP_LEFT = 5,
+		UP_RIGHT = 6,
+		DOWN_LEFT = 9,
+		DOWN_RIGHT = 10
 	};
 
 	Endpoint(int x, int y, Direction dir, int flags) {

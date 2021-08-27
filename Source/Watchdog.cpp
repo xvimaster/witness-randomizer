@@ -258,7 +258,7 @@ void JungleWatchdog::action()
 
 void TownDoorWatchdog::action()
 {
-	if (ReadPanelData<Quaternion>(0x03BB0, ORIENTATION).x < 0.0078f) {
+	if (ReadPanelData<Quaternion>(0x03BB0, ORIENTATION).z > 0) {
 		WritePanelData<float>(0x28A69, POWER, { 1.0f, 1.0f });
 		WritePanelData<int>(0x28A69, NEEDS_REDRAW, { 1 });
 		terminate = true;
