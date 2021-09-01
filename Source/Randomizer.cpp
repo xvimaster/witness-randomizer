@@ -25,14 +25,11 @@ void Randomizer::GenerateHard(HWND loadingHandle) {
 	puzzles->setSeed(seed, seedIsRNG);
 	puzzles->GenerateAllH();
 	MessageBox(GetActiveWindow(), L"Hi there! Thanks for trying out Expert Mode. It will be tough, but I hope you have fun!\r\n\r\n"
-		L"Here are some things you should know before you get started:\r\n\r\n"
-		L"- Your first big challenge will involve getting out of the tutorial area. A puzzle that you normally need to solve will be unsolvable the normal way.\r\n\r\n"
-		L"- One puzzle in the Treehouse area is deactivated, making it harder to get to the laser.\r\n\r\n"
-		L"- Progression in the Town is slightly different. You must complete the 3-color room to open one of the tower doors.\r\n\r\n"
-		L"- The Keep has been made more challenging. You'll need to think creatively to figure out how to get around environmental obstacles.\r\n\r\n"
-		L"- For negative tetris puzzles, make sure your solution has all tetris shapes lying within the bounds of the grid prior to cancellation.\r\n\r\n"
-		L"- Remember to check the Hints page on the wiki if you get stuck.\r\n\r\n"
-		L"- Good luck!", L"Welcome", MB_OK);
+		L"Expert has some unique tricks up its sleeve. You will encounter some situations that may seem impossible at first glance.\r\n\r\n"
+		L"In these situations, try to think of alternate approaches that weren't required in the base game.\r\n\r\n"
+		L"For especially tough puzzles, witnesspuzzles.com has a puzzle editor & solver that works for most puzzles in Expert."
+		L"The Github wiki also has a Hints page that can help with certain tricky puzzles.\r\n\r\n"
+		L"Thanks for playing, and good luck!", L"Welcome", MB_OK);
 }
 
 template <class T>
