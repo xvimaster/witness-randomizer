@@ -209,6 +209,11 @@ private:
 	Point get_sym_point(Point p) { return get_sym_point(p.first, p.second, symmetry); }
 	Point get_sym_point(Point p, Symmetry symmetry) { return get_sym_point(p.first, p.second, symmetry); }
 	Endpoint::Direction get_sym_dir(Endpoint::Direction direction, Symmetry symmetry) {
+		int dirIndex;
+		if (direction == Endpoint::Direction::LEFT) dirIndex = 0;
+		if (direction == Endpoint::Direction::RIGHT) dirIndex = 1;
+		if (direction == Endpoint::Direction::UP) dirIndex = 2;
+		if (direction == Endpoint::Direction::DOWN) dirIndex = 3;
 		std::vector<Endpoint::Direction> mapping;
 		switch (symmetry) {
 		case Symmetry::Horizontal: mapping = { Endpoint::Direction::LEFT, Endpoint::Direction::RIGHT, Endpoint::Direction::DOWN, Endpoint::Direction::UP }; break;
@@ -224,7 +229,7 @@ private:
 		case Symmetry::ParallelVFlip: mapping = { Endpoint::Direction::LEFT, Endpoint::Direction::RIGHT, Endpoint::Direction::DOWN, Endpoint::Direction::UP }; break;
 		default: mapping = { Endpoint::Direction::LEFT, Endpoint::Direction::RIGHT, Endpoint::Direction::UP, Endpoint::Direction::DOWN }; break;
 		}
-		return mapping[direction];
+		return mapping[dirIndex];
 	}
 	int get_num_grid_points() { return ((_width + 1) / 2) * ((_height + 1) / 2); }
 	int get_num_grid_blocks() { return (_width / 2) * (_height / 2);  }

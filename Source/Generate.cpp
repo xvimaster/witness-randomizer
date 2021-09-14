@@ -1312,6 +1312,7 @@ bool Generate::place_shapes(const std::vector<int>& colors, const std::vector<in
 	std::set<Point> open = _openpos;
 	int shapeSize = hasFlag(Config::SmallShapes) ? 2 : hasFlag(Config::BigShapes) ? amount == 1 ? 8 : 6 : 4;
 	int targetArea = amount * shapeSize * 7 / 8; //Average size must be at least 7/8 of the target size
+	if (amount * shapeSize > _panel->get_num_grid_blocks()) targetArea = _panel->get_num_grid_blocks();
 	int originalAmount = amount;
 	if (hasFlag(Generate::Config::MountainFloorH) && _panel->_width == 9) { //The 4 small puzzles shape size may vary depending on the path
 		targetArea = 0;
@@ -1333,7 +1334,8 @@ bool Generate::place_shapes(const std::vector<int>& colors, const std::vector<in
 		for (Point p : region) {
 			if (open.erase(p)) open2.insert(p);
 		}
-		if (region.size() + totalArea == _panel->get_num_grid_blocks()) continue; //To prevent shapes from filling every grid point
+		if (region.size() + totalArea == _panel->get_num_grid_blocks() &&
+			targetArea != _panel->get_num_grid_blocks()) continue; //To prevent shapes from filling every grid point
 		std::vector<Shape> shapes;
 		std::vector<Shape> shapesN;
 		int numShapesN = min(Random::rand() % (numNegative + 1), static_cast<int>(region.size()) / 3); //Negative blocks may be at max 1/3 of the regular blocks

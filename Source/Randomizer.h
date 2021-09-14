@@ -62,6 +62,7 @@ private:
 #define TRACED_EDGES 0x228 
 #define TRACED_EDGE_DATA 0x230 
 #define AUDIO_PREFIX 0x270 
+#define SOLVED 0x298
 #define POWER 0x2A0 
 #define TARGET 0x2B4 
 #define POWER_OFF_ON_FAIL 0x2B8

@@ -172,7 +172,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 						break;
 					}
 				}
-				lastHard = (Special::ReadPanelData<int>(0x00182, BACKGROUND_REGION_COLOR + 12) > 1);
+				lastHard = (Special::ReadPanelData<int>(0x00182, BACKGROUND_REGION_COLOR + 12) > 0);
 				if (!lastHard && hard) {
 					if (MessageBox(hwnd, L"This save file was previously randomized on Normal. Are you sure you want to switch to Expert?", NULL, MB_YESNO) == IDNO) {
 						SendMessage(hwndNormal, BM_SETCHECK, BST_CHECKED, 1);
@@ -192,7 +192,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 
 			//If the save hasn't been randomized before, make sure it is a fresh, unplayed save file
-			else if ((Special::ReadPanelData<int>(0x00064, TRACED_EDGES) > 0 || Special::ReadPanelData<float>(0x00295, POWER) > 0) && !DEBUG) {
+			else if (Special::hasBeenPlayed() && !DEBUG) {
 				MessageBox(hwnd, L"You must start a new game to be able to randomize. If you have already started a randomizer run, make sure the correct save file is loaded.", NULL, MB_OK);
 				break;
 			}

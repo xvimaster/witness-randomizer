@@ -24,10 +24,11 @@ void Randomizer::GenerateHard(HWND loadingHandle) {
 	puzzles->setLoadingHandle(loadingHandle);
 	puzzles->setSeed(seed, seedIsRNG);
 	puzzles->GenerateAllH();
-	MessageBox(GetActiveWindow(), L"Hi there! Thanks for trying out Expert Mode. It will be tough, but I hope you have fun!\r\n\r\n"
-		L"Expert has some unique tricks up its sleeve. You will encounter some situations that may seem impossible at first glance.\r\n\r\n"
+	if (!Special::hasBeenRandomized())
+		MessageBox(GetActiveWindow(), L"Hi there! Thanks for trying out Expert Mode. It will be tough, but I hope you have fun!\r\n\r\n"
+		L"Expert has some unique tricks up its sleeve. You will encounter some situations that may seem impossible at first glance. "
 		L"In these situations, try to think of alternate approaches that weren't required in the base game.\r\n\r\n"
-		L"For especially tough puzzles, witnesspuzzles.com has a puzzle editor & solver that works for most puzzles in Expert."
+		L"For especially tough puzzles, witnesspuzzles.com has a puzzle editor and solver that works for most puzzles in Expert.\r\n\r\n"
 		L"The Github wiki also has a Hints page that can help with certain tricky puzzles.\r\n\r\n"
 		L"Thanks for playing, and good luck!", L"Welcome", MB_OK);
 }
@@ -109,6 +110,7 @@ void Randomizer::RandomizeRange(std::vector<int> &panels, int flags, size_t star
 	}
 }
 
+//Isn't actualy working
 void Randomizer::RandomizeAudiologs()
 {
 	std::vector<int> audiologs = {

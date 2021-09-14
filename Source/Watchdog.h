@@ -41,9 +41,8 @@ protected:
 
 class KeepWatchdog : public Watchdog {
 public:
-	KeepWatchdog() : Watchdog(10) { ready = false; }
+	KeepWatchdog() : Watchdog(10) { }
 	virtual void action();
-	bool ready;
 };
 
 class ArrowWatchdog : public Watchdog {
@@ -96,11 +95,8 @@ public:
 
 class TreehouseWatchdog : public Watchdog {
 public:
-	TreehouseWatchdog(int id) : Watchdog(2) {
-		this->id = id;
-	}
+	TreehouseWatchdog(int id) : Watchdog(1) { }
 	virtual void action();
-	int id;
 };
 
 class JungleWatchdog : public Watchdog {
@@ -127,9 +123,6 @@ public:
 
 class TownDoorWatchdog : public Watchdog {
 public:
-	TownDoorWatchdog() : Watchdog(0.2f) {
-		this->id = id;
-	}
+	TownDoorWatchdog() : Watchdog(0.2f) { }
 	virtual void action();
-	int id;
 };

@@ -80,18 +80,23 @@ public:
 	{
 		WritePanelData(puzzle, TARGET, ReadPanelData<int>(sourceTarget, TARGET));
 	}
-
+	static bool hasBeenPlayed() {
+		return Special::ReadPanelData<float>(0x00295, POWER) > 0 || Special::ReadPanelData<int>(0x00064, TRACED_EDGES) > 0;
+	}
+	static bool hasBeenRandomized() {
+		return Special::ReadPanelData<int>(0x00064, BACKGROUND_REGION_COLOR + 12) > 0;
+	}
 	static void setTargetAndDeactivate(int puzzle, int target)
 	{
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe");
-		if (_memory->ReadPanelData<float>(0x00295, POWER) < 1) //Only deactivate on a fresh save file (since power state is preserved)
+		if (!hasBeenRandomized()) //Only deactivate on a fresh save file (since power state is preserved)
 			_memory->WritePanelData<float>(target, POWER, { 0.0, 0.0 });
 		WritePanelData(puzzle, TARGET, target + 1);
 	}
 	static void setPower(int puzzle, bool power) {
 
 		std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe");
-		if (_memory->ReadPanelData<float>(0x00295, POWER) == 1) return; //Only deactivate on a fresh save file (since power state is preserved)
+		if (!power && hasBeenRandomized()) return; //Only deactivate on a fresh save file (since power state is preserved)
 		if (power) _memory->WritePanelData<float>(puzzle, POWER, { 1.0, 1.0 });
 		else _memory->WritePanelData<float>(puzzle, POWER, { 0.0, 0.0 });
 	}
