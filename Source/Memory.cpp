@@ -70,8 +70,6 @@ void Memory::ThrowError(std::string message) {
 	DWORD exitCode;
 	GetExitCodeProcess(_handle, &exitCode);
 	if (exitCode != STILL_ACTIVE) throw std::exception(message.c_str());
-	std::ofstream file("errorlog.txt", std::ofstream::app);
-	file << message << std::endl;
 	message += "\nPlease close The Witness and try again. If the error persists, please report the issue on the Github Issues page.";
 	MessageBox(GetActiveWindow(), std::wstring(message.begin(), message.end()).c_str(), NULL, MB_OK);
 	throw std::exception(message.c_str());
@@ -84,11 +82,8 @@ void Memory::ThrowError(const std::vector<int>& offsets, bool rw_flag) {
 		ThrowError(ss.str());
 	}
 	else if (offsets.size() == 3) {
-		std::ofstream file("errorlog.txt", std::ofstream::app);
-		file << "Error calculating offsets: ";
-		for (int i : offsets) file << i << " ";
-		file << std::endl;
-		//Don't bother throwing an error since it will be thrown anyway by the caller of ComputeOffsets.
+		for (int i : offsets) ss << "0x" << i << " ";
+		ThrowError("Error computing offsets: " + ss.str());
 	}
 	else {
 		for (int i : offsets) ss << "0x" << i << " ";
@@ -109,7 +104,6 @@ void* Memory::ComputeOffset(std::vector<int> offsets)
 	int final_offset = offsets.back();
 	offsets.pop_back();
 
-	//uintptr_t cumulativeAddress = (offsets.size() == 0 ? 0 : _baseAddress);
 	uintptr_t cumulativeAddress =  _baseAddress;
 	for (const int offset : offsets) {
 		cumulativeAddress += offset;
@@ -135,5 +129,5 @@ bool Memory::showMsg = false;
 int Memory::globalsTests[3] = {
 	0x62D0A0, //Steam and Epic Games
 	0x62B0A0, //Good Old Games
-	0x5B28C0 //Noclip version
+	0x5B28C0 //Older Versions
 };
