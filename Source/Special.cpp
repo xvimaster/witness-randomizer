@@ -216,11 +216,7 @@ void Special::generateSoundDotReflectionPuzzle(int id, Point size, std::vector<i
 	generator->setFlagOnce(Generate::Config::LongPath);
 	generator->setSymmetry(Panel::Symmetry::Rotational);
 	generator->setGridSize(size.first, size.second);
-	if (id == 0x00AFB) { //Fix shipwreck colors
-		WritePanelData(id, PATTERN_POINT_COLOR_A, { 0.6f, 0, 0.6f, 1 });
-		WritePanelData(id, PATTERN_POINT_COLOR_B, { 0.6f, 0.3f, 0, 1 });
-	}
-	else {
+	if (id != 0x00AFB) {
 		WritePanelData(id, SUCCESS_COLOR_B, ReadPanelData<Color>(id, SUCCESS_COLOR_A));
 		generator->setSymbol(Decoration::Start, 0, generator->_height - 1); generator->setSymbol(Decoration::Start, generator->_width - 1, 0);
 		generator->setSymbol(Decoration::Exit, 0, 0); generator->setSymbol(Decoration::Exit, generator->_width - 1, generator->_height - 1);

@@ -166,18 +166,18 @@ void PuzzleList::GenerateSymmetryN()
 	generator->setFlag(Generate::Config::StartEdgeOnly);
 	generator->setGridSize(5, 5);
 	generator->setSymmetry(Panel::Symmetry::Horizontal);
-	generator->generate(0x00022, Decoration::Dot, 10, Decoration::Start, 1, Decoration::Exit, 1);
-	generator->generate(0x00023, Decoration::Dot, 10, Decoration::Start, 1, Decoration::Exit, 1);
+	generator->generate(0x00022, Decoration::Dot, 8, Decoration::Start, 1, Decoration::Exit, 1);
+	generator->generate(0x00023, Decoration::Dot, 8, Decoration::Start, 1, Decoration::Exit, 1);
 	generator->setSymmetry(Panel::Symmetry::Rotational);
-	generator->generate(0x00024, Decoration::Dot, 10, Decoration::Start, 1, Decoration::Exit, 1);
-	generator->generate(0x00025, Decoration::Dot, 10, Decoration::Start, 1, Decoration::Exit, 1);
-	generator->generate(0x00026, Decoration::Dot, 10, Decoration::Start, 1, Decoration::Exit, 1);
+	generator->generate(0x00024, Decoration::Dot, 8, Decoration::Start, 1, Decoration::Exit, 1);
+	generator->generate(0x00025, Decoration::Dot, 8, Decoration::Start, 1, Decoration::Exit, 1);
+	generator->generate(0x00026, Decoration::Dot, 8, Decoration::Start, 1, Decoration::Exit, 1);
 	//Colored Dots
 	generator->generate(0x0007C, Decoration::Dot | Decoration::Color::Blue, 3, Decoration::Dot | Decoration::Color::Yellow, 3, Decoration::Start, 1, Decoration::Exit, 1);
 	generator->generate(0x0007E, Decoration::Dot | Decoration::Color::Blue, 3, Decoration::Dot | Decoration::Color::Yellow, 3, Decoration::Start, 1, Decoration::Exit, 2);
-	generator->generate(0x00075, Decoration::Dot | Decoration::Color::Blue, 2, Decoration::Dot | Decoration::Color::Yellow, 2, Decoration::Dot, 4, Decoration::Start, 1, Decoration::Exit, 1);
-	generator->generate(0x00073, Decoration::Dot | Decoration::Color::Blue, 2, Decoration::Dot | Decoration::Color::Yellow, 1, Decoration::Dot, 6, Decoration::Start, 1, Decoration::Exit, 1);
-	generator->generate(0x00077, Decoration::Dot | Decoration::Color::Blue, 1, Decoration::Dot | Decoration::Color::Yellow, 2, Decoration::Dot, 6, Decoration::Start, 1, Decoration::Exit, 1);
+	generator->generate(0x00075, Decoration::Dot | Decoration::Color::Blue, 2, Decoration::Dot | Decoration::Color::Yellow, 2, Decoration::Dot, 3, Decoration::Start, 1, Decoration::Exit, 1);
+	generator->generate(0x00073, Decoration::Dot | Decoration::Color::Blue, 2, Decoration::Dot | Decoration::Color::Yellow, 1, Decoration::Dot, 5, Decoration::Start, 1, Decoration::Exit, 1);
+	generator->generate(0x00077, Decoration::Dot | Decoration::Color::Blue, 1, Decoration::Dot | Decoration::Color::Yellow, 2, Decoration::Dot, 5, Decoration::Start, 1, Decoration::Exit, 1);
 	generator->generate(0x00079, Decoration::Dot | Decoration::Color::Blue, 2, Decoration::Dot | Decoration::Color::Yellow, 2, Decoration::Dot, 4, Decoration::Start, 2, Decoration::Exit, 1);
 	//Fading Lines
 	generator->setGridSize(6, 6);
@@ -530,6 +530,7 @@ void PuzzleList::GenerateTreehouseN()
 	generator->generate(0x17DCA, Decoration::Star | Decoration::Color::Magenta, 8, Decoration::Star | Decoration::Color::Orange, 6);
 	generator->generate(0x17D8E, Decoration::Star | Decoration::Color::Orange, 4, Decoration::Star | Decoration::Color::Magenta, 2, Decoration::Star | Decoration::Color::Green, 2, Decoration::Gap, 8);
 	generator->setObstructions({ { 1, 2 },{ 1, 4 },{ 7, 2 },{ 7, 4 },{ 2, 1 },{ 4, 1 },{ 6, 1 } });
+	generator->setFlagOnce(Generate::Config::FixBackground);
 	generator->generate(0x17DB7, Decoration::Star | Decoration::Color::Orange, 4, Decoration::Star | Decoration::Color::Magenta, 4, Decoration::Star | Decoration::Color::Green, 4);
 	generator->setGridSize(4, 3);
 	generator->generate(0x17DB1, Decoration::Star | Decoration::Color::Orange, 6, Decoration::Star | Decoration::Color::Magenta, 4, Decoration::Star | Decoration::Color::Green, 2);
@@ -626,7 +627,7 @@ void PuzzleList::GenerateVaultsN()
 		Decoration::Dot | Decoration::Color::Blue, 2, Decoration::Dot | Decoration::Color::Yellow, 2);
 	generator->resetConfig();
 	//Shipwreck Vault
-	specialCase->generateSoundDotReflectionPuzzle(0x00AFB, { 7, 7 }, { DOT_LARGE, DOT_SMALL, DOT_MEDIUM }, { DOT_MEDIUM, DOT_LARGE, DOT_MEDIUM, DOT_SMALL }, 3, false);
+	specialCase->generateSoundDotReflectionPuzzle(0x00AFB, { 7, 7 }, { DOT_MEDIUM, DOT_LARGE, DOT_MEDIUM, DOT_SMALL }, { DOT_LARGE, DOT_SMALL, DOT_MEDIUM }, 3, false);
 	generator->resetConfig();
 	//Jungle Vault
 	specialCase->generateJungleVault(0x15ADD);
@@ -890,11 +891,11 @@ void PuzzleList::GenerateCavesN()
 		Decoration::Star | Decoration::Color::Cyan, 2, Decoration::Star | Decoration::Color::Yellow, 2);
 
 	//Challenge Pillar
-	generator->generate(0x09DD5, Decoration::Triangle | Decoration::Color::Orange, 9);
+	generator->generate(0x09DD5, Decoration::Triangle | Decoration::Color::Orange, 10);
 	//Challenge Entrance
 	generator->generate(0x0A16E, Decoration::Poly | Decoration::Color::Green, 4, Decoration::Star | Decoration::Color::Green, 3);
 	//Theater Exit
-	generator->generate(0x039B4, Decoration::Triangle2 | Decoration::Color::Orange, 10);
+	generator->generate(0x039B4, Decoration::Triangle2 | Decoration::Color::Orange, 12);
 	//Town Exit
 	generator->generate(0x09E85, Decoration::Triangle | Decoration::Color::Orange, 12, Decoration::Start, 3);
 }
@@ -947,7 +948,6 @@ void PuzzleList::GenerateKeepN()
 	{ { 5, 8 },{ 3, 4 },{ 7, 2 },{ 3, 2 } },{ { 5, 8 },{ 1, 4 },{ 7, 2 },{ 1, 2 } },{ { 5, 8 },{ 3, 2 },{ 7, 2 },{ 3, 0 } },
 	{ { 5, 8 },{ 1, 2 },{ 7, 2 },{ 1, 0 } } };
 	generator->hitPoints = validHitPoints[Random::rand() % validHitPoints.size()];
-	generator->setFlagOnce(Generate::Config::RequireCombineShapes);
 	generator->setFlagOnce(Generate::Config::DisableWrite);
 	generator->generate(0x01CD3, Decoration::Poly, 2, Decoration::Stone | Decoration::Color::Black, 1, Decoration::Stone | Decoration::Color::White, 1,
 		Decoration::Stone | Decoration::Color::Cyan, 1, Decoration::Stone | Decoration::Color::Magenta, 1);
@@ -1723,34 +1723,29 @@ void PuzzleList::GenerateTownH()
 	generator->setFlagOnce(Generate::FalseParity);
 	generator->generate(0x28AD9, Decoration::Dot_Intersection, 36, Decoration::Triangle | Decoration::Color::Orange, 7, Decoration::Eraser | Decoration::Color::White, 1);
 	//Blue Symmetry
-	generator->setFlag(Generate::Config::WriteDotColor);
+	generator->setFlag(Generate::Config::RequireCombineShapes);
 	generator->setGridSize(7, 7);
 	generator->pathWidth = 0.6f;
-	generator->setSymmetry(Panel::Symmetry::ParallelH);
-	generator->setSymbol(Decoration::Start, 14, 0); generator->setSymbol(Decoration::Start, 14, 8);
-	generator->setSymbol(Decoration::Exit, 0, 4); generator->setSymbol(Decoration::Exit, 0, 12);
-	generator->generate(0x28AC7, Decoration::Stone | Decoration::Color::Black, 8, Decoration::Stone | Decoration::Color::White, 8);
+	generator->setSymmetry(Panel::Symmetry::Vertical);
+	generator->setSymbol(Decoration::Start, 0, 14); generator->setSymbol(Decoration::Start, 14, 14);
+	generator->setSymbol(Decoration::Exit, 0, 0); generator->setSymbol(Decoration::Exit, 14, 0);
+	generator->generate(0x28AC7, Decoration::Poly | Decoration::Color::Orange, 5);
 	generator->setSymmetry(Panel::Symmetry::ParallelV);
 	generator->setSymbol(Decoration::Start, 0, 14); generator->setSymbol(Decoration::Start, 8, 14);
 	generator->setSymbol(Decoration::Exit, 6, 0); generator->setSymbol(Decoration::Exit, 14, 0);
-	generator->generate(0x28AC8, Decoration::Star | Decoration::Color::Yellow, 10);
+	generator->generate(0x28AC8, Decoration::Poly | Decoration::Color::Orange, 5);
 	generator->setSymmetry(Panel::Symmetry::ParallelHFlip);
 	generator->setSymbol(Decoration::Start, 0, 14); generator->setSymbol(Decoration::Start, 14, 6);
-	generator->setSymbol(Decoration::Exit, 0, 2); generator->setSymbol(Decoration::Exit, 14, 10);
-	generator->setFlagOnce(Generate::Config::TreehouseColors);
-	generator->generate(0x28ACA, Decoration::Star | Decoration::Color::Magenta, 1, Decoration::Star | Decoration::Color::Green, 1,
-		Decoration::Stone | Decoration::Color::Magenta, 2, Decoration::Stone | Decoration::Color::Green, 2, Decoration::Dot, 64);
+	generator->setSymbol(Decoration::Exit, 0, 0); generator->setSymbol(Decoration::Exit, 14, 8);
+	generator->generate(0x28ACA, Decoration::Poly | Decoration::Color::Orange, 5);
 	generator->setSymmetry(Panel::Symmetry::ParallelVFlip);
-	generator->setFlagOnce(Generate::Config::RequireCombineShapes);
 	generator->setSymbol(Decoration::Start, 0, 14); generator->setSymbol(Decoration::Start, 8, 0);
 	generator->setSymbol(Decoration::Exit, 6, 0); generator->setSymbol(Decoration::Exit, 14, 14);
 	generator->generate(0x28ACB, Decoration::Poly | Decoration::Color::Orange, 5);
-	generator->setSymmetry(Panel::Symmetry::FlipXY);
+	generator->setSymmetry(Panel::Symmetry::Rotational);
 	generator->setSymbol(Decoration::Start, 0, 14); generator->setSymbol(Decoration::Start, 14, 0);
-	generator->setSymbol(Decoration::Exit, 0, 2); generator->setSymbol(Decoration::Exit, 2, 0);
-	generator->setSymbol(Decoration::Exit, 12, 14); generator->setSymbol(Decoration::Exit, 14, 12);
-	generator->generate(0x28ACC, Decoration::Triangle | Decoration::Color::Orange, 10,
-		Decoration::Eraser | Decoration::Color::White, 1);
+	generator->setSymbol(Decoration::Exit, 0, 0); generator->setSymbol(Decoration::Exit, 14, 14);
+	generator->generate(0x28ACC, Decoration::Poly | Decoration::Color::Orange, 5);
 	generator->resetConfig();
 	//Glass Door
 	generator->setFlagOnce(Generate::Config::SmallShapes);

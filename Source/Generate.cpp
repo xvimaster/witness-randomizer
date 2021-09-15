@@ -1322,7 +1322,7 @@ bool Generate::place_shapes(const std::vector<int>& colors, const std::vector<in
 	int minx = _panel->_width, miny = _panel->_height, maxx = 0, maxy = 0;
 	int colorIndex = Random::rand() % colors.size();
 	int colorIndexN = Random::rand() % (negativeColors.size() + 1);
-	bool shapesCanceled = false, shapesCombined = false;
+	bool shapesCanceled = false, shapesCombined = false, flatShapes = true;
 	if (amount == 1) shapesCombined = true;
 	while (amount > 0) {
 		if (open.size() == 0)
@@ -1476,6 +1476,8 @@ bool Generate::place_shapes(const std::vector<int>& colors, const std::vector<in
 			int symbol = make_shape_symbol(shape, (numRotated-- > 0), (numShapes-- <= 0));
 			if (symbol == 0)
 				return false;
+			if (!((symbol >> 16) == 0x000F || (symbol >> 16) == 0x1111))
+				flatShapes = false;
 			//Attempt not to put shape symbols adjacent
 			Point pos;
 			for (int i = 0; i < 10; i++) {
@@ -1509,7 +1511,10 @@ bool Generate::place_shapes(const std::vector<int>& colors, const std::vector<in
 			}
 		}
 	} //Do some final checks - make sure targetArea has been reached, all shapes have been placed, and that config requirements have been met
-	if (totalArea < targetArea || numNegative > 0 || hasFlag(Config::RequireCancelShapes) && !shapesCanceled || hasFlag(Config::RequireCombineShapes) && !shapesCombined)
+	if (totalArea < targetArea || numNegative > 0 ||
+		hasFlag(Config::RequireCancelShapes) && !shapesCanceled ||
+		hasFlag(Config::RequireCombineShapes) && !shapesCombined ||
+		originalAmount > 1 && flatShapes)
 		return false;
 	//If symmetry, make sure it didn't shove all the shapes to one side
 	if (_panel->symmetry && Point::pillarWidth == 0 && originalAmount >= 3 &&
