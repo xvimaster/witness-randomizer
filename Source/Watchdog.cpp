@@ -3,6 +3,7 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
 #include "Watchdog.h"
+#include "Quaternion.h"
 #include <thread>
 
 void Watchdog::start()
@@ -19,37 +20,17 @@ void Watchdog::run()
 }
 
 //Keep Watchdog - Keep the big panel off until all panels are solved
-//The condition is not entirely correct, need to figure out how to check for sure if the puzzle is solved. Until then, the purple pressure plate panel (0x01BE9) is unskippable
 
 void KeepWatchdog::action() {
-	int numTraced = ReadPanelData<int>(0x01BE9, TRACED_EDGES);
-	int tracedptr = ReadPanelData<int>(0x01BE9, TRACED_EDGE_DATA);
-	std::vector<int> counts(26); std::fill(counts.begin(), counts.end(), 0);
-	std::vector<SolutionPoint> traced; if (tracedptr) traced = ReadArray<SolutionPoint>(0x01BE9, TRACED_EDGE_DATA, numTraced);
-	if (traced.size() < 12) {
+	if (ReadPanelData<int>(0x01BE9, SOLVED)) {
+		WritePanelData<float>(0x03317, POWER, { 1, 1 });
+		WritePanelData<int>(0x03317, NEEDS_REDRAW, { 1 });
+		terminate = true;
+	}
+	else {
 		WritePanelData<float>(0x03317, POWER, { 0, 0 });
-		return;
+		WritePanelData<int>(0x03317, NEEDS_REDRAW, { 1 });
 	}
-	for (SolutionPoint p : traced) {
-		if (p.pointA == p.pointB) continue;
-		if (p.pointA > 25 || p.pointB > 25) continue;
-		counts[p.pointA]++;
-		counts[p.pointB]++;
-	}
-	for (int i = 0; i < 26; i++) {
-		if (i == 4 || i == 25) {
-			if (counts[i] != 1) {
-				WritePanelData<float>(0x03317, POWER, { 0, 0 });
-				return;
-			}
-		}
-		else if (counts[i] != 0 && counts[i] != 2) {
-			WritePanelData<float>(0x03317, POWER, { 0, 0 });
-			return;
-		}
-	}
-	WritePanelData<float>(0x03317, POWER, { 1, 1 });
-	WritePanelData<int>(0x03317, NEEDS_REDRAW, { 1 });
 }
 
 //Arrow Watchdog - To run the arrow puzzles
@@ -223,9 +204,43 @@ bool BridgeWatchdog::checkTouch(int id)
 
 void TreehouseWatchdog::action()
 {
-	if (_memory->ReadPanelData<int>(0x03613, TRACED_EDGES) > 0) {
-		_memory->WritePanelData<float>(0x17DAE, POWER, { 1.0f, 1.0f });
-		_memory->WritePanelData<int>(0x17DAE, NEEDS_REDRAW, { 1 });
+	if (ReadPanelData<int>(0x03613, SOLVED)) {
+		WritePanelData<float>(0x17DAE, POWER, { 1.0f, 1.0f });
+		WritePanelData<int>(0x17DAE, NEEDS_REDRAW, { 1 });
+		terminate = true;
+	}
+}
+
+void JungleWatchdog::action()
+{
+	int numTraced = ReadPanelData<int>(id, TRACED_EDGES);
+	if (numTraced == tracedLength) return;
+	tracedLength = numTraced;
+	int tracedptr = ReadPanelData<int>(id, TRACED_EDGE_DATA);
+	if (!tracedptr) return;
+	std::vector<SolutionPoint> traced = ReadArray<SolutionPoint>(id, TRACED_EDGE_DATA, numTraced);
+	int seqIndex = 0;
+	for (SolutionPoint p : traced) {
+		if ((sizes[p.pointA] & IntersectionFlags::DOT) == 0) continue;
+		if (sizes[p.pointA] & (0x1000 << (state ? correctSeq1[seqIndex] : correctSeq2[seqIndex])))
+			seqIndex++;
+		else return;
+		if (seqIndex >= 1) {
+			WritePanelData<long>(id, DOT_SEQUENCE, { state ? ptr1 : ptr2 } );
+			WritePanelData<long>(id, DOT_SEQUENCE_REFLECTION, { state ? ptr2 : ptr1 });
+			WritePanelData<int>(id, DOT_SEQUENCE_LEN, { state ? (int)correctSeq1.size() : (int)correctSeq2.size() });
+			WritePanelData<int>(id, DOT_SEQUENCE_LEN_REFLECTION, { state ? (int)correctSeq2.size() : (int)correctSeq1.size() });
+			state = !state;
+			return;
+		}
+	}
+}
+
+void TownDoorWatchdog::action()
+{
+	if (ReadPanelData<Quaternion>(0x03BB0, ORIENTATION).z > 0) {
+		WritePanelData<float>(0x28A69, POWER, { 1.0f, 1.0f });
+		WritePanelData<int>(0x28A69, NEEDS_REDRAW, { 1 });
 		terminate = true;
 	}
 }
