@@ -1137,14 +1137,10 @@ void Special::generateMountainFloorH()
 		PuzzleSymbols symbols({ { Decoration::Poly, 2 },{ Decoration::Eraser | Decoration::Color::Green, 1 } });
 		if (newShape.size() > 5) {
 			if (combine == 0) symbols = PuzzleSymbols({ { Decoration::Poly, 3 },{ Decoration::Eraser | Decoration::Color::Green, 1 } });
-			if (combine == 1) symbols = PuzzleSymbols({ { Decoration::Poly, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Cyan, 1 } });
+			if (combine == 1) symbols = PuzzleSymbols({ { Decoration::Poly, 3 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Cyan, 1 } });
 			combine++;
 		}
 		fails = 0;
-		if (symbols.symbols[Decoration::Poly].size() >= 2 && (symbols.symbols[Decoration::Poly][1].first & (Decoration::Poly | Decoration::Negative)))
-			gen.setFlag(Generate::Config::BigShapes);
-		else
-			gen.removeFlag(Generate::Config::BigShapes);
 		while (!gen.generate(ids[i], symbols)) {
 			if (fails++ > 50) {
 				generateMountainFloorH();
