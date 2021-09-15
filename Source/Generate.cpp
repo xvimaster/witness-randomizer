@@ -1376,7 +1376,8 @@ bool Generate::place_shapes(const std::vector<int>& colors, const std::vector<in
 		if (hasFlag(Config::RequireCombineShapes) && numShapes == 1) continue;
 		bool balance = false;
 		if (numShapes > amount //The region is too big for the number of shapes chosen
-			|| numNegative > 0 && _panel->id == 0x288AA) { //Expert UTM Perspective 4
+			|| numNegative > 0 && _panel->id == 0x288AA //Expert UTM Perspective 4
+			|| numNegative > 0 && _panel->id == 0x00089) { //Expert UTM Invisible 6
 			if (numNegative < 2 || hasFlag(Config::DisableCancelShapes)) continue;
 			//Make balancing shapes - Positive and negative will be switched so that code can be reused
 			balance = true;
