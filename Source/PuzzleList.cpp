@@ -72,6 +72,7 @@ void PuzzleList::CopyTargets()
 	Special::copyTarget(0x17D01, 0x09DE0);
 	Special::copyTarget(0x17F9B, 0x17CAB);
 	Special::copyTarget(0x17C42, 0x09DE0);
+	Special::copyTarget(0x00A5B, 0x17CA4);
 	
 	Special::setPower(0x17CA4, true);
 	Special::setPower(0x17CAB, true);
