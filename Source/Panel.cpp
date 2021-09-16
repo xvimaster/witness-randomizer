@@ -267,7 +267,7 @@ void Panel::WriteDecorations() {
 	for (int y=_height-2; y>0; y-=2) {
 		for (int x=1; x<_width; x+=2) {
 			if (colorMode == ColorMode::Treehouse) {
-				if ((_grid[x][y] & 0xf) == Decoration::Color::Green) {
+				if ((_grid[x][y] & 0xf) == Decoration::Color::Blue) {
 					_grid[x][y] &= ~0xf; _grid[x][y] |= 6;
 				}
 				if ((_grid[x][y] & 0xf) == Decoration::Color::Orange) {
@@ -314,7 +314,7 @@ void Panel::WriteDecorations() {
 			_memory->WritePanelData<Color>(id, SYMBOL_B, { { 1, 1, 1, 1 } }); //White
 			_memory->WritePanelData<Color>(id, SYMBOL_C, { { 1, 0.5, 0, 1 } }); //Orange
 			_memory->WritePanelData<Color>(id, SYMBOL_D, { { 1, 0, 1, 1 } }); //Magenta
-			_memory->WritePanelData<Color>(id, SYMBOL_E, { { 0, 1, 0, 1 } }); //Green
+			_memory->WritePanelData<Color>(id, SYMBOL_E, { { 0, 0, 1, 1 } }); //Blue
 		}
 	}
 	if (any || _memory->ReadPanelData<int>(id, DECORATIONS)) {

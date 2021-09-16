@@ -242,7 +242,7 @@ private:
 			case 3: return { 1, 1, 1, 1 }; //Red
 			case 4: return { 1, 0, 1, 1 }; //Magenta
 			case 5: return { 1, 0.5, 0, 1 }; //Orange
-			case 6: return { 0, 1, 0, 1 }; //Green
+			case 6: return { 0, 0, 1, 1 }; //Blue
 			default: return { 0, 0, 0, 0 };
 			}
 		}
