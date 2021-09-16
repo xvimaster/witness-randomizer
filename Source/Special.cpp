@@ -1153,7 +1153,7 @@ void Special::generateMountainFloorH()
 			if (gen.get_symbol_type(gen.get(p)) == Decoration::Poly) count++;
 			if (gen.get_symbol_type(gen.get(p)) == Decoration::Eraser) count--;
 		}
-		if (count != (newShape.size() > 5 ? combine == 2 ? 3 : 2 : 1)) {
+		if (count != (newShape.size() > 5 ? combine == 2 ? 4 : 2 : 1)) {
 			i--;
 			if (newShape.size() > 5) combine--;
 			continue;
