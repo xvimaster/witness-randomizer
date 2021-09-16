@@ -2,7 +2,7 @@
 
 # Witness Random Puzzle Generator
 
-### [Click Here to Download (ver 1.2.1)](https://github.com/sigma144/witness-randomizer/releases/download/1.2.1/WitnessRPG1.2.1.zip)
+### [Click Here to Download (ver 1.2.2)](https://github.com/sigma144/witness-randomizer/releases/download/1.2.2/WitnessRPG1.2.2.zip)
 
 #### Randomizer Version 1.2 is finally out! It includes numerous puzzle tweaks, nerfs, and bug fixes. Full change log coming shortly
 
