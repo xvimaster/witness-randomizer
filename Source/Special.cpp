@@ -1179,14 +1179,16 @@ void Special::generateMountainFloorH()
 	generator->resetConfig();
 }
 
-void Special::generatePivotPanel(int id, Point gridSize, const std::vector<std::pair<int, int>>& symbolVec) {
+void Special::generatePivotPanel(int id, Point gridSize, const std::vector<std::pair<int, int>>& symbolVec, bool colorblind) {
 	int width = gridSize.first * 2 + 1, height = gridSize.second * 2 + 1;
 	std::vector<std::shared_ptr<Generate>> gens;
 	for (int i = 0; i < 3; i++) gens.push_back(std::make_shared<Generate>());
 	for (std::shared_ptr<Generate> gen : gens) {
 		gen->seed(Random::rand());
+		gen->colorblind = colorblind;
 		gen->setSymbol(Decoration::Start, width / 2, height - 1);
 		gen->setGridSize(gridSize.first, gridSize.second);
+		gen->setFlag(Generate::Config::FixBackground);
 		gen->setFlag(Generate::Config::DisableWrite);
 	}
 	gens[0]->setSymbol(Decoration::Exit, 0, height / 2);
@@ -1525,7 +1527,7 @@ int Special::findGlobals() {
 	panel._memory->retryOnFail = false; //Too slow to retry every read
 	int address = 0;
 	for (int j = 0; j < 10; j++) { //Do several passes through memory, in case of memory faults
-		for (int i = 0x600000; i < 0x700000; i += 4) {
+		for (int i = 0x600000; i < 0x800000; i += 4) {
 			Memory::GLOBALS = i;
 			try {
 				if ((address = panel._memory->ReadPanelData<int>(0x17E52, STYLE_FLAGS, 1)[0]) == 0x0000A040) {
@@ -1534,7 +1536,7 @@ int Special::findGlobals() {
 			}
 			catch (std::exception) {}
 		}
-		for (int i = 0x500000; i < 0x600000; i += 4) {
+		for (int i = 0x400000; i < 0x600000; i += 4) {
 			Memory::GLOBALS = i;
 			try {
 				if ((address = panel._memory->ReadPanelData<int>(0x17E52, STYLE_FLAGS, 1)[0]) == 0x0000A040) {

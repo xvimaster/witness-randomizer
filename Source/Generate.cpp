@@ -234,7 +234,7 @@ void Generate::write(int id)
 		_panel->colorMode = Panel::ColorMode::WriteColors;
 	}
 	else if (hasFlag(Config::TreehouseColors)) {
-		_panel->colorMode = Panel::ColorMode::Treehouse;
+		_panel->colorMode = colorblind ? Panel::ColorMode::TreehouseAlternate : Panel::ColorMode::Treehouse;
 	}
 	if (hasFlag(Config::Write2Color)) {
 		Special::WritePanelData(id, PATTERN_POINT_COLOR_A, _panel->_memory->ReadPanelData<Color>(0x0007C, PATTERN_POINT_COLOR_A));

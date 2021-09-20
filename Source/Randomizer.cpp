@@ -15,14 +15,14 @@
 void Randomizer::GenerateNormal(HWND loadingHandle) {
 	std::shared_ptr<PuzzleList> puzzles = std::make_shared<PuzzleList>();
 	puzzles->setLoadingHandle(loadingHandle);
-	puzzles->setSeed(seed, seedIsRNG);
+	puzzles->setSeed(seed, seedIsRNG, colorblind);
 	puzzles->GenerateAllN();
 }
 
 void Randomizer::GenerateHard(HWND loadingHandle) {
 	std::shared_ptr<PuzzleList> puzzles = std::make_shared<PuzzleList>();
 	puzzles->setLoadingHandle(loadingHandle);
-	puzzles->setSeed(seed, seedIsRNG);
+	puzzles->setSeed(seed, seedIsRNG, colorblind);
 	puzzles->GenerateAllH();
 	if (!Special::hasBeenRandomized())
 		MessageBox(GetActiveWindow(), L"Hi there! Thanks for trying out Expert Mode. It will be tough, but I hope you have fun!\r\n\r\n"

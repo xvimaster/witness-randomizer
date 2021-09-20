@@ -21,6 +21,7 @@ public:
 
 	int seed = 0;
 	bool seedIsRNG = false;
+	bool colorblind = false;
 
 private:
 	void RandomizeDesert();

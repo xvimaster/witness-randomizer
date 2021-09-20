@@ -39,6 +39,7 @@
 
 #define IDC_DIFFICULTY_NORMAL 0x501
 #define IDC_DIFFICULTY_EXPERT 0x502
+#define IDC_COLORBLIND 0x503
 
 #define SHAPE_11 0x1000
 #define SHAPE_12 0x2000
@@ -71,7 +72,7 @@
 //Panel to edit
 int panel = 0x09E69;
 
-HWND hwndSeed, hwndRandomize, hwndCol, hwndRow, hwndElem, hwndColor, hwndLoadingText, hwndNormal, hwndExpert;
+HWND hwndSeed, hwndRandomize, hwndCol, hwndRow, hwndElem, hwndColor, hwndLoadingText, hwndNormal, hwndExpert, hwndColorblind;
 std::shared_ptr<Panel> _panel;
 std::shared_ptr<Randomizer> randomizer = std::make_shared<Randomizer>();
 std::shared_ptr<Generate> generator = std::make_shared<Generate>();
@@ -89,6 +90,7 @@ int currentDir;
 bool hard = false;
 int lastSeed;
 bool lastHard;
+bool colorblind;
 std::vector<long long> shapePos = { SHAPE_11, SHAPE_12, SHAPE_13, SHAPE_14, SHAPE_21, SHAPE_22, SHAPE_23, SHAPE_24, SHAPE_31, SHAPE_32, SHAPE_33, SHAPE_34, SHAPE_41, SHAPE_42, SHAPE_43, SHAPE_44 };
 std::vector<long long> defaultShape = { SHAPE_21, SHAPE_31, SHAPE_32, SHAPE_33 }; //L-shape
 std::vector<long long> directions = { ARROW_UP_RIGHT, ARROW_UP, ARROW_UP_LEFT, ARROW_LEFT, 0, ARROW_RIGHT, ARROW_DOWN_LEFT, ARROW_DOWN, ARROW_DOWN_RIGHT }; //Order of directional check boxes
@@ -129,13 +131,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDC_DIFFICULTY_EXPERT:
 			hard = true;
 			break;
+		case IDC_COLORBLIND:
+			colorblind = !IsDlgButtonChecked(hwnd, IDC_COLORBLIND);
+			CheckDlgButton(hwnd, IDC_COLORBLIND, colorblind);
+			break;
 
 		//Randomize button
 		case IDC_RANDOMIZE:
 		{
+			bool rerandomize = false;
 			if (Special::ReadPanelData<int>(0x00064, NUM_DOTS) > 5) {
-				MessageBox(hwnd, L"Game is already randomized.", NULL, MB_OK);
-				break;
+				if (MessageBox(hwnd, L"Game is currently randomized. Are you sure you want to randomize again? (Can cause glitches)", NULL, MB_YESNO) == IDYES) {
+					rerandomize = true;
+					seedIsRNG = false;
+				}
+				else break;
 			}
 
 			//Read seed from text box
@@ -165,7 +175,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			//If the save was previously randomized, check that seed and difficulty match with the save file
 			int lastSeed = Special::ReadPanelData<int>(0x00064, BACKGROUND_REGION_COLOR + 12);
-			if (lastSeed > 0 && !DEBUG) {
+			if (lastSeed > 0 && !rerandomize && !DEBUG) {
 				if (seed != lastSeed && !randomizer->seedIsRNG) {
 					if (MessageBox(hwnd, (L"This save file was previously randomized with seed " + std::to_wstring(lastSeed) + L". Are you sure you want to use seed " + std::to_wstring(seed) + L" instead?").c_str(), NULL, MB_YESNO) == IDNO) {
 						SetWindowText(hwndSeed, std::to_wstring(lastSeed).c_str());
@@ -192,18 +202,29 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 
 			//If the save hasn't been randomized before, make sure it is a fresh, unplayed save file
-			else if (Special::hasBeenPlayed() && !DEBUG) {
-				MessageBox(hwnd, L"You must start a new game to be able to randomize. If you have already started a randomizer run, make sure the correct save file is loaded.", NULL, MB_OK);
-				break;
+			else if (Special::hasBeenPlayed() && !rerandomize && !DEBUG) {
+				if (MessageBox(hwnd, L"Warning: It is recommended that you start a new game for the randomizer, to prevent corruption of your save file. Randomize on the current save file anyway?", NULL, MB_YESNO) == IDYES) {
+					randomizer->seedIsRNG = false;
+				}
+				else break;
 			}
-
+			
+			ShowWindow(hwndColorblind, SW_HIDE);
+			if (colorblind) {
+				std::ofstream out("WRPGconfig.txt");
+				out << "colorblind:true" << std::endl;
+				out.close();
+			}
+			else {
+				std::remove("WRPGconfig.txt");
+			}
 			SetWindowText(hwndRandomize, L"Randomizing...");
 			randomizer->seed = seed;
+			randomizer->colorblind = IsDlgButtonChecked(hwnd, IDC_COLORBLIND);
 			if (hard) randomizer->GenerateHard(hwndLoadingText);
 			else randomizer->GenerateNormal(hwndLoadingText);
 			Special::WritePanelData(0x00064, BACKGROUND_REGION_COLOR + 12, seed);
 			Special::WritePanelData(0x00182, BACKGROUND_REGION_COLOR + 12, hard);
-
 			SetWindowText(hwndRandomize, L"Randomized!");
 			SetWindowText(hwndSeed, std::to_wstring(seed).c_str());
 
@@ -379,9 +400,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		catch (std::exception) { Memory::GLOBALS = 0; }
 	}
 	if (!Memory::GLOBALS) {
-		std::ifstream file("globals.txt");
+		std::ifstream file("WRPGglobals.txt");
 		if (file.is_open()) {
 			file >> std::hex >> Memory::GLOBALS;
+			file.close();
 		}
 		else {
 			std::string str = "Globals ptr not found. Press OK to search for globals ptr (may take a minute or two). Please keep The Witness open during this time.";
@@ -391,8 +413,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				std::stringstream ss; ss << std::hex << "Address found: 0x" << address << ". This address wil be automatically loaded next time. Please post an issue on Github with this address so that it can be added in the future.";
 				std::string str = ss.str();
 				MessageBox(GetActiveWindow(), std::wstring(str.begin(), str.end()).c_str(), NULL, MB_OK);
-				std::ofstream ofile("globals.txt", std::ofstream::app);
+				std::ofstream ofile("WRPGglobals.txt", std::ofstream::app);
 				ofile << std::hex << address << std::endl;
+				ofile.close();
 			}
 			else {
 				str = "Address could not be found. Please post an issue on the Github page.";
@@ -440,6 +463,27 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	hwndLoadingText = CreateWindow(L"STATIC", L"",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | SS_LEFT,
 		400, 125, 160, 16, hwnd, NULL, hInstance, NULL);
+
+	hwndColorblind = CreateWindow(L"BUTTON", L"Colorblind mode",
+		WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
+		400, 125, 130, 16, hwnd, (HMENU)IDC_COLORBLIND, hInstance, NULL);
+
+	std::ifstream configFile("WRPGconfig.txt");
+	if (configFile.is_open()) {
+		std::map<std::string, std::string> settings;
+		std::string setting, value;
+		while (!configFile.eof() && configFile.good()) {
+			std::getline(configFile, setting, ':');
+			std::getline(configFile, value);
+			settings[setting] = value;
+		}
+		if (settings.count("colorblind") && settings["colorblind"] == "true") {
+			colorblind = true;
+			CheckDlgButton(hwnd, IDC_COLORBLIND, true);
+		}
+		configFile.close();
+	}
+
 	ShowWindow(hwndLoadingText, SW_HIDE);
 
 	//---------------------Debug/editing controls (debug mode only)---------------------

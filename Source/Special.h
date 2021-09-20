@@ -47,7 +47,7 @@ public:
 	bool generate2BridgeH(int id1, int id2, std::vector<std::shared_ptr<Generate>> gens);
 	void generateMountainFloor();
 	void generateMountainFloorH();
-	void generatePivotPanel(int id, Point gridSize, const std::vector<std::pair<int, int>>& symbolVec); //Too slow right now, only used a couple times in hard mode
+	void generatePivotPanel(int id, Point gridSize, const std::vector<std::pair<int, int>>& symbolVec, bool colorblind); //Too slow right now, only used a couple times in hard mode
 	void modifyGate(int id);
 	void addDecoyExits(std::shared_ptr<Generate> gen, int amount);
 	void initSSGrid(std::shared_ptr<Generate> gen);

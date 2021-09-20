@@ -22,6 +22,7 @@ public:
 		_handle = NULL;
 		_panel = NULL;
 		_parity = -1;
+		colorblind = false;
 		_seed = Random::rand();
 		arrowColor = backgroundColor = successColor = { 0, 0, 0, 0 };
 		resetConfig();
@@ -154,6 +155,7 @@ private:
 	bool _allowNonMatch; //Used for multi-generator
 	int _parity;
 	std::vector<std::vector<Point>> _obstructions;
+	bool colorblind;
 
 	HWND _handle;
 	int _areaTotal, _genTotal, _areaPuzzles, _totalPuzzles;

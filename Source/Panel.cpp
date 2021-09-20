@@ -266,8 +266,8 @@ void Panel::WriteDecorations() {
 	_style &= ~0x3fc0; //Remove all element flags
 	for (int y=_height-2; y>0; y-=2) {
 		for (int x=1; x<_width; x+=2) {
-			if (colorMode == ColorMode::Treehouse) {
-				if ((_grid[x][y] & 0xf) == Decoration::Color::Blue) {
+			if (colorMode == ColorMode::Treehouse || colorMode == ColorMode::TreehouseAlternate) {
+				if ((_grid[x][y] & 0xf) == Decoration::Color::Green) {
 					_grid[x][y] &= ~0xf; _grid[x][y] |= 6;
 				}
 				if ((_grid[x][y] & 0xf) == Decoration::Color::Orange) {
@@ -303,18 +303,26 @@ void Panel::WriteDecorations() {
 	}
 	else {
 		_memory->WritePanelData<int>(id, NUM_DECORATIONS, { static_cast<int>(decorations.size()) });
-		if (colorMode == ColorMode::WriteColors || colorMode == ColorMode::Treehouse || colorMode == ColorMode::TreehouseLoad || _memory->ReadPanelData<int>(id, DECORATION_COLORS))
+		if (colorMode == ColorMode::WriteColors || colorMode == ColorMode::Treehouse || colorMode == ColorMode::TreehouseAlternate || _memory->ReadPanelData<int>(id, DECORATION_COLORS))
 			_memory->WriteArray<Color>(id, DECORATION_COLORS, decorationColors);
 		else if (colorMode == ColorMode::Reset || colorMode == ColorMode::Alternate) {
 			_memory->WritePanelData<int>(id, PUSH_SYMBOL_COLORS, { colorMode == ColorMode::Reset ? 0 : 1 });
 		}
-		if (colorMode == ColorMode::Treehouse || colorMode == ColorMode::TreehouseLoad) {
+		if (colorMode == ColorMode::Treehouse) {
 			_memory->WritePanelData<int>(id, PUSH_SYMBOL_COLORS, { 1 });
 			_memory->WritePanelData<Color>(id, SYMBOL_A, { { 0, 0, 0, 1 } }); //Black
 			_memory->WritePanelData<Color>(id, SYMBOL_B, { { 1, 1, 1, 1 } }); //White
 			_memory->WritePanelData<Color>(id, SYMBOL_C, { { 1, 0.5, 0, 1 } }); //Orange
 			_memory->WritePanelData<Color>(id, SYMBOL_D, { { 1, 0, 1, 1 } }); //Magenta
-			_memory->WritePanelData<Color>(id, SYMBOL_E, { { 0, 0, 1, 1 } }); //Blue
+			_memory->WritePanelData<Color>(id, SYMBOL_E, { { 0, 1, 0, 1 } }); //Green
+		}
+		else if (colorMode == ColorMode::TreehouseAlternate) {
+			_memory->WritePanelData<int>(id, PUSH_SYMBOL_COLORS, { 1 });
+			_memory->WritePanelData<Color>(id, SYMBOL_A, { { 0, 0, 0, 1 } }); //Black
+			_memory->WritePanelData<Color>(id, SYMBOL_B, { { 0, 0, 1, 1 } }); //White->Blue
+			_memory->WritePanelData<Color>(id, SYMBOL_C, { { 1, 0.5, 0, 1 } }); //Orange
+			_memory->WritePanelData<Color>(id, SYMBOL_D, { { 1, 0, 1, 1 } }); //Magenta
+			_memory->WritePanelData<Color>(id, SYMBOL_E, { { 1, 1, 1, 1 } }); //Green->White
 		}
 	}
 	if (any || _memory->ReadPanelData<int>(id, DECORATIONS)) {
@@ -555,6 +563,11 @@ void Panel::WriteIntersections() {
 		for (int x = 0; x < _width; x++) {
 			if (x % 2 == y % 2) continue;
 			if (_grid[x][y] == 0 || _grid[x][y] == OPEN) continue;
+			if (_grid[x][y] & IntersectionFlags::DOT) {
+				_style |= HAS_DOTS;
+				if (_grid[x][y] & IntersectionFlags::DOT_IS_BLUE || _grid[x][y] & IntersectionFlags::DOT_IS_ORANGE)
+					_style |= IS_2COLOR;
+			}
 			if (locate_segment(x, y, connections_a, connections_b) == -1)
 				continue;
 			if (_grid[x][y] & IntersectionFlags::GAP) {
@@ -577,11 +590,6 @@ void Panel::WriteIntersections() {
 			else {
 				if (_grid[x][y] == IntersectionFlags::COLUMN || _grid[x][y] == IntersectionFlags::ROW)
 					continue;
-				if (_grid[x][y] & IntersectionFlags::DOT) {
-					_style |= HAS_DOTS;
-					if (_grid[x][y] & IntersectionFlags::DOT_IS_BLUE || _grid[x][y] & IntersectionFlags::DOT_IS_ORANGE)
-						_style |= IS_2COLOR;
-				}
 				if (!break_segment(x, y, connections_a, connections_b, intersections, intersectionFlags))
 					continue;
 				if (symmetry) {

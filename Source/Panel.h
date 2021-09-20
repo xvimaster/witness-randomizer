@@ -169,7 +169,7 @@ public:
 	Symmetry symmetry;
 
 	float pathWidth;
-	enum ColorMode { Default, Reset, Alternate, WriteColors, Treehouse, TreehouseLoad };
+	enum ColorMode { Default, Reset, Alternate, WriteColors, Treehouse, TreehouseAlternate };
 	ColorMode colorMode;
 	bool decorationsOnly;
 	bool enableFlash;
@@ -235,14 +235,25 @@ private:
 	int get_num_grid_blocks() { return (_width / 2) * (_height / 2);  }
 	int get_parity() { return (get_num_grid_points() + 1) % 2; }
 	Color get_color_rgb(int color) {
-		if (colorMode == ColorMode::Treehouse || colorMode == ColorMode::TreehouseLoad) {
+		if (colorMode == ColorMode::Treehouse) {
 			switch (color) {
 			case 1: return { 0, 0, 0, 1 }; //Black
 			case 2: return { 1, 1, 1, 1 }; //White
-			case 3: return { 1, 1, 1, 1 }; //Red
+			case 3: return { 1, 0, 0, 1 }; //Red (Not used)
 			case 4: return { 1, 0, 1, 1 }; //Magenta
 			case 5: return { 1, 0.5, 0, 1 }; //Orange
-			case 6: return { 0, 0, 1, 1 }; //Blue
+			case 6: return { 0, 1, 0, 1 }; //Green
+			default: return { 0, 0, 0, 0 };
+			}
+		}
+		else if (colorMode == ColorMode::TreehouseAlternate) {
+			switch (color) {
+			case 1: return { 0, 0, 0, 1 }; //Black
+			case 2: return { 0, 0, 1, 1 }; //White->Blue
+			case 3: return { 1, 0, 0, 1 }; //Red (Not used)
+			case 4: return { 1, 0, 1, 1 }; //Magenta
+			case 5: return { 1, 0.5, 0, 1 }; //Orange
+			case 6: return { 1, 1, 1, 1 }; //Green->White
 			default: return { 0, 0, 0, 0 };
 			}
 		}

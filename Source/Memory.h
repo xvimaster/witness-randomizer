@@ -32,22 +32,20 @@ public:
 
 	bool Read(LPCVOID lpBaseAddress, LPVOID lpBuffer, SIZE_T nSize) {
 		if (!retryOnFail) return ReadProcessMemory(_handle, lpBaseAddress, lpBuffer, nSize, nullptr);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10000; i++) {
 			if (ReadProcessMemory(_handle, lpBaseAddress, lpBuffer, nSize, nullptr)) {
 				return true;
 			}
-			Sleep(1);
 		}
 		return false;
 	}
 
 	bool Write(LPVOID lpBaseAddress, LPCVOID lpBuffer, SIZE_T nSize) {
 		if (!retryOnFail) return WriteProcessMemory(_handle, lpBaseAddress, lpBuffer, nSize, nullptr);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10000; i++) {
 			if (WriteProcessMemory(_handle, lpBaseAddress, lpBuffer, nSize, nullptr)) {
 				return true;
 			}
-			Sleep(1);
 		}
 		return false;
 	}
