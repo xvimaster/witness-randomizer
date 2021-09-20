@@ -297,7 +297,7 @@ void PuzzleList::GenerateQuarryN()
 	generator->generate(0x09DB3, Decoration::Star | Decoration::Color::White, 5, Decoration::Poly | Decoration::Color::Green, 2, Decoration::Eraser | Decoration::Black, 1);
 	generator->pathWidth = 0.8f;
 	generator->generate(0x09DB4, Decoration::Star | Decoration::Color::White, 6, Decoration::Poly | Decoration::Color::Green, 2, Decoration::Eraser | Decoration::Black, 1);
-	generator->setGridSize(7, 3);
+	generator->setGridSize(6, 3);
 	generator->pathWidth = 0.6f;
 	generator->generate(0x0A3CB, Decoration::Star | Decoration::Color::Black, 3, Decoration::Poly | Decoration::Color::Green, 3, Decoration::Eraser | Decoration::Cyan, 1);
 	generator->generate(0x0A3CC, Decoration::Star | Decoration::Color::Black, 5, Decoration::Poly | Decoration::Color::Green, 3, Decoration::Eraser | Decoration::Cyan, 1);
