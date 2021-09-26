@@ -85,7 +85,7 @@ void ArrowWatchdog::initPath()
 	tracedLength = numTraced;
 	complete = false;
 	if (traced.size() == 0) return;
-	for (SolutionPoint p : traced) {
+	for (const SolutionPoint& p : traced) {
 		int p1 = p.pointA, p2 = p.pointB;
 		if (p1 == exitPoint || p2 == exitPoint) {
 			complete = true;
@@ -198,7 +198,7 @@ bool BridgeWatchdog::checkTouch(int id)
 	int numIntersections = _memory->ReadPanelData<int>(id, NUM_DOTS);
 	std::vector<int> intersectionFlags = _memory->ReadArray<int>(id, DOT_FLAGS, numIntersections);
 	std::vector<SolutionPoint> edges = _memory->ReadArray<SolutionPoint>(id, TRACED_EDGE_DATA, length);
-	for (SolutionPoint sp : edges) if (intersectionFlags[sp.pointA] == Decoration::Dot_Intersection || intersectionFlags[sp.pointB] == Decoration::Dot_Intersection) return true;
+	for (const SolutionPoint& sp : edges) if (intersectionFlags[sp.pointA] == Decoration::Dot_Intersection || intersectionFlags[sp.pointB] == Decoration::Dot_Intersection) return true;
 	return false;
 }
 
@@ -220,7 +220,7 @@ void JungleWatchdog::action()
 	if (!tracedptr) return;
 	std::vector<SolutionPoint> traced = ReadArray<SolutionPoint>(id, TRACED_EDGE_DATA, numTraced);
 	int seqIndex = 0;
-	for (SolutionPoint p : traced) {
+	for (const SolutionPoint& p : traced) {
 		if ((sizes[p.pointA] & IntersectionFlags::DOT) == 0) continue;
 		if (sizes[p.pointA] & (0x1000 << (state ? correctSeq1[seqIndex] : correctSeq2[seqIndex])))
 			seqIndex++;

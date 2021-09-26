@@ -146,7 +146,7 @@ void Special::generateColorFilterPuzzle(int id, Point size, const std::vector<st
 		for (Color &c : symbolColors) {
 			colorCounts[c]++;
 		}
-		for (auto pair : colorCounts) {
+		for (const auto& pair : colorCounts) {
 			if (pair.second % 2) {
 				pass = true;
 				break;
@@ -1505,8 +1505,8 @@ void Special::drawSeedAndDifficulty(int id, int seed, bool hard, bool setSeed, b
 	std::string seedStr = std::to_string(seed);
 	createText(id, seedStr, intersections, connectionsA, connectionsB, 0.5f - seedStr.size()*0.06f, 0.5f + seedStr.size()*0.06f, setSeed ? 0.6f : 0.65f, setSeed ? 0.75f : 0.8f);
 	if (setSeed) createText(id, "set seed", intersections, connectionsA, connectionsB, 0.1f, 0.9f, 0.86f, 0.96f);
-	std::wstring version = VERSION_STR;
-	createText(id, std::string(version.begin(), version.end()), intersections, connectionsA, connectionsB, 0.98f - version.size()*0.06f, 0.98f, 0.02f, 0.10f);
+	std::string version = VERSION_STR;
+	createText(id, version, intersections, connectionsA, connectionsB, 0.98f - version.size()*0.06f, 0.98f, 0.02f, 0.10f);
 	if (options) createText(id, "option", intersections, connectionsA, connectionsB, 0.02f, 0.5f, 0.02f, 0.10f);
 
 	drawText(id, intersections, connectionsA, connectionsB, { 0.1f, 0.5f, 0.9f, 0.5f });

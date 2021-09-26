@@ -99,7 +99,7 @@ void Memory::ThrowError(std::string message) {
 	GetExitCodeProcess(_handle, &exitCode);
 	if (exitCode != STILL_ACTIVE) throw std::exception(message.c_str());
 	message += "\nPlease close The Witness and try again. If the error persists, please report the issue on the Github Issues page.";
-	MessageBox(GetActiveWindow(), std::wstring(message.begin(), message.end()).c_str(), NULL, MB_OK);
+	MessageBoxA(GetActiveWindow(), message.c_str(), NULL, MB_OK);
 	throw std::exception(message.c_str());
 }
 

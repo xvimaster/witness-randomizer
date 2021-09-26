@@ -406,20 +406,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			file.close();
 		}
 		else {
-			std::string str = "Globals ptr not found. Press OK to search for globals ptr (may take a minute or two). Please keep The Witness open during this time.";
-			if (MessageBox(GetActiveWindow(), std::wstring(str.begin(), str.end()).c_str(), NULL, MB_OK) != IDOK) return 0;
+			std::wstring str = L"Globals ptr not found. Press OK to search for globals ptr (may take a minute or two). Please keep The Witness open during this time.";
+			if (MessageBox(GetActiveWindow(), str.c_str(), NULL, MB_OK) != IDOK) return 0;
 			int address = memory.findGlobals();
 			if (address) {
-				std::stringstream ss; ss << std::hex << "Address found: 0x" << address << ". This address wil be automatically loaded next time. Please post an issue on Github with this address so that it can be added in the future.";
-				std::string str = ss.str();
-				MessageBox(GetActiveWindow(), std::wstring(str.begin(), str.end()).c_str(), NULL, MB_OK);
+				std::wstringstream ss; ss << std::hex << "Address found: 0x" << address << ". This address wil be automatically loaded next time. Please post an issue on Github with this address so that it can be added in the future.";
+				MessageBox(GetActiveWindow(), ss.str().c_str(), NULL, MB_OK);
 				std::ofstream ofile("WRPGglobals.txt", std::ofstream::app);
 				ofile << std::hex << address << std::endl;
 				ofile.close();
 			}
 			else {
-				str = "Address could not be found. Please post an issue on the Github page.";
-				MessageBox(GetActiveWindow(), std::wstring(str.begin(), str.end()).c_str(), NULL, MB_OK);
+				str = L"Address could not be found. Please post an issue on the Github page.";
+				MessageBox(GetActiveWindow(), str.c_str(), NULL, MB_OK);
 				return 0;
 			}
 		}
