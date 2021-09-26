@@ -14,6 +14,7 @@ class Memory
 {
 public:
 	Memory(const std::string& processName);
+	int findGlobals();
 	~Memory();
 
 	Memory(const Memory& memory) = delete;

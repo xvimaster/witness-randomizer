@@ -1522,34 +1522,6 @@ void Special::drawGoodLuckPanel(int id)
 	drawText(id, intersections, connectionsA, connectionsB, { 0.66f, 0.62f, 0.66f, 0.69f, 0.32f, 0.69f, 0.51f, 0.51f, 0.32f, 0.32f, 0.66f, 0.32f, 0.66f, 0.39f });
 }
 
-int Special::findGlobals() {
-	Panel panel;
-	panel._memory->retryOnFail = false; //Too slow to retry every read
-	int address = 0;
-	for (int j = 0; j < 10; j++) { //Do several passes through memory, in case of memory faults
-		for (int i = 0x600000; i < 0x800000; i += 4) {
-			Memory::GLOBALS = i;
-			try {
-				if ((address = panel._memory->ReadPanelData<int>(0x17E52, STYLE_FLAGS, 1)[0]) == 0x0000A040) {
-					return i;
-				}
-			}
-			catch (std::exception) {}
-		}
-		for (int i = 0x400000; i < 0x600000; i += 4) {
-			Memory::GLOBALS = i;
-			try {
-				if ((address = panel._memory->ReadPanelData<int>(0x17E52, STYLE_FLAGS, 1)[0]) == 0x0000A040) {
-					return i;
-				}
-			}
-			catch (std::exception) {}
-		}
-		Sleep(10);
-	}
-	return 0;
-}
-
 //For testing/debugging purposes only
 void Special::test() {
 

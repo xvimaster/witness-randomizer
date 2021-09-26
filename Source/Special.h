@@ -196,8 +196,6 @@ public:
 		return -1;
 	}
 
-	static int findGlobals();
-
 private:
 
 	std::shared_ptr<Generate> generator;
