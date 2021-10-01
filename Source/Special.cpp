@@ -146,7 +146,7 @@ void Special::generateColorFilterPuzzle(int id, Point size, const std::vector<st
 		for (Color &c : symbolColors) {
 			colorCounts[c]++;
 		}
-		for (auto pair : colorCounts) {
+		for (const auto& pair : colorCounts) {
 			if (pair.second % 2) {
 				pass = true;
 				break;
@@ -1505,8 +1505,8 @@ void Special::drawSeedAndDifficulty(int id, int seed, bool hard, bool setSeed, b
 	std::string seedStr = std::to_string(seed);
 	createText(id, seedStr, intersections, connectionsA, connectionsB, 0.5f - seedStr.size()*0.06f, 0.5f + seedStr.size()*0.06f, setSeed ? 0.6f : 0.65f, setSeed ? 0.75f : 0.8f);
 	if (setSeed) createText(id, "set seed", intersections, connectionsA, connectionsB, 0.1f, 0.9f, 0.86f, 0.96f);
-	std::wstring version = VERSION_STR;
-	createText(id, std::string(version.begin(), version.end()), intersections, connectionsA, connectionsB, 0.98f - version.size()*0.06f, 0.98f, 0.02f, 0.10f);
+	std::string version = VERSION_STR;
+	createText(id, version, intersections, connectionsA, connectionsB, 0.98f - version.size()*0.06f, 0.98f, 0.02f, 0.10f);
 	if (options) createText(id, "option", intersections, connectionsA, connectionsB, 0.02f, 0.5f, 0.02f, 0.10f);
 
 	drawText(id, intersections, connectionsA, connectionsB, { 0.1f, 0.5f, 0.9f, 0.5f });
@@ -1520,34 +1520,6 @@ void Special::drawGoodLuckPanel(int id)
 	createText(id, "good", intersections, connectionsA, connectionsB, 0.2f, 0.8f, 0.07f, 0.23f);
 	createText(id, "luck!", intersections, connectionsA, connectionsB, 0.2f, 0.8f, 0.77f, 0.93f);
 	drawText(id, intersections, connectionsA, connectionsB, { 0.66f, 0.62f, 0.66f, 0.69f, 0.32f, 0.69f, 0.51f, 0.51f, 0.32f, 0.32f, 0.66f, 0.32f, 0.66f, 0.39f });
-}
-
-int Special::findGlobals() {
-	Panel panel;
-	panel._memory->retryOnFail = false; //Too slow to retry every read
-	int address = 0;
-	for (int j = 0; j < 10; j++) { //Do several passes through memory, in case of memory faults
-		for (int i = 0x600000; i < 0x800000; i += 4) {
-			Memory::GLOBALS = i;
-			try {
-				if ((address = panel._memory->ReadPanelData<int>(0x17E52, STYLE_FLAGS, 1)[0]) == 0x0000A040) {
-					return i;
-				}
-			}
-			catch (std::exception) {}
-		}
-		for (int i = 0x400000; i < 0x600000; i += 4) {
-			Memory::GLOBALS = i;
-			try {
-				if ((address = panel._memory->ReadPanelData<int>(0x17E52, STYLE_FLAGS, 1)[0]) == 0x0000A040) {
-					return i;
-				}
-			}
-			catch (std::exception) {}
-		}
-		Sleep(10);
-	}
-	return 0;
 }
 
 //For testing/debugging purposes only
