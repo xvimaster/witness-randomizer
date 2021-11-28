@@ -271,7 +271,11 @@ void Randomizer::ShufflePanels(bool hard) {
 
 	// General shuffles.
 	SwapWithRandomPanel(0x17CC4, millElevatorControlOptions, SWAP::LINES | SWAP::COLORS); // Mill Elevator Control
-	SwapWithRandomPanel(0x0A3B5, tutorialBackLeftOptions, SWAP::LINES | SWAP::COLORS); // Tutorial Back Left
+	if (hard) {
+		SwapWithRandomPanel(0x0A3B5, tutorialBackLeftExpertOptions, SWAP::LINES | SWAP::COLORS); // Tutorial Back Left
+	} else {
+		SwapWithRandomPanel(0x0A3B5, tutorialBackLeftOptions, SWAP::LINES | SWAP::COLORS); // Tutorial Back Left
+	}
 	Randomize(utmElevatorControls, SWAP::LINES | SWAP::COLORS);
 	Randomize(treehousePivotSet, SWAP::LINES | SWAP::COLORS);
 	Randomize(utmPerspectiveSet, SWAP::LINES | SWAP::COLORS);

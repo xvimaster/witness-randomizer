@@ -56,6 +56,227 @@ std::vector<int> tutorialBackLeftOptions = {
 	0x0A3B5, // Tutorial Back Left
 };
 
+std::vector<int> tutorialBackLeftExpertOptions = {
+    0x0A3B2, // Tutorial Back Right
+    0x0A171, // Tutorial Optional Door 1
+    0x04CA4, // Tutorial Optional Door 2
+    0x17CFB, // Outside Tutorial Discard
+    0x3C12B, // Glass Factory Discard
+    0x01A54, // Glass Factory Entry
+    0x000B0, // Symmetry Island Door 1
+    0x17CE7, // Desert Discard
+    0x0CC7B, // Desert Vault
+    0x01E59, // Mill Entry Door Right
+    0x00E0C, // Mill Lower Row 1
+    0x01489, // Mill Lower Row 2
+    0x0148A, // Mill Lower Row 3
+    0x014D9, // Mill Lower Row 4
+    0x014E7, // Mill Lower Row 5
+    0x014E8, // Mill Lower Row 6
+    0x00557, // Mill Upper Row 1
+    0x005F1, // Mill Upper Row 2
+    0x00620, // Mill Upper Row 3
+    0x009F5, // Mill Upper Row 4
+    0x0146C, // Mill Upper Row 5
+    0x3C12D, // Mill Upper Row 6
+    0x03686, // Mill Upper Row 7
+    0x014E9, // Mill Upper Row 8
+    0x0367C, // Mill Control Room 1
+    0x17CF0, // Mill Discard
+    0x021D5, // Boathouse Ramp Activation Shapers
+    0x021B3, // Boathouse Erasers and Shapers 1
+    0x021B4, // Boathouse Erasers and Shapers 2
+    0x021B0, // Boathouse Erasers and Shapers 3
+    0x021AF, // Boathouse Erasers and Shapers 4
+    0x021AE, // Boathouse Erasers and Shapers 5
+    0x021B5, // Boathouse Erasers and Stars 1
+    0x021B6, // Boathouse Erasers and Stars 2
+    0x021B7, // Boathouse Erasers and Stars 3
+    0x021BB, // Boathouse Erasers and Stars 4
+    0x09DB5, // Boathouse Erasers and Stars 5
+    0x09DB1, // Boathouse Erasers and Stars 6
+    0x3C124, // Boathouse Erasers and Stars 7
+    0x09DB3, // Boathouse Erasers Shapers and Stars 1
+    0x09DB4, // Boathouse Erasers Shapers and Stars 2
+    0x0A3CB, // Boathouse Erasers Shapers and Stars 3
+    0x0A3CC, // Boathouse Erasers Shapers and Stars 4
+    0x0A3D0, // Boathouse Erasers Shapers and Stars 5
+    0x09E57, // Quarry Entry Gate 1
+    0x17C09, // Quarry Entry Gate 2
+    0x0288C, // Treehouse Door 1
+    0x02886, // Treehouse Door 2
+    0x17D72, // Treehouse Yellow 1
+    0x17D8F, // Treehouse Yellow 2
+    0x17D74, // Treehouse Yellow 3
+    0x17DAC, // Treehouse Yellow 4
+    0x17D9E, // Treehouse Yellow 5
+    0x17DB9, // Treehouse Yellow 6
+    0x17D9C, // Treehouse Yellow 7
+    0x17DC2, // Treehouse Yellow 8
+    0x17DC4, // Treehouse Yellow 9
+    0x0A182, // Treehouse Door 3
+    0x17DC8, // Treehouse First Purple 1
+    0x17DC7, // Treehouse First Purple 2
+    0x17CE4, // Treehouse First Purple 3
+    0x17D2D, // Treehouse First Purple 4
+    0x17D6C, // Treehouse First Purple 5
+    0x17D9B, // Treehouse Second Purple 1
+    0x17D99, // Treehouse Second Purple 2
+    0x17DAA, // Treehouse Second Purple 3
+    0x17D97, // Treehouse Second Purple 4
+    0x17BDF, // Treehouse Second Purple 5
+    0x17D91, // Treehouse Second Purple 6
+    0x17DC6, // Treehouse Second Purple 7
+    0x17DB3, // Treehouse Left Orange 1
+    0x17DB5, // Treehouse Left Orange 2
+    0x17DB6, // Treehouse Left Orange 3
+    0x17DC0, // Treehouse Left Orange 4
+    0x17DD7, // Treehouse Left Orange 5
+    0x17DD9, // Treehouse Left Orange 6
+    0x17DB8, // Treehouse Left Orange 7
+    0x17DDC, // Treehouse Left Orange 8
+    0x17DDE, // Treehouse Left Orange 10
+    0x17DE3, // Treehouse Left Orange 11
+    0x17DEC, // Treehouse Left Orange 12
+    0x17DAE, // Treehouse Left Orange 13
+    0x17DB0, // Treehouse Left Orange 14
+    0x17DDB, // Treehouse Left Orange 15
+    0x17D88, // Treehouse Right Orange 1
+    0x17DB4, // Treehouse Right Orange 2
+    0x17D8C, // Treehouse Right Orange 3
+    0x17DCD, // Treehouse Right Orange 5
+    0x17DB2, // Treehouse Right Orange 6
+    0x17DCC, // Treehouse Right Orange 7
+    0x17DCA, // Treehouse Right Orange 8
+    0x17D8E, // Treehouse Right Orange 9
+    0x17DB1, // Treehouse Right Orange 11
+    0x17DA2, // Treehouse Right Orange 12
+    0x17E3C, // Treehouse Green 1
+    0x17E4D, // Treehouse Green 2
+    0x17E4F, // Treehouse Green 3
+    0x17E5B, // Treehouse Green 5
+    0x17E5F, // Treehouse Green 6
+    0x17E61, // Treehouse Green 7
+    0x17FA9, // Treehouse Green Bridge Discard
+    0x00139, // Keep Hedges 1
+    0x019DC, // Keep Hedges 2
+    0x019E7, // Keep Hedges 3
+    0x01A0F, // Keep Hedges 4
+    0x17D28, // Shipwreck Discard
+    0x2899C, // Town 25 Dots 1
+    0x28A33, // Town 25 Dots 2
+    0x28ABF, // Town 25 Dots 3
+    0x28AC0, // Town 25 Dots 4
+    0x28AC1, // Town 25 Dots 5
+    0x28AC7, // Town Blue 1
+    0x28A0D, // Town Church Stars
+    0x28AD9, // Town Eraser
+    0x28998, // Town Green Door
+    0x0A0C8, // Town Orange Crate
+    0x17D01, // Town Orange Crate Discard
+    0x03C0C, // Town RGB Stones
+    0x17C71, // Town Rooftop Discard
+    0x17F89, // Theater Entrance
+    0x33AB2, // Theater Corona Exit
+    0x0A168, // Theater Sun Exit
+    0x17C2E, // Bunker Entry Door
+    0x00469, // Swamp Tutorial 1
+    0x00472, // Swamp Tutorial 2
+    0x00262, // Swamp Tutorial 3
+    0x00474, // Swamp Tutorial 4
+    0x00553, // Swamp Tutorial 5
+    0x0056F, // Swamp Tutorial 6
+    0x00390, // Swamp Tutorial 7
+    0x010CA, // Swamp Tutorial 8
+    0x00983, // Swamp Tutorial 9
+    0x00984, // Swamp Tutorial 10
+    0x00986, // Swamp Tutorial 11
+    0x00985, // Swamp Tutorial 12
+    0x00987, // Swamp Tutorial 13
+    0x181A9, // Swamp Tutorial 14
+    0x00982, // Swamp Red 1
+    0x0097F, // Swamp Red 2
+    0x0098F, // Swamp Red 3
+    0x00990, // Swamp Red 4
+    0x17C0D, // Swamp Red Shortcut 1
+    0x17C0E, // Swamp Red Shortcut 2
+    0x00999, // Swamp Discontinuous 1
+    0x0099D, // Swamp Discontinuous 2
+    0x009A0, // Swamp Discontinuous 3
+    0x009A1, // Swamp Discontinuous 4
+    0x00007, // Swamp Rotation Tutorial 1
+    0x00008, // Swamp Rotation Tutorial 2
+    0x00009, // Swamp Rotation Tutorial 3
+    0x0000A, // Swamp Rotation Tutorial 4
+    0x009AB, // Swamp Blue Underwater 1
+    0x009AD, // Swamp Blue Underwater 2
+    0x009AE, // Swamp Blue Underwater 3
+    0x009AF, // Swamp Blue Underwater 4
+    0x00006, // Swamp Blue Underwater 5
+    0x003B2, // Swamp Rotation Advanced 1
+    0x00A1E, // Swamp Rotation Advanced 2
+    0x00C2E, // Swamp Rotation Advanced 3
+    0x00E3A, // Swamp Rotation Advanced 4
+    0x009A6, // Swamp Purple Tetris
+    0x00002, // Swamp Teal Underwater 1
+    0x00004, // Swamp Teal Underwater 2
+    0x00005, // Swamp Teal Underwater 3
+    0x013E6, // Swamp Teal Underwater 4
+    0x00596, // Swamp Teal Underwater 5
+    0x00001, // Swamp Red Underwater 1
+    0x014D2, // Swamp Red Underwater 2
+    0x014D4, // Swamp Red Underwater 3
+    0x014D1, // Swamp Red Underwater 4
+    0x17C05, // Swamp Laser Shortcut 1
+    0x17C02, // Swamp Laser Shortcut 2
+    0x17F9B, // Jungle Discard
+    0x09FD3, // Mountain 2 Rainbow 1
+    0x09FD4, // Mountain 2 Rainbow 2
+    0x09FD6, // Mountain 2 Rainbow 3
+    0x09FD7, // Mountain 2 Rainbow 4
+    0x09FD8, // Mountain 2 Rainbow 5
+    0x17F93, // Mountain 2 Discard
+    0x17FA2, // Mountain 3 Secret Door
+    0x17C42, // Mountainside Discard
+    0x00FF8, // UTM Entrance Door
+    0x0A16B, // UTM Green Dots 1
+    0x0A2CE, // UTM Green Dots 2
+    0x0A2D7, // UTM Green Dots 3
+    0x0A2DD, // UTM Green Dots 4
+    0x0008F, // UTM Invisible Dots 1
+    0x0006B, // UTM Invisible Dots 2
+    0x0008B, // UTM Invisible Dots 3
+    0x0008C, // UTM Invisible Dots 4
+    0x0008A, // UTM Invisible Dots 5
+    0x00089, // UTM Invisible Dots 6
+    0x0006A, // UTM Invisible Dots 7
+    0x0006C, // UTM Invisible Dots 8
+    0x021D7, // UTM Mountainside Shortcut
+    0x00B71, // UTM Quarry
+    0x01A31, // UTM Rainbow
+    0x32962, // UTM Swamp
+    0x32966, // UTM Treehouse
+    0x17CF2, // UTM Waterfall Shortcut
+    0x00A72, // UTM Blue Cave In
+    0x009A4, // UTM Blue Discontinuous
+    0x008B8, // UTM Blue Left 1
+    0x00973, // UTM Blue Left 2
+    0x0097B, // UTM Blue Left 3
+    0x0097D, // UTM Blue Left 4
+    0x0097E, // UTM Blue Left 5
+    0x00994, // UTM Blue Right Far 1
+    0x334D5, // UTM Blue Right Far 2
+    0x00995, // UTM Blue Right Far 3
+    0x00996, // UTM Blue Right Far 4
+    0x00998, // UTM Blue Right Far 5
+    0x00190, // UTM Blue Right Near 1
+    0x006FE, // UTM Blue Right Near 4
+    0x0A16E, // UTM Challenge Entrance
+    0x039B4, // Tunnels Theater Catwalk
+
+    0x0A3B5, // Tutorial Back Left
+};
+
 std::vector<int> utmElevatorControls = {
 	0x335AB, // UTM In Elevator Control
 	0x3369D, // UTM Lower Elevator Control
