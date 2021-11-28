@@ -40,6 +40,7 @@
 #define IDC_DIFFICULTY_NORMAL 0x501
 #define IDC_DIFFICULTY_EXPERT 0x502
 #define IDC_COLORBLIND 0x503
+#define IDC_DOUBLE 0x504
 
 #define SHAPE_11 0x1000
 #define SHAPE_12 0x2000
@@ -72,7 +73,7 @@
 //Panel to edit
 int panel = 0x09E69;
 
-HWND hwndSeed, hwndRandomize, hwndCol, hwndRow, hwndElem, hwndColor, hwndLoadingText, hwndNormal, hwndExpert, hwndColorblind;
+HWND hwndSeed, hwndRandomize, hwndCol, hwndRow, hwndElem, hwndColor, hwndLoadingText, hwndNormal, hwndExpert, hwndColorblind, hwndDoubleMode;
 std::shared_ptr<Panel> _panel;
 std::shared_ptr<Randomizer> randomizer = std::make_shared<Randomizer>();
 std::shared_ptr<Generate> generator = std::make_shared<Generate>();
@@ -209,7 +210,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 				else break;
 			}
 			
-			ShowWindow(hwndColorblind, SW_HIDE);
+			EnableWindow(hwndColorblind, false);
+			EnableWindow(hwndDoubleMode, false);
 			if (colorblind) {
 				std::ofstream out("WRPGconfig.txt");
 				out << "colorblind:true" << std::endl;
@@ -386,7 +388,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	RegisterClassW(&wndClass);
 
 	HWND hwnd = CreateWindow(WINDOW_CLASS, PRODUCT_NAME, WS_OVERLAPPEDWINDOW,
-      650, 200, 600, DEBUG ? 700 : 200, nullptr, nullptr, hInstance, nullptr);
+      650, 200, 600, DEBUG ? 700 : 320, nullptr, nullptr, hInstance, nullptr);
 
 	//Initialize memory globals constant depending on game version
 	Memory memory("witness64_d3d11.exe");
@@ -447,25 +449,31 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	if (hard) SendMessage(hwndExpert, BM_SETCHECK, BST_CHECKED, 1);
 	else SendMessage(hwndNormal, BM_SETCHECK, BST_CHECKED, 1);
 
+	CreateWindow(L"STATIC", L"Options:",
+		WS_TABSTOP | WS_VISIBLE | WS_CHILD | SS_LEFT,
+		10, 125, 120, 16, hwnd, NULL, hInstance, NULL);
+	hwndColorblind = CreateWindow(L"BUTTON", L"Colorblind Mode - The colors on certain panels will be changed to be more accommodating to people with colorblindness. The puzzles themselves are identical to those generated without colorblind mode enabled.",
+		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_CHECKBOX | BS_MULTILINE,
+		10, 145, 570, 50, hwnd, (HMENU)IDC_COLORBLIND, hInstance, NULL);
+	hwndDoubleMode = CreateWindow(L"BUTTON", L"Double Mode - In addition to generating new puzzles, the randomizer will also shuffle the location of most puzzles.",
+		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_CHECKBOX | BS_MULTILINE,
+		10, 200, 570, 35, hwnd, (HMENU)IDC_DOUBLE, hInstance, NULL);
+
 	CreateWindow(L"STATIC", L"Enter a seed (optional):",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | SS_LEFT,
-		10, 125, 160, 16, hwnd, NULL, hInstance, NULL);
+		10, 250, 160, 16, hwnd, NULL, hInstance, NULL);
 	hwndSeed = CreateWindow(MSFTEDIT_CLASS, lastSeed == 0 ? L"" : std::to_wstring(lastSeed).c_str(),
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER,
-        180, 120, 60, 26, hwnd, NULL, hInstance, NULL);
+        180, 245, 60, 26, hwnd, NULL, hInstance, NULL);
 	SendMessage(hwndSeed, EM_SETEVENTMASK, NULL, ENM_CHANGE); // Notify on text change
 
 	hwndRandomize = CreateWindow(L"BUTTON", L"Randomize",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-		250, 120, 130, 26, hwnd, (HMENU)IDC_RANDOMIZE, hInstance, NULL);
+		250, 245, 130, 26, hwnd, (HMENU)IDC_RANDOMIZE, hInstance, NULL);
 
 	hwndLoadingText = CreateWindow(L"STATIC", L"",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | SS_LEFT,
-		400, 125, 160, 16, hwnd, NULL, hInstance, NULL);
-
-	hwndColorblind = CreateWindow(L"BUTTON", L"Colorblind mode",
-		WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
-		400, 125, 130, 16, hwnd, (HMENU)IDC_COLORBLIND, hInstance, NULL);
+		400, 250, 160, 16, hwnd, NULL, hInstance, NULL);
 
 	std::ifstream configFile("WRPGconfig.txt");
 	if (configFile.is_open()) {
