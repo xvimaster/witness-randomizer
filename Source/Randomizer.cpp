@@ -17,7 +17,7 @@ void Randomizer::GenerateNormal(HWND loadingHandle) {
 	puzzles->setLoadingHandle(loadingHandle);
 	puzzles->setSeed(seed, seedIsRNG, colorblind);
 	puzzles->GenerateAllN();
-	if (doubleMode) ShufflePanels();
+	if (doubleMode) ShufflePanels(false);
 }
 
 void Randomizer::GenerateHard(HWND loadingHandle) {
@@ -25,7 +25,10 @@ void Randomizer::GenerateHard(HWND loadingHandle) {
 	puzzles->setLoadingHandle(loadingHandle);
 	puzzles->setSeed(seed, seedIsRNG, colorblind);
 	puzzles->GenerateAllH();
-	if (doubleMode) ShufflePanels();
+	if (doubleMode) ShufflePanels(true);
+	SetWindowText(loadingHandle, L"Starting watchdogs...");
+	Panel::StartArrowWatchdogs(_shuffleMapping);
+	SetWindowText(loadingHandle, L"Done!");
 	if (!Special::hasBeenRandomized())
 		MessageBox(GetActiveWindow(), L"Hi there! Thanks for trying out Expert Mode. It will be tough, but I hope you have fun!\r\n\r\n"
 		L"Expert has some unique tricks up its sleeve. You will encounter some situations that may seem impossible at first glance. "
@@ -100,7 +103,7 @@ void Randomizer::Randomize(std::vector<int>& panels, int flags) {
 }
 
 // Range is [start, end)
-void Randomizer::RandomizeRange(std::vector<int> &panels, int flags, size_t startIndex, size_t endIndex) {
+void Randomizer::RandomizeRange(std::vector<int> panels, int flags, size_t startIndex, size_t endIndex) {
 	if (panels.size() == 0) return;
 	if (startIndex >= endIndex) return;
 	if (endIndex >= panels.size()) endIndex = static_cast<int>(panels.size());
@@ -173,6 +176,7 @@ void Randomizer::SwapPanels(int panel1, int panel2, int flags) {
 		offsets[COLORED_REGIONS] = sizeof(void*);
 	}
 	if (flags & SWAP::LINES) {
+		offsets[TRACED_EDGES] = 16;
 		offsets[AUDIO_PREFIX] = sizeof(void*);
 		offsets[PATH_WIDTH_SCALE] = sizeof(float);
 		offsets[STARTPOINT_SCALE] = sizeof(float);
@@ -251,7 +255,7 @@ void Randomizer::ShuffleRange(std::vector<int>& order, size_t startIndex, size_t
 	}
 }
 
-void Randomizer::ShufflePanels() {
+void Randomizer::ShufflePanels(bool hard) {
 	_alreadySwapped.clear();
 
 	// General shuffles.
@@ -260,8 +264,10 @@ void Randomizer::ShufflePanels() {
 	Randomize(utmElevatorControls, SWAP::LINES | SWAP::COLORS);
 	Randomize(treehousePivotSet, SWAP::LINES | SWAP::COLORS);
 	Randomize(utmPerspectiveSet, SWAP::LINES | SWAP::COLORS);
-	Randomize(symmetryLaserYellows, SWAP::LINES | SWAP::COLORS);
-	Randomize(symmetryLaserBlues, SWAP::LINES | SWAP::COLORS);
+	if (!hard) {
+		Randomize(symmetryLaserYellows, SWAP::LINES | SWAP::COLORS);
+		Randomize(symmetryLaserBlues, SWAP::LINES | SWAP::COLORS);
+	}
 	Randomize(squarePanels, SWAP::LINES | SWAP::COLORS);
 	Randomize(desertPanelsWide, SWAP::LINES);
 	Randomize(mountainMultipanel, SWAP::LINES | SWAP::COLORS);

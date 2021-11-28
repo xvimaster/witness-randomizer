@@ -30,13 +30,13 @@ private:
 	void RandomizeDesert();
 
 	void Randomize(std::vector<int>& panels, int flags);
-	void RandomizeRange(std::vector<int> &panels, int flags, size_t startIndex, size_t endIndex);
+	void RandomizeRange(std::vector<int> panels, int flags, size_t startIndex, size_t endIndex);
 	void RandomizeAudiologs();
 	void SwapPanels(int panel1, int panel2, int flags);
 	void ReassignTargets(const std::vector<int>& panels, const std::vector<int>& order, std::vector<int> targets = {});
 	void SwapWithRandomPanel(int panel1, const std::vector<int>& possiblePanels, int flags);
 	void ShuffleRange(std::vector<int>& order, size_t startIndex, size_t endIndex);
-	void ShufflePanels();
+	void ShufflePanels(bool hard);
 
 	std::shared_ptr<Memory> _memory = std::make_shared<Memory>("witness64_d3d11.exe");
 	std::set<int> _alreadySwapped;

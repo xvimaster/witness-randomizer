@@ -1406,7 +1406,6 @@ void Special::createArrowPuzzle(int id, int x, int y, int dir, int ticks, const 
 		generator->set(p, p.first % 2 ? Decoration::Gap_Row : Decoration::Gap_Column);
 	}
 	generator->write(id);
-	(new ArrowWatchdog(id))->start();
 }
 
 void Special::createArrowSecretDoor(int id)
@@ -1423,7 +1422,6 @@ void Special::createArrowSecretDoor(int id)
 	generator->set(9, 5, Decoration::Arrow | (3 << 12) | (3 << 16));
 	generator->set(9, 9, Decoration::Arrow | (3 << 12) | (6 << 16));
 	generator->write(id);
-	(new ArrowWatchdog(id))->start();
 }
 
 void Special::generateCenterPerspective(int id, const std::vector<std::pair<int, int>>& symbolVec, int symbolType)

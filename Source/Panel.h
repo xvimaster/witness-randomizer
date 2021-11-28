@@ -2,6 +2,7 @@
 #include "Memory.h"
 #include "Randomizer.h"
 #include <stdint.h>
+#include <tuple>
 
 struct Point {
 	int first;
@@ -147,6 +148,8 @@ public:
 	void SetGridSymbol(int x, int y, Decoration::Shape symbol, Decoration::Color color);
 	void ClearGridSymbol(int x, int y);
 	void Resize(int width, int height);
+
+	static void StartArrowWatchdogs(const std::map<int, int>& shuffleMappings = {});
 
 	enum Style {
 		SYMMETRICAL = 0x2, //Not on the town symmetry puzzles? IDK why.
@@ -432,6 +435,7 @@ private:
 	int id;
 
 	static std::vector<Panel> generatedPanels;
+	static std::vector<std::tuple<int, int>> arrowPuzzles;
 
 	friend class PanelExtractionTests;
 	friend class Generate;
