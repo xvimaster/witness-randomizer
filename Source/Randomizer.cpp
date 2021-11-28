@@ -332,8 +332,6 @@ void Randomizer::ShufflePanels(bool hard) {
 	// Jungle.
 	std::vector<int> jungleRandomOrder(junglePanels.size(), 0);
 	std::iota(jungleRandomOrder.begin(), jungleRandomOrder.end(), 0);
-	// Waves 1 cannot be randomized, since no other panel can start on
-	ShuffleRange(jungleRandomOrder, 1, 7); // Waves 2-7
 	ShuffleRange(jungleRandomOrder, 8, 13); // Pitches 1-6
 	ReassignTargets(junglePanels, jungleRandomOrder);
 
