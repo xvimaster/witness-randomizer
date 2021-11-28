@@ -318,6 +318,11 @@ void Randomizer::ShufflePanels(bool hard) {
 	orchardRandomOrder[max(panel3Index, panel4Index)] = 4;
 	ReassignTargets(orchard, orchardRandomOrder);
 
+	// Don't power off Town Apple Tree on fail on Expert.
+	if (hard) {
+		_memory->WritePanelData<int>(0x28938, POWER_OFF_ON_FAIL, { 0 });
+	}
+
 	// Monastery.
 	std::vector<int> monasteryRandomOrder(monasteryPanels.size(), 0);
 	std::iota(monasteryRandomOrder.begin(), monasteryRandomOrder.end(), 0);
