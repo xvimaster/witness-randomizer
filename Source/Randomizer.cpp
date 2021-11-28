@@ -295,21 +295,6 @@ void Randomizer::ShufflePanels(bool hard) {
 	ShuffleRange(transparentRandomOrder, 1, 5);
 	ReassignTargets(transparent, transparentRandomOrder);
 
-	// Change the shadows tutorial cable to only activate avoid
-	_memory->WritePanelData<int>(0x319A8, CABLE_TARGET_2, { 0 });
-	// Change shadows avoid 8 to power shadows follow
-	_memory->WritePanelData<int>(0x1972F, TARGET, { 0x1C34C });
-	std::vector<int> shadowsRandomOrder(shadowsPanels.size(), 0);
-	std::iota(shadowsRandomOrder.begin(), shadowsRandomOrder.end(), 0);
-	ShuffleRange(shadowsRandomOrder, 0, 8); // Tutorial
-	ShuffleRange(shadowsRandomOrder, 8, 16); // Avoid
-	ShuffleRange(shadowsRandomOrder, 16, 21); // Follow
-	ReassignTargets(shadowsPanels, shadowsRandomOrder);
-	// Turn off original starting panel
-	_memory->WritePanelData<float>(shadowsPanels[0], POWER, { 0.0f, 0.0f });
-	// Turn on new starting panel
-	_memory->WritePanelData<float>(shadowsPanels[shadowsRandomOrder[0]], POWER, { 1.0f, 1.0f });
-
 	// Orchard.
 	std::vector<int> orchardRandomOrder(orchard.size() + 1, 0);
 	std::iota(orchardRandomOrder.begin(), orchardRandomOrder.end(), 0);
@@ -370,9 +355,4 @@ void Randomizer::ShufflePanels(bool hard) {
 	// Turn on new starting panels
 	_memory->WritePanelData<float>(pillars[pillarRandomOrder[0]], POWER, { 1.0f, 1.0f });
 	_memory->WritePanelData<float>(pillars[pillarRandomOrder[5]], POWER, { 1.0f, 1.0f });
-
-	// Distance-gate swamp snipe 1 to prevent RNG swamp snipe
-	_memory->WritePanelData<float>(0x17C05, MAX_BROADCAST_DISTANCE, { 15.0 });
-	// Distance-gate shadows laser to prevent sniping through the bars
-	_memory->WritePanelData<float>(0x19650, MAX_BROADCAST_DISTANCE, { 2.5 });
 }
