@@ -12,6 +12,17 @@
 #include "Random.h"
 #include "Quaternion.h"
 
+std::vector<int> copyWithoutElements(const std::vector<int>& input, const std::vector<int>& toRemove) {
+	std::vector<int> result;
+	result.reserve(input.size());
+	for (int val : input) {
+		if (std::find(toRemove.begin(), toRemove.end(), val) == toRemove.end()) {
+			result.push_back(val);
+		}
+	}
+	return result;
+}
+
 void Randomizer::GenerateNormal(HWND loadingHandle) {
 	std::shared_ptr<PuzzleList> puzzles = std::make_shared<PuzzleList>();
 	puzzles->setLoadingHandle(loadingHandle);
@@ -267,8 +278,11 @@ void Randomizer::ShufflePanels(bool hard) {
 	if (!hard) {
 		Randomize(symmetryLaserYellows, SWAP::LINES | SWAP::COLORS);
 		Randomize(symmetryLaserBlues, SWAP::LINES | SWAP::COLORS);
+		Randomize(squarePanels, SWAP::LINES | SWAP::COLORS);
+	} else {
+		std::vector<int> panelsToRandom = copyWithoutElements(squarePanels, squarePanelsExpertBanned);
+		Randomize(panelsToRandom, SWAP::LINES | SWAP::COLORS);
 	}
-	Randomize(squarePanels, SWAP::LINES | SWAP::COLORS);
 	Randomize(desertPanelsWide, SWAP::LINES);
 	Randomize(mountainMultipanel, SWAP::LINES | SWAP::COLORS);
 

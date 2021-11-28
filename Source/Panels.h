@@ -449,6 +449,13 @@ std::vector<int> squarePanels = {
     0x09E85, // Tunnels Town Shortcut
 };
 
+std::vector<int> squarePanelsExpertBanned = {
+    0x09E7A, // Mountain 1 Green 1
+    0x09E71, // Mountain 1 Green 2
+    0x09E72, // Mountain 1 Green 3
+    0x09E69, // Mountain 1 Green 4
+    0x09E7B, // Mountain 1 Green 5
+};
 
 std::vector<int> desertPanels = {
 	0x00698, // Desert Surface 1
