@@ -89,6 +89,7 @@ Decoration::Color color;
 int currentShape;
 int currentDir;
 bool hard = false;
+bool doubleMode = false;
 int lastSeed;
 bool lastHard;
 bool colorblind;
@@ -135,6 +136,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDC_COLORBLIND:
 			colorblind = !IsDlgButtonChecked(hwnd, IDC_COLORBLIND);
 			CheckDlgButton(hwnd, IDC_COLORBLIND, colorblind);
+			break;
+		case IDC_DOUBLE:
+			doubleMode = !IsDlgButtonChecked(hwnd, IDC_DOUBLE);
+			CheckDlgButton(hwnd, IDC_DOUBLE, doubleMode);
 			break;
 
 		//Randomize button
@@ -200,6 +205,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 						break;
 					}
 				}
+				bool lastDouble = (Special::ReadPanelData<int>(0x0A3B2, BACKGROUND_REGION_COLOR + 12) > 0);
+				if (lastDouble && !doubleMode) {
+					if (MessageBox(hwnd, L"This save file was previously randomized on Double Mode. Are you sure you want to disable it?", NULL, MB_YESNO) == IDNO) {
+						SendMessage(hwndDoubleMode, BM_SETCHECK, BST_CHECKED, 1);
+						doubleMode = true;
+						break;
+					}
+				}
+				if (!lastDouble && doubleMode) {
+					if (MessageBox(hwnd, L"This save file was not previously randomized on Double Mode. Are you sure you want to enable it?", NULL, MB_YESNO) == IDNO) {
+						SendMessage(hwndDoubleMode, BM_SETCHECK, BST_UNCHECKED, 1);
+						doubleMode = false;
+						break;
+					}
+				}
 			}
 
 			//If the save hasn't been randomized before, make sure it is a fresh, unplayed save file
@@ -227,6 +247,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			else randomizer->GenerateNormal(hwndLoadingText);
 			Special::WritePanelData(0x00064, BACKGROUND_REGION_COLOR + 12, seed);
 			Special::WritePanelData(0x00182, BACKGROUND_REGION_COLOR + 12, hard);
+			Special::WritePanelData(0x0A3B2, BACKGROUND_REGION_COLOR + 12, doubleMode);
 			SetWindowText(hwndRandomize, L"Randomized!");
 			SetWindowText(hwndSeed, std::to_wstring(seed).c_str());
 
@@ -430,6 +451,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	//Get the seed and difficulty previously used for this save file (if applicable)
 	int lastSeed = Special::ReadPanelData<int>(0x00064, BACKGROUND_REGION_COLOR + 12);
 	hard = (Special::ReadPanelData<int>(0x00182, BACKGROUND_REGION_COLOR + 12) > 0);
+	doubleMode = (Special::ReadPanelData<int>(0x0A3B2, BACKGROUND_REGION_COLOR + 12) > 0);
 
 	//-------------------------Basic window controls---------------------------
 
@@ -458,6 +480,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	hwndDoubleMode = CreateWindow(L"BUTTON", L"Double Mode - In addition to generating new puzzles, the randomizer will also shuffle the location of most puzzles.",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_CHECKBOX | BS_MULTILINE,
 		10, 200, 570, 35, hwnd, (HMENU)IDC_DOUBLE, hInstance, NULL);
+	if (doubleMode) SendMessage(hwndDoubleMode, BM_SETCHECK, BST_CHECKED, 1);
 
 	CreateWindow(L"STATIC", L"Enter a seed (optional):",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | SS_LEFT,
