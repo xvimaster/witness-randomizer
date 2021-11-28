@@ -270,7 +270,6 @@ void Randomizer::ShufflePanels(bool hard) {
 	_alreadySwapped.clear();
 
 	// General shuffles.
-	SwapWithRandomPanel(0x17CC4, millElevatorControlOptions, SWAP::LINES | SWAP::COLORS); // Mill Elevator Control
 	if (hard) {
 		SwapWithRandomPanel(0x0A3B5, tutorialBackLeftExpertOptions, SWAP::LINES | SWAP::COLORS); // Tutorial Back Left
 	} else {
