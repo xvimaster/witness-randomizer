@@ -243,6 +243,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			SetWindowText(hwndRandomize, L"Randomizing...");
 			randomizer->seed = seed;
 			randomizer->colorblind = IsDlgButtonChecked(hwnd, IDC_COLORBLIND);
+			randomizer->doubleMode = doubleMode;
 			if (hard) randomizer->GenerateHard(hwndLoadingText);
 			else randomizer->GenerateNormal(hwndLoadingText);
 			Special::WritePanelData(0x00064, BACKGROUND_REGION_COLOR + 12, seed);

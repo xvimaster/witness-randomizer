@@ -17,6 +17,7 @@ void Randomizer::GenerateNormal(HWND loadingHandle) {
 	puzzles->setLoadingHandle(loadingHandle);
 	puzzles->setSeed(seed, seedIsRNG, colorblind);
 	puzzles->GenerateAllN();
+	if (doubleMode) ShufflePanels();
 }
 
 void Randomizer::GenerateHard(HWND loadingHandle) {
@@ -24,6 +25,7 @@ void Randomizer::GenerateHard(HWND loadingHandle) {
 	puzzles->setLoadingHandle(loadingHandle);
 	puzzles->setSeed(seed, seedIsRNG, colorblind);
 	puzzles->GenerateAllH();
+	if (doubleMode) ShufflePanels();
 	if (!Special::hasBeenRandomized())
 		MessageBox(GetActiveWindow(), L"Hi there! Thanks for trying out Expert Mode. It will be tough, but I hope you have fun!\r\n\r\n"
 		L"Expert has some unique tricks up its sleeve. You will encounter some situations that may seem impossible at first glance. "
@@ -129,6 +131,14 @@ void Randomizer::RandomizeAudiologs()
 }
 
 void Randomizer::SwapPanels(int panel1, int panel2, int flags) {
+	if (!_shuffleMapping.count(panel1)) {
+		_shuffleMapping[panel1] = panel1;
+	}
+	if (!_shuffleMapping.count(panel2)) {
+		_shuffleMapping[panel2] = panel2;
+	}
+	std::swap(_shuffleMapping[panel1], _shuffleMapping[panel2]);
+
 	std::map<int, int> offsets;
 
 	if (flags & SWAP::TARGETS) {
@@ -198,4 +208,143 @@ void Randomizer::SwapPanels(int panel1, int panel2, int flags) {
 	}
 	_memory->WritePanelData<int>(panel1, NEEDS_REDRAW, { 1 });
 	_memory->WritePanelData<int>(panel2, NEEDS_REDRAW, { 1 });
+}
+
+void Randomizer::ReassignTargets(const std::vector<int>& panels, const std::vector<int>& order, std::vector<int> targets) {
+	if (targets.empty()) {
+		// This list is offset by 1, so the target of the Nth panel is in position N (aka the N+1th element)
+		// The first panel may not have a wire to power it, so we use the panel ID itself.
+		targets = { panels[0] + 1 };
+		for (const int panel : panels) {
+			int target = _memory->ReadPanelData<int>(panel, TARGET, 1)[0];
+			targets.push_back(target);
+		}
+	}
+
+	for (size_t i = 0; i < order.size() - 1; i++) {
+		// Set the target of order[i] to order[i+1], using the "real" target as determined above.
+		const int panelTarget = targets[order[i + 1]];
+		_memory->WritePanelData<int>(panels[order[i]], TARGET, { panelTarget });
+	}
+}
+
+void Randomizer::SwapWithRandomPanel(int panel1, const std::vector<int>& possiblePanels, int flags) {
+	int toSwap = -1;
+	do {
+		const int target = Random::rand() % static_cast<int>(possiblePanels.size());
+		toSwap = possiblePanels[target];
+	} while (_alreadySwapped.count(toSwap));
+	if (panel1 != toSwap) {
+		SwapPanels(panel1, toSwap, flags);
+	}
+	_alreadySwapped.insert(toSwap);
+}
+
+// Range is [start, end)
+void Randomizer::ShuffleRange(std::vector<int>& order, size_t startIndex, size_t endIndex) {
+	if (order.size() == 0) return;
+	if (startIndex >= endIndex) return;
+	if (endIndex >= order.size()) endIndex = static_cast<int>(order.size());
+	for (size_t i = endIndex - 1; i > startIndex; i--) {
+		const int target = (Random::rand() % (static_cast<int>(i) - static_cast<int>(startIndex) + 1)) + static_cast<int>(startIndex); 
+		std::swap(order[i], order[target]);
+	}
+}
+
+void Randomizer::ShufflePanels() {
+	_alreadySwapped.clear();
+
+	// General shuffles.
+	SwapWithRandomPanel(0x17CC4, millElevatorControlOptions, SWAP::LINES | SWAP::COLORS); // Mill Elevator Control
+	SwapWithRandomPanel(0x0A3B5, tutorialBackLeftOptions, SWAP::LINES | SWAP::COLORS); // Tutorial Back Left
+	Randomize(utmElevatorControls, SWAP::LINES | SWAP::COLORS);
+	Randomize(treehousePivotSet, SWAP::LINES | SWAP::COLORS);
+	Randomize(utmPerspectiveSet, SWAP::LINES | SWAP::COLORS);
+	Randomize(symmetryLaserYellows, SWAP::LINES | SWAP::COLORS);
+	Randomize(symmetryLaserBlues, SWAP::LINES | SWAP::COLORS);
+	Randomize(squarePanels, SWAP::LINES | SWAP::COLORS);
+	Randomize(desertPanelsWide, SWAP::LINES);
+	Randomize(mountainMultipanel, SWAP::LINES | SWAP::COLORS);
+
+	// Symmetry transparent.
+	std::vector<int> transparentRandomOrder(transparent.size(), 0);
+	std::iota(transparentRandomOrder.begin(), transparentRandomOrder.end(), 0);
+	ShuffleRange(transparentRandomOrder, 1, 5);
+	ReassignTargets(transparent, transparentRandomOrder);
+
+	// Change the shadows tutorial cable to only activate avoid
+	_memory->WritePanelData<int>(0x319A8, CABLE_TARGET_2, { 0 });
+	// Change shadows avoid 8 to power shadows follow
+	_memory->WritePanelData<int>(0x1972F, TARGET, { 0x1C34C });
+	std::vector<int> shadowsRandomOrder(shadowsPanels.size(), 0);
+	std::iota(shadowsRandomOrder.begin(), shadowsRandomOrder.end(), 0);
+	ShuffleRange(shadowsRandomOrder, 0, 8); // Tutorial
+	ShuffleRange(shadowsRandomOrder, 8, 16); // Avoid
+	ShuffleRange(shadowsRandomOrder, 16, 21); // Follow
+	ReassignTargets(shadowsPanels, shadowsRandomOrder);
+	// Turn off original starting panel
+	_memory->WritePanelData<float>(shadowsPanels[0], POWER, { 0.0f, 0.0f });
+	// Turn on new starting panel
+	_memory->WritePanelData<float>(shadowsPanels[shadowsRandomOrder[0]], POWER, { 1.0f, 1.0f });
+
+	// Orchard.
+	std::vector<int> orchardRandomOrder(orchard.size() + 1, 0);
+	std::iota(orchardRandomOrder.begin(), orchardRandomOrder.end(), 0);
+	ShuffleRange(orchardRandomOrder, 1, 5);
+	// Ensure that we open the gate before the final puzzle (by swapping)
+	int panel3Index = find(orchardRandomOrder, 3);
+	int panel4Index = find(orchardRandomOrder, 4);
+	orchardRandomOrder[min(panel3Index, panel4Index)] = 3;
+	orchardRandomOrder[max(panel3Index, panel4Index)] = 4;
+	ReassignTargets(orchard, orchardRandomOrder);
+
+	// Monastery.
+	std::vector<int> monasteryRandomOrder(monasteryPanels.size(), 0);
+	std::iota(monasteryRandomOrder.begin(), monasteryRandomOrder.end(), 0);
+	ShuffleRange(monasteryRandomOrder, 3, 9); // Outer 2 & 3, Inner 1-4
+	ReassignTargets(monasteryPanels, monasteryRandomOrder);
+
+	// Bunker.
+	std::vector<int> bunkerRandomOrder(bunkerPanels.size(), 0);
+	std::iota(bunkerRandomOrder.begin(), bunkerRandomOrder.end(), 0);
+	// Randomize Tutorial 2-Advanced Tutorial 4 + Glass 1
+	// Tutorial 1 cannot be randomized, since no other panel can start on
+	// Glass 1 will become door + glass 1, due to the targetting system
+	ShuffleRange(bunkerRandomOrder, 1, 10);
+	// Randomize Glass 1-3 into everything after the door/glass 1
+	const size_t glass1Index = find(bunkerRandomOrder, 9);
+	ShuffleRange(bunkerRandomOrder, glass1Index + 1, 12);
+	ReassignTargets(bunkerPanels, bunkerRandomOrder);
+
+	// Jungle.
+	std::vector<int> jungleRandomOrder(junglePanels.size(), 0);
+	std::iota(jungleRandomOrder.begin(), jungleRandomOrder.end(), 0);
+	// Waves 1 cannot be randomized, since no other panel can start on
+	ShuffleRange(jungleRandomOrder, 1, 7); // Waves 2-7
+	ShuffleRange(jungleRandomOrder, 8, 13); // Pitches 1-6
+	ReassignTargets(junglePanels, jungleRandomOrder);
+
+	// Randomize final pillars order
+	std::vector<int> pillarTargets = { pillars[0] + 1 };
+	for (const int pillar : pillars) {
+		int target = _memory->ReadPanelData<int>(pillar, TARGET, 1)[0];
+		pillarTargets.push_back(target);
+	}
+	pillarTargets[5] = pillars[5] + 1;
+	std::vector<int> pillarRandomOrder(pillars.size(), 0);
+	std::iota(pillarRandomOrder.begin(), pillarRandomOrder.end(), 0);
+	ShuffleRange(pillarRandomOrder, 0, 4); // Left Pillars 1-4
+	ShuffleRange(pillarRandomOrder, 5, 9); // Right Pillars 1-4
+	ReassignTargets(pillars, pillarRandomOrder, pillarTargets);
+	// Turn off original starting panels
+	_memory->WritePanelData<float>(pillars[0], POWER, { 0.0f, 0.0f });
+	_memory->WritePanelData<float>(pillars[5], POWER, { 0.0f, 0.0f });
+	// Turn on new starting panels
+	_memory->WritePanelData<float>(pillars[pillarRandomOrder[0]], POWER, { 1.0f, 1.0f });
+	_memory->WritePanelData<float>(pillars[pillarRandomOrder[5]], POWER, { 1.0f, 1.0f });
+
+	// Distance-gate swamp snipe 1 to prevent RNG swamp snipe
+	_memory->WritePanelData<float>(0x17C05, MAX_BROADCAST_DISTANCE, { 15.0 });
+	// Distance-gate shadows laser to prevent sniping through the bars
+	_memory->WritePanelData<float>(0x19650, MAX_BROADCAST_DISTANCE, { 2.5 });
 }
