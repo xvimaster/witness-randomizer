@@ -284,7 +284,11 @@ void Randomizer::ShufflePanels(bool hard) {
 		Randomize(squarePanels, SWAP::LINES | SWAP::COLORS);
 	} else {
 		std::vector<int> panelsToRandom = copyWithoutElements(squarePanels, squarePanelsExpertBanned);
-		Randomize(panelsToRandom, SWAP::LINES | SWAP::COLORS);
+		std::vector<int> firstPass = copyWithoutElements(panelsToRandom, arrowPanels);
+		std::vector<int> secondPass = copyWithoutElements(panelsToRandom, glassPanels);
+
+		Randomize(firstPass, SWAP::LINES | SWAP::COLORS);
+		Randomize(secondPass, SWAP::LINES | SWAP::COLORS);
 	}
 	Randomize(desertPanelsWide, SWAP::LINES);
 	Randomize(mountainMultipanel, SWAP::LINES | SWAP::COLORS);

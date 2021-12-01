@@ -670,6 +670,103 @@ std::vector<int> squarePanels = {
     0x09E85, // Tunnels Town Shortcut
 };
 
+std::vector<int> arrowPanels = {
+    0x17CFB, // Outside Tutorial Discard
+    0x3C12B, // Glass Factory Discard
+    0x17CE7, // Desert Discard
+    0x17CF0, // Mill Discard
+    0x17FA9, // Treehouse Green Bridge Discard
+    0x17FA0, // Treehouse Laser Discard
+    0x17D27, // Keep Discard
+    0x17D28, // Shipwreck Discard
+    0x17D01, // Town Orange Crate Discard
+    0x17C71, // Town Rooftop Discard
+    0x17CF7, // Theater Discard
+    0x17F9B, // Jungle Discard
+    0x17F93, // Mountain 2 Discard
+    0x17FA2, // Mountain 3 Secret Door
+    0x17C42, // Mountainside Discard
+    0x00FF8, // UTM Entrance Door
+    0x0A16B, // UTM Green Dots 1
+    0x0A2CE, // UTM Green Dots 2
+    0x0A2D7, // UTM Green Dots 3
+    0x0A2DD, // UTM Green Dots 4
+    0x0A2EA, // UTM Green Dots 5
+    0x17FB9, // UTM Green Dots 6
+    0x0008F, // UTM Invisible Dots 1
+    0x0006B, // UTM Invisible Dots 2
+    0x0008B, // UTM Invisible Dots 3
+    0x0008C, // UTM Invisible Dots 4
+    0x0008A, // UTM Invisible Dots 5
+    0x00089, // UTM Invisible Dots 6
+    0x0006A, // UTM Invisible Dots 7
+    0x0006C, // UTM Invisible Dots 8
+    0x00027, // UTM Invisible Dots Symmetry 1
+    0x00028, // UTM Invisible Dots Symmetry 2
+    0x00029, // UTM Invisible Dots Symmetry 3
+    0x021D7, // UTM Mountainside Shortcut
+    0x00B71, // UTM Quarry
+    0x01A31, // UTM Rainbow
+    0x32962, // UTM Swamp
+    0x32966, // UTM Treehouse
+    0x17CF2, // UTM Waterfall Shortcut
+    0x00A72, // UTM Blue Cave In
+    0x009A4, // UTM Blue Discontinuous
+    0x018A0, // UTM Blue Easy Symmetry
+    0x01A0D, // UTM Blue Hard Symmetry
+    0x008B8, // UTM Blue Left 1
+    0x00973, // UTM Blue Left 2
+    0x0097B, // UTM Blue Left 3
+    0x0097D, // UTM Blue Left 4
+    0x0097E, // UTM Blue Left 5
+    0x00994, // UTM Blue Right Far 1
+    0x334D5, // UTM Blue Right Far 2
+    0x00995, // UTM Blue Right Far 3
+    0x00996, // UTM Blue Right Far 4
+    0x00998, // UTM Blue Right Far 5
+    0x00190, // UTM Blue Right Near 1
+    0x00558, // UTM Blue Right Near 2
+    0x00567, // UTM Blue Right Near 3
+    0x006FE, // UTM Blue Right Near 4
+    0x0A16E, // UTM Challenge Entrance
+    0x039B4, // Tunnels Theater Catwalk
+    0x09E85, // Tunnels Town Shortcut
+};
+
+std::vector<int> glassPanels = {
+    0x01A54, // Glass Factory Entry
+    0x00086, // Glass Factory Vertical Symmetry 1
+    0x00087, // Glass Factory Vertical Symmetry 2
+    0x00059, // Glass Factory Vertical Symmetry 3
+    0x00062, // Glass Factory Vertical Symmetry 4
+    0x0008D, // Glass Factory Rotational Symmetry 1
+    0x00081, // Glass Factory Rotational Symmetry 2
+    0x00083, // Glass Factory Rotational Symmetry 3
+    0x00084, // Glass Factory Melting 1
+    0x00082, // Glass Factory Melting 2
+    0x0343A, // Glass Factory Melting 3
+    0x000B0, // Symmetry Island Door 1
+    0x00022, // Symmetry Island Black Dots 1
+    0x00023, // Symmetry Island Black Dots 2
+    0x00024, // Symmetry Island Black Dots 3
+    0x00025, // Symmetry Island Black Dots 4
+    0x00026, // Symmetry Island Black Dots 5
+    0x0007C, // Symmetry Island Colored Dots 1
+    0x0007E, // Symmetry Island Colored Dots 2
+    0x00075, // Symmetry Island Colored Dots 3
+    0x00073, // Symmetry Island Colored Dots 4
+    0x00077, // Symmetry Island Colored Dots 5
+    0x00079, // Symmetry Island Colored Dots 6
+    0x00065, // Symmetry Island Fading Lines 1
+    0x0006D, // Symmetry Island Fading Lines 2
+    0x00072, // Symmetry Island Fading Lines 3
+    0x0006F, // Symmetry Island Fading Lines 4
+    0x00070, // Symmetry Island Fading Lines 5
+    0x00071, // Symmetry Island Fading Lines 6
+    0x00076, // Symmetry Island Fading Lines 7
+    0x28998, // Town Green Door
+};
+
 std::vector<int> squarePanelsExpertBanned = {
     0x09E7A, // Mountain 1 Green 1
     0x09E71, // Mountain 1 Green 2
