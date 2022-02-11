@@ -12,6 +12,7 @@
 
 int Point::pillarWidth = 0;
 std::vector<Panel> Panel::generatedPanels;
+std::vector<std::tuple<int, int>> Panel::arrowPuzzles;
 
 template <class T>
 int find(const std::vector<T> &data, T search, size_t startIndex = 0) {
@@ -331,8 +332,20 @@ void Panel::WriteDecorations() {
 		_memory->WriteArray<int>(id, DECORATION_FLAGS, decorations);
 	}
 	if (arrows) {
-		ArrowWatchdog* watchdog = new ArrowWatchdog(id, Point::pillarWidth);
-		watchdog->style = _style;
+		arrowPuzzles.emplace_back(id, Point::pillarWidth);
+	}
+}
+
+void Panel::StartArrowWatchdogs(const std::map<int, int>& shuffleMappings) {
+	std::map<int, int> invertedMappings;
+	for (const auto& [from, to] : shuffleMappings) {
+		invertedMappings[to] = from;
+	}
+	for (const auto& [id, pillarWidth] : arrowPuzzles) {
+		int realId = id;
+		if (invertedMappings.count(realId)) realId = invertedMappings.at(realId);
+
+		ArrowWatchdog* watchdog = new ArrowWatchdog(realId, pillarWidth);
 		watchdog->start();
 	}
 }
