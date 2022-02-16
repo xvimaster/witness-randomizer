@@ -144,16 +144,15 @@ void PuzzleList::GenerateSymmetryN()
 	generator->removeFlagOnce(Generate::Config::StartEdgeOnly);
 	generator->generateMaze(0x00059, 1, 0);
 	generator->generateMaze(0x00062);
-	generator->generateMaze(0x0005C);
+	specialCase->generateSpecialSymMaze(generator, 0x0005C);
 	//Rotational Symmetry Mazes
 	generator->setSymmetry(Panel::Symmetry::Rotational);
 	generator->setGridSize(5, 5);
 	generator->generateMaze(0x0008D, 0, 1);
 	generator->generateMaze(0x00081, 1, 1);
+	generator->removeFlagOnce(Generate::Config::StartEdgeOnly);
+	generator->generateMaze(0x00083, 1, 1);
 	generator->setGridSize(6, 6);
-	generator->generateMaze(0x00083);
-	generator->setGridSize(7, 7);
-	generator->pathWidth = 0.8f;
 	generator->generateMaze(0x00084);
 	generator->generateMaze(0x00082);
 	generator->generateMaze(0x0343A);
@@ -472,7 +471,9 @@ void PuzzleList::GenerateTreehouseN()
 	generator->generate(0x17DC7, Decoration::Star | Decoration::Color::Magenta, 6, Decoration::Dot_Intersection, 6, Decoration::Gap, 3);
 	generator->generate(0x17CE4, Decoration::Star | Decoration::Color::Magenta, 6, Decoration::Dot_Intersection, 6, Decoration::Gap, 3);
 	generator->setGridSize(5, 5);
+	generator->pathWidth = 0.8f;
 	generator->generate(0x17D2D, Decoration::Star | Decoration::Color::Magenta, 6, Decoration::Dot_Intersection, 9, Decoration::Gap, 8);
+	generator->pathWidth = 1;
 	generator->generate(0x17D6C, Decoration::Star | Decoration::Color::Magenta, 8, Decoration::Dot_Intersection, 9, Decoration::Gap, 5);
 	generator->removeFlag(Generate::Config::FullGaps);
 	//Pink Bridge 2
@@ -1331,7 +1332,7 @@ void PuzzleList::GenerateQuarryH()
 	//All together
 	generator->removeFlag(Generate::Config::WriteColors);
 	generator->setFlag(Generate::Config::ResetColors);
-	generator->setGridSize(7, 3);
+	generator->setGridSize(6, 3);
 	generator->pathWidth = 0.6f;
 	generator->generate(0x0A3CB, Decoration::Star | Decoration::Color::Orange, 4, Decoration::Poly | Decoration::Color::Orange, 2,
 		Decoration::Poly | Decoration::Negative | Decoration::Color::Magenta, 2, Decoration::Eraser | Decoration::White, 2);
