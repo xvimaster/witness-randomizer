@@ -34,21 +34,21 @@ void PuzzleList::GenerateAllH()
 {
 	generator->setLoadingData(349);
 	CopyTargets();
-	//GenerateTutorialH();
-	//GenerateSymmetryH();
-	//GenerateQuarryH();
+	GenerateTutorialH();
+	GenerateSymmetryH();
+	GenerateQuarryH();
 	//GenerateBunkerH(); //Can't randomize because panels refuse to render the symbols
-	//GenerateSwampH();
-	//GenerateTreehouseH();
-	//GenerateTownH();
-	//GenerateVaultsH();
-	//GenerateTrianglePanelsH();
-	//GenerateOrchardH();
-	//GenerateDesertH();
-	//GenerateKeepH();
-	//GenerateJungleH();
+	GenerateSwampH();
+	GenerateTreehouseH();
+	GenerateTownH();
+	GenerateVaultsH();
+	GenerateTrianglePanelsH();
+	GenerateOrchardH();
+	GenerateDesertH();
+	GenerateKeepH();
+	GenerateJungleH();
 	GenerateMountainH();
-	//GenerateCavesH();
+	GenerateCavesH();
 	SetWindowText(_handle, L"Done!");
 	//GenerateShadowsH(); //Can't randomize
 	//GenerateMonasteryH(); //Can't randomize
