@@ -2017,7 +2017,7 @@ void PuzzleList::GenerateVaultsH()
 	generator->setSymbol(Decoration::Exit, 16, 0);
 	generator->setSymbol(Decoration::Exit, 0, 16);
 	generator->setSymbol(Decoration::Exit, 16, 16);
-	generator->generate(0x033D4, Decoration::Stone | Decoration::Color::Purple, 8, Decoration::Stone | Decoration::Color::White, 8, Decoration::Stone | Decoration::Color::Black, 8, Decoration::Dot_Intersection, 81, Decoration::Start, 8);
+	generator->generate(0x033D4, Decoration::Stone | Decoration::Color::Purple, 6, Decoration::Stone | Decoration::Color::White, 6, Decoration::Stone | Decoration::Color::Black, 6, Decoration::Dot_Intersection, 81, Decoration::Start, 8);
 	//Desert Vault
 	generator->resetConfig();
 	generator->generate(0x0CC7B, { { Decoration::Dot_Intersection, 49 },{ Decoration::Poly | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
