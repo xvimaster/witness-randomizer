@@ -1318,8 +1318,8 @@ void PuzzleList::GenerateQuarryH()
 	generator->setGridSize(6, 6);
 	generator->pathWidth = 0.8f;
 	generator->generate(0x3C12D, {
-		{Decoration::Stone | Decoration::Color::White, 3},
-		{Decoration::Stone | Decoration::Color::Black, 3},
+		{Decoration::Stone | Decoration::Color::White, 4},
+		{Decoration::Stone | Decoration::Color::Black, 4},
 		{Decoration::Star | Decoration::Color::White, 3},
 		{Decoration::Star | Decoration::Color::Black, 3},
 		{Decoration::Star | Decoration::Color::Red, 3},
@@ -1328,10 +1328,10 @@ void PuzzleList::GenerateQuarryH()
 		{Decoration::Triangle | Decoration::Color::Green, 4},
 		{Decoration::Eraser | Decoration::Color::Green, 2} });
 	generator->generate(0x03686, {
-		{Decoration::Stone | Decoration::Color::White, 3},
-		{Decoration::Stone | Decoration::Color::Black, 3},
-		{Decoration::Star | Decoration::Color::White, 4},
-		{Decoration::Star | Decoration::Color::Black, 4},
+		{Decoration::Stone | Decoration::Color::White, 4},
+		{Decoration::Stone | Decoration::Color::Black, 4},
+		{Decoration::Star | Decoration::Color::White, 3},
+		{Decoration::Star | Decoration::Color::Black, 3},
 		{Decoration::Star | Decoration::Color::Red, 3},
 		{Decoration::Star | Decoration::Color::Green, 3},
 		{Decoration::Triangle | Decoration::Color::Red, 4},
@@ -1340,17 +1340,17 @@ void PuzzleList::GenerateQuarryH()
 	generator->setGridSize(7, 7);
 	generator->pathWidth = 0.6f;
 	generator->generate(0x014E9, {
-		{Decoration::Stone | Decoration::Color::White, 3},
-		{Decoration::Stone | Decoration::Color::Black, 3},
-		{Decoration::Stone | Decoration::Color::Cyan, 3},
-		{Decoration::Star | Decoration::Color::White, 2},
-		{Decoration::Star | Decoration::Color::Black, 2},
-		{Decoration::Star | Decoration::Color::Red, 2},
-		{Decoration::Star | Decoration::Color::Green, 2},
-		{Decoration::Star | Decoration::Color::Cyan, 2},
-		{Decoration::Triangle | Decoration::Color::Red, 3},
-		{Decoration::Triangle | Decoration::Color::Green, 3},
-		{Decoration::Triangle | Decoration::Color::Cyan, 3},
+		{Decoration::Stone | Decoration::Color::White, 4},
+		{Decoration::Stone | Decoration::Color::Black, 4},
+		{Decoration::Stone | Decoration::Color::Cyan, 4},
+		{Decoration::Star | Decoration::Color::White, 3},
+		{Decoration::Star | Decoration::Color::Black, 3},
+		{Decoration::Star | Decoration::Color::Red, 3},
+		{Decoration::Star | Decoration::Color::Green, 3},
+		{Decoration::Star | Decoration::Color::Cyan, 3},
+		{Decoration::Triangle | Decoration::Color::Red, 4},
+		{Decoration::Triangle | Decoration::Color::Green, 4},
+		{Decoration::Triangle | Decoration::Color::Cyan, 4},
 		{Decoration::Eraser | Decoration::Color::Green, 2} });
 	//Stones + Stars + Triangles
 	generator->setGridSize(8, 8);
@@ -1844,13 +1844,10 @@ void PuzzleList::GenerateTreehouseH()
 		Decoration::Stone | Decoration::Color::Black, 2, Decoration::Star | Decoration::Color::Black, 3,
 		Decoration::Stone | Decoration::Color::White, 1, Decoration::Star | Decoration::Color::White, 2, Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Black, 3, Decoration::Eraser | Decoration::Color::White, 1);
 	generator->resetConfig();
-	generator->setFlag(Generate::Config::AlternateColors);
-	generator->pathWidth = 0.8f;
-	generator->setObstructions({ { { 1, 2 },{ 1, 4 },{ 9, 2 },{ 9, 4 },{ 2, 1 },{ 4, 1 },{ 6, 1 },{ 8, 1 } },
-	{ { 1, 2 },{ 1, 4 },{ 1, 6 },{ 0, 7 },{ 9, 2 },{ 9, 4 },{ 9, 6 },{ 10, 7 },{ 4, 1 },{ 6, 1 },{ 8, 1 } },
-	{ { 1, 2 },{ 1, 4 },{ 1, 6 },{ 0, 7 },{ 9, 2 },{ 9, 4 },{ 9, 6 },{ 10, 7 },{ 2, 1 },{ 4, 1 },{ 6, 1 } } });
-	generator->generate(0x17DD1, Decoration::Poly | Decoration::Color::Green, 3, Decoration::Poly | Decoration::Color::Black, 1, Decoration::Poly | Decoration::Negative | Decoration::Color::White, 1,
-		Decoration::Star | Decoration::Color::White, 2, Decoration::Star | Decoration::Color::Green, 2, Decoration::Star | Decoration::Color::Black, 2);
+	generator->setObstructions({ { 1, 2 },{ 1, 4 },{ 9, 2 },{ 9, 4 },{ 2, 1 },{ 4, 1 },{ 6, 1 },{ 8, 1 } });
+	generator->generate(0x17DD1, Decoration::Star | Decoration::Color::Black, 3, Decoration::Star | Decoration::Color::White, 3,
+		Decoration::Stone | Decoration::Color::White, 2, Decoration::Stone | Decoration::Color::Purple, 2,
+		Decoration::Poly | Decoration::Can_Rotate | Decoration::Purple, 1, Decoration::Poly | Decoration::Black, 1);
 	generator->setGridSize(5, 5);
 	generator->setFlag(Generate::Config::WriteInvisible);
 	generator->setSymmetry(Panel::Symmetry::RotateLeft);
