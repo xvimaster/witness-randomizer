@@ -1348,7 +1348,7 @@ void Special::generateSymmetryGate(int id)
 	generator->setSymbol(Decoration::Exit, 4, 8);
 	generator->setSymbol(Decoration::Exit, 0, 4);
 	generator->setSymbol(Decoration::Exit, 8, 4);
-	generator->generate(id, Decoration::Triangle | Decoration::Color::Yellow, 6);
+	generator->generate(id, Decoration::Triangle | Decoration::Color::Yellow, 4);
 	std::vector<Point> breakPos = { {0, 3}, {2, 3}, {4, 3}, {6, 3}, {8, 3}, {0, 5}, {2, 5}, {4, 5}, {6, 5}, {8, 5} };
 	for (Point p : breakPos) generator->set(p, IntersectionFlags::COLUMN | 0x40000);
 	breakPos = { { 3, 0 },{ 3, 2 },{ 3, 4 },{ 3, 6 },{ 3, 8 },{ 5, 0 },{ 5, 2 },{ 5, 4 },{ 5, 6 },{ 5, 8 } };

@@ -451,7 +451,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	//Get the seed and difficulty previously used for this save file (if applicable)
 	int lastSeed = Special::ReadPanelData<int>(0x00064, BACKGROUND_REGION_COLOR + 12);
-	hard = (Special::ReadPanelData<int>(0x00182, BACKGROUND_REGION_COLOR + 12) > 0);
+	hard = true;
 	doubleMode = (Special::ReadPanelData<int>(0x0A3B2, BACKGROUND_REGION_COLOR + 12) > 0);
 
 	//-------------------------Basic window controls---------------------------
@@ -463,14 +463,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	CreateWindow(L"STATIC", L"Choose Difficuty:",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | SS_LEFT,
 		10, 15, 120, 16, hwnd, NULL, hInstance, NULL);
-	hwndNormal = CreateWindow(L"BUTTON", L"NORMAL - Puzzles that should be reasonably challenging for most players. Puzzle mechanics are mostly identical to those in the original game.",
-		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON | BS_MULTILINE,
-		10, 35, 570, 35, hwnd, (HMENU)IDC_DIFFICULTY_NORMAL, hInstance, NULL);
-	hwndExpert = CreateWindow(L"BUTTON", L"EXPERT - Very difficult puzzles with complex mechanics and mind-boggling new tricks. For brave players seeking the ultimate challenge.",
+	hwndExpert = CreateWindow(L"BUTTON", L"DESPAIR - Let's enjoy it. Or just die.",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON | BS_MULTILINE,
 		10, 75, 570, 35, hwnd, (HMENU)IDC_DIFFICULTY_EXPERT, hInstance, NULL);
-	if (hard) SendMessage(hwndExpert, BM_SETCHECK, BST_CHECKED, 1);
-	else SendMessage(hwndNormal, BM_SETCHECK, BST_CHECKED, 1);
+	SendMessage(hwndExpert, BM_SETCHECK, BST_CHECKED, 1);
 
 	CreateWindow(L"STATIC", L"Options:",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | SS_LEFT,
@@ -491,7 +487,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         180, 245, 60, 26, hwnd, NULL, hInstance, NULL);
 	SendMessage(hwndSeed, EM_SETEVENTMASK, NULL, ENM_CHANGE); // Notify on text change
 
-	hwndRandomize = CreateWindow(L"BUTTON", L"Randomize",
+	hwndRandomize = CreateWindow(L"BUTTON", L"Randomizespair",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 		250, 245, 130, 26, hwnd, (HMENU)IDC_RANDOMIZE, hInstance, NULL);
 

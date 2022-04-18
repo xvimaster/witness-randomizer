@@ -7,27 +7,26 @@
 
 void PuzzleList::GenerateAllN()
 {
-	generator->setLoadingData(336);
+	generator->setLoadingData(349);
 	CopyTargets();
-	GenerateTutorialN();
-	GenerateSymmetryN();
-	GenerateQuarryN();
-	//GenerateBunkerN(); //Can't randomize because panels refuse to render the symbols
-	GenerateSwampN();
-	GenerateTreehouseN();
-	GenerateTownN();
-	GenerateVaultsN();
-	GenerateTrianglePanelsN();
-	GenerateOrchardN();
-	GenerateDesertN();
-	GenerateKeepN();
-	GenerateJungleN();
-	GenerateMountainN();
-	GenerateCavesN();
+	GenerateTutorialH();
+	GenerateSymmetryH();
+	GenerateQuarryH();
+	//GenerateBunkerH(); //Can't randomize because panels refuse to render the symbols
+	GenerateSwampH();
+	GenerateTreehouseH();
+	GenerateTownH();
+	GenerateVaultsH();
+	GenerateTrianglePanelsH();
+	GenerateOrchardH();
+	GenerateDesertH();
+	GenerateKeepH();
+	GenerateJungleH();
+	GenerateMountainH();
+	GenerateCavesH();
 	SetWindowText(_handle, L"Done!");
-	(new ArrowWatchdog(0x0056E))->start(); //Easy way to close the randomizer when the game is done
-	//GenerateShadowsN(); //Can't randomize
-	//GenerateMonasteryN(); //Can't randomize
+	//GenerateShadowsH(); //Can't randomize
+	//GenerateMonasteryH(); //Can't randomize
 }
 
 void PuzzleList::GenerateAllH()
@@ -1103,8 +1102,8 @@ void PuzzleList::GenerateSymmetryH()
 	generator->set(0, 16, Decoration::Dot_Intersection);
 	generator->write(0x0005C);
 	//Decoy Exits
-	generator->setGridSize(10, 14);
-	generator->pathWidth = 0.3f;
+	generator->setGridSize(9, 12);
+	generator->pathWidth = 0.4f;
 	generator->setFlag(Generate::Config::DisableWrite);
 	generator->generateMaze(0x0008D, 0, 1);
 	specialCase->addDecoyExits(generator, 4);
@@ -1202,13 +1201,13 @@ void PuzzleList::GenerateSymmetryH()
 	generator->setSymbol(Decoration::Exit, 0, 4); generator->setSymbol(Decoration::Exit, 8, 4);
 	generator->setSymbol(Decoration::Exit, 4, 0); generator->setSymbol(Decoration::Exit, 4, 8);
 	generator->setFlag(Generate::Config::DisableDotIntersection);
-	specialCase->generateReflectionDotPuzzle(generator, 0x00A52, 0x00A61, { { Decoration::Dot, 20 } }, pop_random(weirdSym), true);
+	specialCase->generateReflectionDotPuzzle(generator, 0x00A52, 0x00A61, { { Decoration::Dot, 16 } }, pop_random(weirdSym), true);
 	generator->setSymbol(Decoration::Start, 0, 8); generator->setSymbol(Decoration::Start, 8, 8);
 	generator->setSymbol(Decoration::Start, 8, 0); generator->setSymbol(Decoration::Start, 0, 0);
 	generator->setSymbol(Decoration::Exit, 0, 4); generator->setSymbol(Decoration::Exit, 8, 4);
 	generator->setSymbol(Decoration::Exit, 4, 0); generator->setSymbol(Decoration::Exit, 4, 8);
 	generator->setFlag(Generate::Config::DisableDotIntersection);
-	specialCase->generateReflectionDotPuzzle(generator, 0x00A57, 0x00A64, { { Decoration::Dot, 18 }}, pop_random(weirdSym), true);
+	specialCase->generateReflectionDotPuzzle(generator, 0x00A57, 0x00A64, { { Decoration::Dot, 16 }}, pop_random(weirdSym), true);
 	generator->setSymbol(Decoration::Start, 0, 8); generator->setSymbol(Decoration::Start, 8, 8);
 	generator->setSymbol(Decoration::Start, 8, 0); generator->setSymbol(Decoration::Start, 0, 0);
 	generator->setSymbol(Decoration::Exit, 0, 4); generator->setSymbol(Decoration::Exit, 8, 4);
@@ -2566,61 +2565,45 @@ void PuzzleList::GenerateCavesH()
 	generator->pathWidth = 0.6f;
 	generator->setGridSize(7, 7);
 	generator->blockPos = {
-	{ 3, 3 },{ 3, 5 }, { 3, 7 }, { 3, 9 }, { 3, 11 },
-	{ 5, 3 },{ 5, 5 }, { 5, 7 }, { 5, 9 }, { 5, 11 },
-	{ 7, 3 },{ 7, 5 }, { 7, 7 }, { 7, 9 }, { 7, 11 },
-	{ 9, 3 },{ 9, 5 }, { 9, 7 }, { 9, 9 }, { 9, 11 },
-	{ 11, 3 },{ 11, 5 }, { 11, 7 }, { 11, 9 }, { 11, 11 } };
+	{ 5, 5 }, { 5, 7 }, { 5, 9 },
+	{ 7, 5 }, { 7, 7 }, { 7, 9 },
+	{ 9, 5 }, { 9, 7 }, { 9, 9 }, };
 	generator->generate(0x0008F, Decoration::Stone | Decoration::Color::Black, 9, Decoration::Stone | Decoration::Color::X, 9, Decoration::Poly | Decoration::Color::Black, 3, Decoration::Poly | Decoration::Color::X, 3);
 	generator->blockPos = {
-		{ 3, 3 },{ 3, 5 }, { 3, 7 }, { 3, 9 }, { 3, 11 },
-		{ 5, 3 },{ 5, 5 }, { 5, 7 }, { 5, 9 }, { 5, 11 },
-		{ 7, 3 },{ 7, 5 }, { 7, 7 }, { 7, 9 }, { 7, 11 },
-		{ 9, 3 },{ 9, 5 }, { 9, 7 }, { 9, 9 }, { 9, 11 },
-		{ 11, 3 },{ 11, 5 }, { 11, 7 }, { 11, 9 }, { 11, 11 } };
+	{ 5, 5 }, { 5, 7 }, { 5, 9 },
+	{ 7, 5 }, { 7, 7 }, { 7, 9 },
+	{ 9, 5 }, { 9, 7 }, { 9, 9 }, };
 	generator->generate(0x0006B, Decoration::Stone | Decoration::Color::Black, 6, Decoration::Stone | Decoration::Color::X, 6, Decoration::Stone | Decoration::Color::Orange, 6, Decoration::Poly | Decoration::Color::Black, 2, Decoration::Poly | Decoration::Color::X, 2, Decoration::Poly | Decoration::Color::Orange, 2);
 	generator->blockPos = {
-		{ 3, 3 },{ 3, 5 }, { 3, 7 }, { 3, 9 }, { 3, 11 },
-		{ 5, 3 },{ 5, 5 }, { 5, 7 }, { 5, 9 }, { 5, 11 },
-		{ 7, 3 },{ 7, 5 }, { 7, 7 }, { 7, 9 }, { 7, 11 },
-		{ 9, 3 },{ 9, 5 }, { 9, 7 }, { 9, 9 }, { 9, 11 },
-		{ 11, 3 },{ 11, 5 }, { 11, 7 }, { 11, 9 }, { 11, 11 } };
+	{ 5, 5 }, { 5, 7 }, { 5, 9 },
+	{ 7, 5 }, { 7, 7 }, { 7, 9 },
+	{ 9, 5 }, { 9, 7 }, { 9, 9 }, };
 	generator->generate(0x0008B, Decoration::Poly | Decoration::Color::Black, 2, Decoration::Poly | Decoration::Negative | Decoration::Color::Black, 1, Decoration::Triangle | Decoration::Color::Black, 6, Decoration::Triangle | Decoration::Color::Orange, 4, Decoration::Stone | Decoration::Color::X, 3, Decoration::Stone | Decoration::Color::Orange, 5, Decoration::Star | Decoration::Color::X, 2, Decoration::Eraser | Decoration::Color::X, 1);
 	generator->blockPos = {
-		{ 3, 3 },{ 3, 5 }, { 3, 7 }, { 3, 9 }, { 3, 11 },
-		{ 5, 3 },{ 5, 5 }, { 5, 7 }, { 5, 9 }, { 5, 11 },
-		{ 7, 3 },{ 7, 5 }, { 7, 7 }, { 7, 9 }, { 7, 11 },
-		{ 9, 3 },{ 9, 5 }, { 9, 7 }, { 9, 9 }, { 9, 11 },
-		{ 11, 3 },{ 11, 5 }, { 11, 7 }, { 11, 9 }, { 11, 11 } };
+	{ 5, 5 }, { 5, 7 }, { 5, 9 },
+	{ 7, 5 }, { 7, 7 }, { 7, 9 },
+	{ 9, 5 }, { 9, 7 }, { 9, 9 }, };
 	generator->generate(0x0008C, Decoration::Poly | Decoration::Color::Black, 3, Decoration::Poly | Decoration::Negative | Decoration::Color::Black, 1, Decoration::Triangle | Decoration::Color::Black, 5, Decoration::Triangle | Decoration::Color::Orange, 4, Decoration::Stone | Decoration::Color::X, 3, Decoration::Stone | Decoration::Color::Orange, 5, Decoration::Star | Decoration::Color::X, 2, Decoration::Eraser | Decoration::Color::X, 1);
 	generator->blockPos = {
-		{ 3, 3 },{ 3, 5 }, { 3, 7 }, { 3, 9 }, { 3, 11 },
-		{ 5, 3 },{ 5, 5 }, { 5, 7 }, { 5, 9 }, { 5, 11 },
-		{ 7, 3 },{ 7, 5 }, { 7, 7 }, { 7, 9 }, { 7, 11 },
-		{ 9, 3 },{ 9, 5 }, { 9, 7 }, { 9, 9 }, { 9, 11 },
-		{ 11, 3 },{ 11, 5 }, { 11, 7 }, { 11, 9 }, { 11, 11 } };
+	{ 5, 5 }, { 5, 7 }, { 5, 9 },
+	{ 7, 5 }, { 7, 7 }, { 7, 9 },
+	{ 9, 5 }, { 9, 7 }, { 9, 9 }, };
 	generator->generate(0x0008A, Decoration::Poly | Decoration::Color::Black, 4, Decoration::Poly | Decoration::Negative | Decoration::Color::Black, 1, Decoration::Triangle | Decoration::Color::Black, 4, Decoration::Triangle | Decoration::Color::Orange, 4, Decoration::Stone | Decoration::Color::X, 3, Decoration::Stone | Decoration::Color::Orange, 5, Decoration::Star | Decoration::Color::X, 2, Decoration::Eraser | Decoration::Color::X, 1);
 	generator->blockPos = {
-		{ 3, 3 },{ 3, 5 }, { 3, 7 }, { 3, 9 }, { 3, 11 },
-		{ 5, 3 },{ 5, 5 }, { 5, 7 }, { 5, 9 }, { 5, 11 },
-		{ 7, 3 },{ 7, 5 }, { 7, 7 }, { 7, 9 }, { 7, 11 },
-		{ 9, 3 },{ 9, 5 }, { 9, 7 }, { 9, 9 }, { 9, 11 },
-		{ 11, 3 },{ 11, 5 }, { 11, 7 }, { 11, 9 }, { 11, 11 } };
+	{ 5, 5 }, { 5, 7 }, { 5, 9 },
+	{ 7, 5 }, { 7, 7 }, { 7, 9 },
+	{ 9, 5 }, { 9, 7 }, { 9, 9 }, };
 	generator->generate(0x00089, Decoration::Poly | Decoration::Color::Black, 5, Decoration::Poly | Decoration::Negative | Decoration::Color::Black, 1, Decoration::Triangle | Decoration::Color::Black, 3, Decoration::Triangle | Decoration::Color::Orange, 4, Decoration::Stone | Decoration::Color::X, 3, Decoration::Stone | Decoration::Color::Orange, 5, Decoration::Star | Decoration::Color::X, 2, Decoration::Eraser | Decoration::Color::X, 1);
 	generator->blockPos = {
-		{ 3, 3 },{ 3, 5 }, { 3, 7 }, { 3, 9 }, { 3, 11 },
-		{ 5, 3 },{ 5, 5 }, { 5, 7 }, { 5, 9 }, { 5, 11 },
-		{ 7, 3 },{ 7, 5 }, { 7, 7 }, { 7, 9 }, { 7, 11 },
-		{ 9, 3 },{ 9, 5 }, { 9, 7 }, { 9, 9 }, { 9, 11 },
-		{ 11, 3 },{ 11, 5 }, { 11, 7 }, { 11, 9 }, { 11, 11 } };
-	generator->generate(0x0006A, Decoration::Dot, 12, Decoration::Star | Decoration::Color::Orange, 5, Decoration::Star | Decoration::Color::X, 5, Decoration::Stone | Decoration::Color::Orange, 5, Decoration::Stone | Decoration::Color::X, 5, Decoration::Star | Decoration::Color::Black, 4);
+	{ 5, 5 }, { 5, 7 }, { 5, 9 },
+	{ 7, 5 }, { 7, 7 }, { 7, 9 },
+	{ 9, 5 }, { 9, 7 }, { 9, 9 }, };
+	generator->generate(0x0006A, Decoration::Dot, 12, Decoration::Star | Decoration::Color::Orange, 7, Decoration::Star | Decoration::Color::X, 5, Decoration::Stone | Decoration::Color::Orange, 5, Decoration::Stone | Decoration::Color::X, 5, Decoration::Star | Decoration::Color::Black, 6);
 	generator->blockPos = {
-		{ 3, 3 },{ 3, 5 }, { 3, 7 }, { 3, 9 }, { 3, 11 },
-		{ 5, 3 },{ 5, 5 }, { 5, 7 }, { 5, 9 }, { 5, 11 },
-		{ 7, 3 },{ 7, 5 }, { 7, 7 }, { 7, 9 }, { 7, 11 },
-		{ 9, 3 },{ 9, 5 }, { 9, 7 }, { 9, 9 }, { 9, 11 },
-		{ 11, 3 },{ 11, 5 }, { 11, 7 }, { 11, 9 }, { 11, 11 } };
-	generator->generate(0x0006C, Decoration::Dot, 12, Decoration::Star | Decoration::Color::Orange, 5, Decoration::Star | Decoration::Color::X, 5, Decoration::Stone | Decoration::Color::Orange, 5, Decoration::Stone | Decoration::Color::X, 5, Decoration::Star | Decoration::Color::Black, 4);
+	{ 5, 5 }, { 5, 7 }, { 5, 9 },
+	{ 7, 5 }, { 7, 7 }, { 7, 9 },
+	{ 9, 5 }, { 9, 7 }, { 9, 9 }, };
+	generator->generate(0x0006C, Decoration::Dot, 12, Decoration::Star | Decoration::Color::Orange, 7, Decoration::Star | Decoration::Color::X, 5, Decoration::Stone | Decoration::Color::Orange, 5, Decoration::Stone | Decoration::Color::X, 5, Decoration::Star | Decoration::Color::Black, 6);
 	generator->setSymmetry(Panel::Symmetry::Rotational);
 	generator->setSymbol(Decoration::Start, 0, 0); generator->setSymbol(Decoration::Start, 14, 14);
 	generator->setSymbol(Decoration::Exit, 0, 14); generator->setSymbol(Decoration::Exit, 14, 0);
@@ -2730,11 +2713,10 @@ void PuzzleList::GenerateKeepH()
 	generator->write(0x033EA);
 
 	generator->resetConfig();
-	generator->setObstructions({ { 8, 5 },{ 6, 5 },{ 1, 8 },{ 1, 6 },{ 1, 4 },{ 2, 3 },{ 4, 3 },{ 6, 3 } });
-	generator->hitPoints = { { 3, 2 },{ 1, 0 } };
+	generator->setObstructions({ { 8, 5 },{ 6, 5 },{ 1, 8 },{ 1, 6 },{ 1, 4 },{ 2, 3 },{ 4, 3 },{ 6, 3 },{ 3, 2 }});
 	generator->setFlagOnce(Generate::Config::DisableWrite);
 	generator->generate(0x01BE9, Decoration::Star | Decoration::Color::Black, 3, Decoration::Star | Decoration::Color::White, 3,
-		Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Black, 2, Decoration::Poly | Decoration::Color::White, 1);
+		Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Black, 1, Decoration::Poly | Decoration::Color::White, 1);
 	std::set<Point> path2 = generator->_path;
 	generator->write(0x01BE9);
 
@@ -2746,8 +2728,7 @@ void PuzzleList::GenerateKeepH()
 	generator->setObstructions({ { 5, 8 } });
 	generator->setFlagOnce(Generate::Config::SplitShapes);
 	generator->setFlagOnce(Generate::Config::DisableWrite);
-	generator->generate(0x01CD3, Decoration::Stone | Decoration::Color::Black, 3, Decoration::Stone | Decoration::Color::White, 3,
-		Decoration::Triangle | Decoration::Color::Yellow, 3, Decoration::Poly, 1, Decoration::Poly | Decoration::Can_Rotate, 2);
+	generator->generate(0x01CD3,Decoration::Triangle | Decoration::Color::Yellow, 6, Decoration::Poly, 1, Decoration::Poly | Decoration::Can_Rotate, 1);
 	std::set<Point> path3 = generator->_path;
 	generator->write(0x01CD3);
 
@@ -2770,7 +2751,7 @@ void PuzzleList::GenerateKeepH()
 	generator->write(0x01D3F);
 
 	specialCase->generateKeepLaserPuzzle(0x03317, path1, path2, path3, path4,
-		{ { Decoration::Triangle | Decoration::Color::Yellow, 10 },{ Decoration::Star | Decoration::Color::Yellow, 4 },{ Decoration::Stone | Decoration::Color::Yellow, 2 },
+		{ { Decoration::Triangle | Decoration::Color::Yellow, 30 },{ Decoration::Star | Decoration::Color::Yellow, 4 },{ Decoration::Stone | Decoration::Color::Yellow, 2 },
 		{ Decoration::Star | Decoration::Color::Black, 3 },{ Decoration::Star | Decoration::Color::White, 3 },
 		{ Decoration::Stone | Decoration::Color::Black, 5 },{ Decoration::Stone | Decoration::Color::White, 4 },
 		{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Black, 1 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::White, 1 },
