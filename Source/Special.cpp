@@ -736,7 +736,7 @@ void Special::generateMultiPuzzle(std::vector<int> ids, const std::vector<std::v
 	for (int i = 0; i < ids.size(); i++) {
 		gens[i].setFlag(Generate::Config::DisableWrite);
 		gens[i].setFlag(Generate::WriteColors);
-		if (symbols[i].getNum(Decoration::Poly)  - symbols[i].getNum(Decoration::Eraser) > 1) gens[i].setFlag(Generate::RequireCombineShapes);
+		if (symbols[i].getNum(Decoration::Poly) - symbols[i].getNum(Decoration::Eraser) > 1) gens[i].setFlag(Generate::RequireCombineShapes);
 	}
 	while (!generateMultiPuzzle(ids, gens, symbols, generator->_path)) {
 		generator->generate(ids[0]);
