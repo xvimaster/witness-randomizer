@@ -1592,14 +1592,13 @@ void PuzzleList::GenerateSwampH()
 	generator->write(0x17C0E);
 	//Disconnected Shapes
 	generator->resetConfig();
-	generator->setFlag(Generate::Config::BigShapes);
 	generator->setFlag(Generate::Config::DisconnectShapes);
 	generator->setGridSize(6, 6);
 	generator->pathWidth = 0.6f;
-	generator->generate(0x00999, Decoration::Start, 1, Decoration::Poly, 4, Decoration::Poly | Decoration::Negative, 2, Decoration::Stone | Decoration::Color::Black, 5, Decoration::Stone | Decoration::Color::White, 5);
-	generator->generate(0x0099D, Decoration::Start, 1, Decoration::Poly, 4, Decoration::Poly | Decoration::Negative, 2, Decoration::Stone | Decoration::Color::Black, 4, Decoration::Stone | Decoration::Color::White, 4);
-	generator->generate(0x009A0, Decoration::Start, 1, Decoration::Poly, 4, Decoration::Poly | Decoration::Negative, 2, Decoration::Stone | Decoration::Color::Black, 3, Decoration::Stone | Decoration::Color::White, 3);
-	generator->generate(0x009A1, Decoration::Start, 1,Decoration::Poly | Decoration::Can_Rotate, 4, Decoration::Poly | Decoration::Negative, 2);
+	generator->generate(0x00999, Decoration::Start, 3, Decoration::Poly, 5, Decoration::Stone | Decoration::Color::Black, 4, Decoration::Stone | Decoration::Color::White, 4);
+	generator->generate(0x0099D, Decoration::Start, 3, Decoration::Poly, 3, Decoration::Poly | Decoration::Can_Rotate, 2, Decoration::Stone | Decoration::Color::Black, 4, Decoration::Stone | Decoration::Color::White, 4, Decoration::Triangle | Decoration::Color::Black, 6);
+	generator->generate(0x009A0, Decoration::Start, 3, Decoration::Poly | Decoration::Can_Rotate, 5, Decoration::Triangle | Decoration::Color::Black, 6);
+	generator->generate(0x009A1, Decoration::Start, 3, Decoration::Poly | Decoration::Can_Rotate, 2, Decoration::Poly, 3, Decoration::Triangle | Decoration::Color::Black, 6);
 	generator->resetConfig();
 	//Modify rotating bridge
 	generator->initPanel(0x181F5);
@@ -1684,9 +1683,9 @@ void PuzzleList::GenerateSwampH()
 	generator->resetConfig();
 	generator->setGridSize(6, 6);
 	generator->pathWidth = 0.6f;
-	generator->generate(0x17C05, Decoration::Poly | Decoration::Can_Rotate | Decoration::Orange, 4, Decoration::Poly | Decoration::Negative | Decoration::Blue, 2,
+	generator->generate(0x17C05, Decoration::Poly | Decoration::Can_Rotate | Decoration::Orange, 4, Decoration::Poly | Decoration::Negative | Decoration::Blue, 1,
 		Decoration::Star | Decoration::Color::Orange, 5,Decoration::Star | Decoration::Color::Blue, 5);
-	generator->generate(0x17C02, Decoration::Poly | Decoration::Can_Rotate | Decoration::Blue, 4, Decoration::Poly | Decoration::Negative | Decoration::Orange, 2,
+	generator->generate(0x17C02, Decoration::Poly | Decoration::Can_Rotate | Decoration::Blue, 4, Decoration::Poly | Decoration::Negative | Decoration::Orange, 1,
 		Decoration::Star | Decoration::Color::Orange, 5, Decoration::Star | Decoration::Color::Blue, 5);
 }
 
