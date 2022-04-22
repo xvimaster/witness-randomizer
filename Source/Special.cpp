@@ -1546,7 +1546,42 @@ void Special::drawGoodLuckPanel(int id)
 	std::vector<float> intersections;
 	std::vector<int> connectionsA;
 	std::vector<int> connectionsB;
-	drawText(id, intersections, connectionsA, connectionsB, { 0.66f, 0.62f, 0.66f, 0.69f, 0.32f, 0.69f, 0.51f, 0.51f, 0.32f, 0.32f, 0.66f, 0.32f, 0.66f, 0.39f });
+
+	std::vector<float> sa = {
+		0.45f, 0.9f,
+		0.4f, 0.88f,
+		0.35f, 0.85f,
+		0.3f, 0.8f,
+		0.25f, 0.72f,
+		0.2f, 0.6f,
+		0.15f, 0.55f,
+		0.1f, 0.5f,
+		0.2f, 0.51f,
+		0.25f, 0.54f,
+		0.275f, 0.4f,
+		0.3f, 0.3f,
+		0.35f, 0.25f,
+		0.4f, 0.235f,
+		0.45f, 0.22f,
+		0.5f, 0.21f,
+		0.55f, 0.22f,
+		0.6f, 0.235f,
+		0.65f, 0.25f,
+		0.7f, 0.3f,
+		0.725f, 0.4f,
+		0.75f, 0.54f,
+		0.8f, 0.51f,
+		0.9f, 0.5f,
+		0.85f, 0.55f,
+		0.8f, 0.6f,
+		0.75f, 0.72f,
+		0.7f, 0.8f,
+		0.65f, 0.85f,
+		0.6f, 0.88f,
+		0.55f, 0.9f
+	};
+	createText(id, "good luck!", intersections, connectionsA, connectionsB, 0.1f, 0.9f, 0.85f, 0.98f);
+	drawText(id, intersections, connectionsA, connectionsB, sa);
 }
 
 //For testing/debugging purposes only
