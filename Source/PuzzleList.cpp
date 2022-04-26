@@ -2105,7 +2105,7 @@ void PuzzleList::GenerateVaultsH()
 	generator->resetConfig();
 	generator->setGridSize(8, 8);
 	generator->generate(0x0CC7B, { { Decoration::Dot_Intersection, 81 },{ Decoration::Poly | Decoration::Color::Orange, 3 },{ Decoration::Poly | Decoration::Color::Blue, 2 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 1 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
+		{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 2 },
 		{ Decoration::Star | Decoration::Color::Orange, 5 },{ Decoration::Star | Decoration::Color::Blue, 3 },
 		{ Decoration::Triangle | Decoration::Color::Orange, 2 },{ Decoration::Triangle | Decoration::Color::Blue, 4 },
 		{ Decoration::Stone | Decoration::Color::Orange, 3 },{ Decoration::Stone | Decoration::Color::Blue, 3 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
@@ -2424,11 +2424,12 @@ void PuzzleList::GenerateCavesH()
 	generator->backgroundColor = { 0, 0, 0.1f, 1 };
 	generator->arrowColor = { 0.6f, 0, 1, 1 };
 	generator->successColor = { 1, 1, 1, 1 };
-	generator->setGridSize(7, 7);
+	generator->setGridSize(9, 9);
 	generator->setSymmetry(Panel::Symmetry::RotateRight);
-	generator->setSymbol(Decoration::Start, 4, 4); generator->setSymbol(Decoration::Start, 10, 4); generator->setSymbol(Decoration::Start, 4, 10); generator->setSymbol(Decoration::Start, 10, 10);
-	generator->setSymbol(Decoration::Exit, 4, 0); generator->setSymbol(Decoration::Exit, 14, 4); generator->setSymbol(Decoration::Exit, 0, 10); generator->setSymbol(Decoration::Exit, 10, 14);
-	generator->generate(0x01A0D, Decoration::Triangle, 25);
+	generator->setSymbol(Decoration::Start, 6, 6); generator->setSymbol(Decoration::Start, 12, 6); generator->setSymbol(Decoration::Start, 6, 12); generator->setSymbol(Decoration::Start, 12, 12);
+	generator->setSymbol(Decoration::Exit, 6, 0); generator->setSymbol(Decoration::Exit, 18, 6); generator->setSymbol(Decoration::Exit, 0, 12); generator->setSymbol(Decoration::Exit, 12, 18);
+	generator->generate(0x01A0D, Decoration::Triangle, 40);
+	generator->setGridSize(7, 7);
 	generator->setSymmetry(Panel::Symmetry::RotateLeft);
 	generator->setSymbol(Decoration::Start, 4, 4); generator->setSymbol(Decoration::Start, 10, 4); generator->setSymbol(Decoration::Start, 4, 10); generator->setSymbol(Decoration::Start, 10, 10);
 	generator->setSymbol(Decoration::Exit, 4, 0); generator->setSymbol(Decoration::Exit, 14, 4); generator->setSymbol(Decoration::Exit, 0, 10); generator->setSymbol(Decoration::Exit, 10, 14);
