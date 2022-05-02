@@ -2238,15 +2238,12 @@ void PuzzleList::GenerateMountainH()
 	generator->generate(0x09E7A, Decoration::Poly | Decoration::Color::Black, 3, Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Black, 3);
 	generator->generate(0x09E71, Decoration::Dot, 8, Decoration::Stone | Decoration::Color::Black, 9, Decoration::Stone | Decoration::Color::White, 9,
 		Decoration::Triangle | Decoration::Color::Black, 4, Decoration::Triangle | Decoration::Color::White, 4, Decoration::Eraser | Decoration::Color::Black, 1);
-	generator->blockPos = { { 1, 1 },{ 3, 3 },{ 7, 7 },{ 9, 9 },{ 1, 7 },{ 7, 1 },{ 3, 9 },{ 9, 3 } };
 	generator->generate(0x09E72, Decoration::Dot, 8, Decoration::Star | Decoration::Color::Black, 3, Decoration::Star | Decoration::Color::White, 3,
 		Decoration::Triangle | Decoration::Color::Black, 3, Decoration::Triangle | Decoration::Color::White, 6,
 		Decoration::Poly | Decoration::Color::Black, 2, Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::White, 1, Decoration::Eraser | Decoration::Color::Black, 1);
-	generator->blockPos = { { 7, 3 },{ 3, 7 },{ 1, 9 },{ 9, 1 },{ 1, 3 },{ 3, 1 },{ 7, 9 },{ 9, 7 } };
-	generator->generate(0x09E69, Decoration::Dot, 8, Decoration::Stone | Decoration::Color::Black, 4, Decoration::Stone | Decoration::Color::White, 4,
+	generator->generate(0x09E69, Decoration::Dot, 12, Decoration::Stone | Decoration::Color::Black, 4, Decoration::Stone | Decoration::Color::White, 4,
 		Decoration::Star | Decoration::Color::Black, 2, Decoration::Star | Decoration::Color::White, 3,
-		Decoration::Poly |Decoration::Color::Black, 4,
-		Decoration::Poly | Decoration::Negative | Decoration::Color::White, 2, Decoration::Eraser | Decoration::Color::Black, 1);
+		Decoration::Poly |Decoration::Color::Black, 4, Decoration::Eraser | Decoration::Color::Black, 1);
 	generator->removeFlag(Generate::Config::BigShapes);
 	generator->generate(0x09E7B, Decoration::Dot, 6, Decoration::Star | Decoration::Color::Black, 5, Decoration::Stone | Decoration::Color::Black, 3,
 		Decoration::Triangle | Decoration::Color::Black, 7,
