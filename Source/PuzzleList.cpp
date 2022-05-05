@@ -1376,12 +1376,19 @@ void PuzzleList::GenerateQuarryH()
 		Decoration::Start, 7, Decoration::Eraser | Decoration::Color::Purple, 1);
 	//Boathouse Ramp Activation
 	generator->resetConfig();
-	generator->setGridSize(6, 6);
+	generator->pathWidth = 0.4f;
+	generator->setGridSize(7, 7);
 	generator->setFlag(Generate::Config::EnableFlash);
-	generator->generate(0x034D4, Decoration::Star | Decoration::White, 3, Decoration::Star | Decoration::Black, 8,
-		Decoration::Star | Decoration::Magenta, 10, Decoration::Eraser | Decoration::Color::White, 1);
+	generator->generate(0x034D4,
+		Decoration::Star | Decoration::White, 3,
+		Decoration::Star | Decoration::Black, 3,
+		Decoration::Stone | Decoration::Black, 5,
+		Decoration::Triangle | Decoration::Black, 6,
+		Decoration::Star | Decoration::Magenta, 7,
+		Decoration::Stone | Decoration::Magenta, 3,
+		Decoration::Eraser | Decoration::Color::White, 1);
 	generator->setFlagOnce(Generate::Config::DisconnectShapes);
-	generator->generate(0x021D5, Decoration::Poly, 6, Decoration::Eraser | Decoration::Color::White, 2);
+	generator->generate(0x021D5, Decoration::Poly, 5, Decoration::Triangle, 15, Decoration::Eraser | Decoration::Color::White, 2);
 	//Eraser + Shapes
 	generator->pathWidth = 0.6f;
 	generator->setFlag(Generate::Config::ResetColors);
@@ -1694,10 +1701,9 @@ void PuzzleList::GenerateTreehouseH()
 	generator->setLoadingData(L"Treehouse", 58);
 	generator->resetConfig();
 	generator->setFlag(Generate::Config::TreehouseColors);
-	generator->initPanel(0x0288C);
-	generator->set(1, 1, Decoration::Triangle1 | Decoration::Color::Orange);
-	generator->set(1, 3, Decoration::Star | Decoration::Color::Orange);
-	generator->write(0x0288C);
+	generator->pathWidth = 0.8f;
+	generator->setGridSize(5, 5);
+	generator->generate(0x0288C, Decoration::Star | Decoration::Color::Orange, 3, Decoration::Triangle | Decoration::Color::Orange, 10);
 	generator->pathWidth = 0.8f;
 	generator->setGridSize(6, 6);
 	generator->generate(0x02886, Decoration::Star | Decoration::Color::Orange, 5, Decoration::Triangle | Decoration::Color::Orange, 15);
@@ -1705,53 +1711,50 @@ void PuzzleList::GenerateTreehouseH()
 	//Yellow Bridge
 	generator->setGridSize(5, 5);
 	generator->setFlag(Generate::Config::WriteDotColor);
-	generator->generate(0x17D72, { { Decoration::Dot_Intersection, 36 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
-		{ Decoration::Star | Decoration::Color::Orange, 2 },{ Decoration::Star | Decoration::Color::Blue, 1 },
-		{ Decoration::Triangle | Decoration::Color::Orange, 2 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
-		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 }});
-	generator->generate(0x17D8F, { { Decoration::Dot_Intersection, 36 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
-		{ Decoration::Star | Decoration::Color::Orange, 2 },{ Decoration::Star | Decoration::Color::Blue, 1 },
-		{ Decoration::Triangle | Decoration::Color::Orange, 2 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
-		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
-	generator->generate(0x17D74, { { Decoration::Dot_Intersection, 36 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
-		{ Decoration::Star | Decoration::Color::Orange, 2 },{ Decoration::Star | Decoration::Color::Blue, 1 },
-		{ Decoration::Triangle | Decoration::Color::Orange, 2 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
-		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 } });
-	generator->generate(0x17DAC, { { Decoration::Dot_Intersection, 36 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
-		{ Decoration::Star | Decoration::Color::Orange, 2 },{ Decoration::Star | Decoration::Color::Blue, 1 },
-		{ Decoration::Triangle | Decoration::Color::Orange, 2 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
-		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
-	generator->generate(0x17D9E, { { Decoration::Dot_Intersection, 36 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
-		{ Decoration::Star | Decoration::Color::Orange, 2 },{ Decoration::Star | Decoration::Color::Blue, 1 },
-		{ Decoration::Triangle | Decoration::Color::Orange, 2 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
-		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 } });
-	generator->generate(0x17DB9, { { Decoration::Dot_Intersection, 36 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
-		{ Decoration::Star | Decoration::Color::Orange, 2 },{ Decoration::Star | Decoration::Color::Blue, 1 },
-		{ Decoration::Triangle | Decoration::Color::Orange, 2 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
-		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
-	generator->generate(0x17D9C, { { Decoration::Dot_Intersection,36 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 2 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
+	generator->generate(0x17D72, {{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 5 },{ Decoration::Poly | Decoration::Color::Blue, 2 },
 		{ Decoration::Star | Decoration::Color::Orange, 1 },{ Decoration::Star | Decoration::Color::Blue, 1 },
 		{ Decoration::Triangle | Decoration::Color::Orange, 1 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
-		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 } });
-	generator->generate(0x17DC2, { { Decoration::Dot_Intersection,36 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 2 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
+		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 1 }});
+	generator->generate(0x17D8F, {{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 2 },{ Decoration::Poly | Decoration::Color::Blue, 5 },
 		{ Decoration::Star | Decoration::Color::Orange, 1 },{ Decoration::Star | Decoration::Color::Blue, 1 },
-		{ Decoration::Triangle | Decoration::Color::Orange, 2 },{ Decoration::Triangle | Decoration::Color::Blue, 2 },
-		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
-	generator->generate(0x17DC4, { { Decoration::Dot_Intersection,36 },{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 2 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
+		{ Decoration::Triangle | Decoration::Color::Orange, 1 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
+		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 1 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
+	generator->generate(0x17D74, {{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 5 },{ Decoration::Poly | Decoration::Color::Blue, 2 },
 		{ Decoration::Star | Decoration::Color::Orange, 1 },{ Decoration::Star | Decoration::Color::Blue, 1 },
-		{ Decoration::Triangle | Decoration::Color::Orange, 3 },{ Decoration::Triangle | Decoration::Color::Blue, 3 },
-		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 } });
+		{ Decoration::Triangle | Decoration::Color::Orange, 1 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
+		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 1 } });
+	generator->generate(0x17DAC, {{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 2 },{ Decoration::Poly | Decoration::Color::Blue, 5 },
+		{ Decoration::Star | Decoration::Color::Orange, 1 },{ Decoration::Star | Decoration::Color::Blue, 1 },
+		{ Decoration::Triangle | Decoration::Color::Orange, 1 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
+		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 1 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
+	generator->generate(0x17D9E, {{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 5 },{ Decoration::Poly | Decoration::Color::Blue, 2 },
+		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 1 },
+		{ Decoration::Star | Decoration::Color::Orange, 1 },{ Decoration::Star | Decoration::Color::Blue, 1 },
+		{ Decoration::Triangle | Decoration::Color::Orange, 1 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
+		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 1 } });
+	generator->generate(0x17DB9, {{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 2 },{ Decoration::Poly | Decoration::Color::Blue, 3 },
+		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 1 },
+		{ Decoration::Star | Decoration::Color::Orange, 1 },{ Decoration::Star | Decoration::Color::Blue, 1 },
+		{ Decoration::Triangle | Decoration::Color::Orange, 1 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
+		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 1 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
+	generator->generate(0x17D9C, { { Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 4 },
+		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 1 },
+		{ Decoration::Star | Decoration::Color::Orange, 1 },{ Decoration::Star | Decoration::Color::Blue, 1 },
+		{ Decoration::Triangle | Decoration::Color::Orange, 1 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
+		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 1 } });
+	generator->generate(0x17DC2, {{ Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 4 },
+		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 1 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
+		{ Decoration::Star | Decoration::Color::Orange, 1 },{ Decoration::Star | Decoration::Color::Blue, 1 },
+		{ Decoration::Triangle | Decoration::Color::Orange, 1 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
+		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 1 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
+	generator->generate(0x17DC4, { { Decoration::Poly | Decoration::Can_Rotate | Decoration::Color::Orange, 1 },{ Decoration::Poly | Decoration::Color::Blue, 4 },
+		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 1 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Orange, 1 },
+		{ Decoration::Star | Decoration::Color::Orange, 1 },{ Decoration::Star | Decoration::Color::Blue, 1 },
+		{ Decoration::Triangle | Decoration::Color::Orange, 1 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
+		{ Decoration::Stone | Decoration::Color::Orange, 1 },{ Decoration::Stone | Decoration::Color::Blue, 1 } });
 	generator->removeFlagOnce(Generate::Config::TreehouseLayout);
-	generator->generate(0x0A182, Decoration::Star | Decoration::Color::Orange,3, Decoration::Triangle | Decoration::Color::Orange, 6, Decoration::Stone | Decoration::Color::Orange, 2, Decoration::Dot, 10);
+	generator->setGridSize(8, 8);
+	generator->generate(0x0A182, Decoration::Star | Decoration::Color::Orange, 5, Decoration::Triangle | Decoration::Color::Orange, 10, Decoration::Stone | Decoration::Color::Orange, 4, Decoration::Star | Decoration::Color::Magenta, 3, Decoration::Triangle | Decoration::Color::Magenta, 5, Decoration::Stone | Decoration::Color::Magenta, 3, Decoration::Dot, 12);
 	//Pink Bridge 1
 	generator->setFlag(Generate::Config::TreehouseColors);
 	generator->setFlag(Generate::Config::WriteDotColor);
@@ -2010,6 +2013,7 @@ void PuzzleList::GenerateTownH()
 	//Blue Symmetry
 	generator->setFlag(Generate::Config::BigShapes);
 	generator->setFlag(Generate::Config::DisconnectShapes);
+	generator->setFlag(Generate::Config::RequireCombineShapes);
 	generator->setGridSize(7, 7);
 	generator->pathWidth = 0.6f;
 	generator->setSymmetry(Panel::Symmetry::Rotational);
@@ -2024,15 +2028,18 @@ void PuzzleList::GenerateTownH()
 	generator->setSymbol(Decoration::Start, 0, 14); generator->setSymbol(Decoration::Start, 14, 0);
 	generator->setSymbol(Decoration::Exit, 0, 0); generator->setSymbol(Decoration::Exit, 14, 14);
 	generator->generate(0x28ACA, Decoration::Poly | Decoration::Color::Orange, 7);
-	generator->setSymmetry(Panel::Symmetry::Rotational);
-	generator->setFlag(Generate::Config::RequireCombineShapes);
+	generator->setSymmetry(Panel::Symmetry::RotateRight);
 	generator->setSymbol(Decoration::Start, 0, 14); generator->setSymbol(Decoration::Start, 14, 0);
-	generator->setSymbol(Decoration::Exit, 0, 0); generator->setSymbol(Decoration::Exit, 14, 14);
+	generator->setSymbol(Decoration::Start, 0, 0); generator->setSymbol(Decoration::Start, 14, 14);
+	generator->setSymbol(Decoration::Exit, 4, 0); generator->setSymbol(Decoration::Exit, 0, 10);
+	generator->setSymbol(Decoration::Exit, 14, 4); generator->setSymbol(Decoration::Exit, 10, 14);
 	generator->generate(0x28ACB, Decoration::Poly | Decoration::Color::Orange, 5);
-	generator->setSymmetry(Panel::Symmetry::Rotational);
+	generator->setSymmetry(Panel::Symmetry::RotateLeft);
 	generator->setSymbol(Decoration::Start, 0, 14); generator->setSymbol(Decoration::Start, 14, 0);
-	generator->setSymbol(Decoration::Exit, 0, 0); generator->setSymbol(Decoration::Exit, 14, 14);
-	generator->generate(0x28ACC, Decoration::Poly | Decoration::Color::Orange, 6);
+	generator->setSymbol(Decoration::Start, 0, 0); generator->setSymbol(Decoration::Start, 14, 14);
+	generator->setSymbol(Decoration::Exit, 10, 0); generator->setSymbol(Decoration::Exit, 0, 4);
+	generator->setSymbol(Decoration::Exit, 14, 10); generator->setSymbol(Decoration::Exit, 4, 14);
+	generator->generate(0x28ACC, Decoration::Poly | Decoration::Color::Orange, 5);
 	generator->resetConfig();
 	//Glass Door
 	generator->setGridSize(6, 6);
