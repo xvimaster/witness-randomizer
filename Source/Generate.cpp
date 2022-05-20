@@ -1716,14 +1716,37 @@ bool Generate::place_newsymbols(int color, int amount)
 			return false;
 		Point pos = pick_random(open);
 		open.erase(pos);
-		int fails = 0;
-		while (fails++ < 20) { //Keep picking random directions until one works
-			int choice = (_parity == -1 ? Random::rand() % 8 : Random::rand() % 4);
-			set(pos, Decoration::NewSymbols | color | (choice << 16));//0x10(choice¨equals direction)000(color)
-			_openpos.erase(pos);
-			amount--;
-			break;
+
+		std::set<Point> result;
+		std::set<Point> region = get_region(pos);
+		std::set<Point> nearby = {
+			pos + Point(2,0),pos + Point(0,2),pos + Point(0,-2), pos + Point(-2,0),
+			pos + Point(2,2), pos + Point(-2,2), pos + Point(-2,-2), pos + Point(2,-2),
+		};
+
+		int num = 0;
+		for (Point a : nearby) {
+			for (Point b : region) {
+				if (a.first == b.first && a.second == b.second) {
+					num += 1;
+				}
+			}
 		}
+		if ((pos.first == 1 || pos.first == _panel->_width - 2) && (pos.second == 1 || pos.second == _panel->_height - 2)) 
+		{
+			num = 3 - num;
+		}
+		else if ((pos.first == 1 || pos.first == _panel->_width - 2) || (pos.second == 1 || pos.second == _panel->_height - 2)) 
+		{
+			num = 5 - num;
+		}
+		else
+		{
+			num = 8 - num;
+		}
+		set(pos, Decoration::NewSymbols | color | num << 16);//0x10(num)000(color)
+		_openpos.erase(pos);
+		amount--;
 	}
 	return true;
 }

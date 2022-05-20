@@ -68,6 +68,8 @@ public:
 	virtual void action();
 	void initPath();
 	bool checkArrow(int x, int y);
+	bool checkNewSymbols(int x, int y, int symbol);
+	std::set<Point> get_region_for_watchdog(Point pos);
 	bool checkArrowPillar(int x, int y);
 
 	int id;

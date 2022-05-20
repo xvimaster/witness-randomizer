@@ -1044,7 +1044,9 @@ void PuzzleList::GenerateTutorialH()
 	specialCase->modifyGate(0x03629);
 	//Secret back area
 	generator->setGridSize(6, 6);
-	generator->generate(0x0A171, Decoration::NewSymbols, 4, Decoration::Arrow, 2, Decoration::Stone | Decoration::Color::Black, 4, Decoration::Stone | Decoration::Color::White, 4);
+	generator->setSymbol(Decoration::Start, 0, 12);
+	generator->setSymbol(Decoration::Exit, 12, 0);
+	generator->generate(0x0A171,Decoration::NewSymbols, 20, Decoration::Arrow, 1, Decoration::Stone | Decoration::Color::Black, 4, Decoration::Stone | Decoration::Color::White, 4);
 	//generator->generate(0x0A171, Decoration::Dot_Intersection, 49, Decoration::Triangle | Decoration::Color::Orange, 18, Decoration::Start, 2);
 	generator->setGridSize(6, 6);
 	generator->generate(0x04CA4, Decoration::Dot_Intersection, 49, Decoration::Poly | Decoration::Color::Yellow | Decoration::Can_Rotate, 2, Decoration::Poly | Decoration::Color::Yellow, 2, Decoration::Gap, 8);

@@ -627,9 +627,8 @@ void Panel::WriteIntersections() {
 	//NewSymbols (if applicable)
 	for (int y = 1; y < _height; y += 2) {
 		for (int x = 1; x < _width; x += 2) {
-			if ((_grid[x][y] & 0x1000000) == Decoration::NewSymbols)
-				render_arrow(x, y, 3, 3, intersections, intersectionFlags, polygons);
-				//render_newsymbols(x, y, 0x3, 0x3, intersections, intersectionFlags, polygons);
+			if ((_grid[x][y] & 0x1000700) == Decoration::NewSymbols)
+				render_newsymbols(x, y, (_grid[x][y] & 0xf0000) >> 16 , intersections, intersectionFlags, polygons);
 		}
 	}
 

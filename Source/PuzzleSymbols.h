@@ -32,6 +32,7 @@ struct PuzzleSymbols {
 		for (std::pair<int, int> s : symbolVec) {
 			if (s.first == Decoration::Gap || s.first == Decoration::Start || s.first == Decoration::Exit) symbols[s.first].push_back(s);
 			else if (s.first & Decoration::Dot) symbols[Decoration::Dot].push_back(s);
+			else if (s.first & Decoration::NewSymbols) symbols[Decoration::NewSymbols].push_back(s);
 			else symbols[s.first & 0x700].push_back(s);
 		}
 		style = 0;

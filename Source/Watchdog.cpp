@@ -129,6 +129,9 @@ bool ArrowWatchdog::checkArrow(int x, int y)
 		if (grid[x][y + 1] == PATH) count++;
 		return count == (symbol >> 16);
 	}
+	if ((symbol & 0x1000700) == Decoration::NewSymbols) {
+		return checkNewSymbols(x, y,symbol);
+	}
 	if ((symbol & 0x700) != Decoration::Arrow)
 		return true;
 	int targetCount = (symbol & 0xf000) >> 12;
@@ -143,6 +146,58 @@ bool ArrowWatchdog::checkArrow(int x, int y)
 		x += dir.first; y += dir.second;
 	}
 	return count == targetCount;
+}
+
+bool ArrowWatchdog::checkNewSymbols(int x, int y,int symbol) {
+	Point pos = Point(x, y);
+	std::set<Point> region = get_region_for_watchdog(Point(x, y));
+	std::set<Point> nearby = {
+			pos + Point(2,0),pos + Point(0,2),pos + Point(0,-2), pos + Point(-2,0),
+			pos + Point(2,2), pos + Point(-2,2), pos + Point(-2,-2), pos + Point(2,-2),
+	};
+	int num = 0;
+	for (Point a : nearby) {
+		for (Point b : region) {
+			if (a.first == b.first && a.second == b.second) {
+				num += 1;
+			}
+		}
+	}
+	if ((pos.first == 1 || pos.first == width - 2) && (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 3 - num;
+	}
+	else if ((pos.first == 1 || pos.first == width - 2) || (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 5 - num;
+	}
+	else
+	{
+		num = 8 - num;
+	}
+	return num == (0xf0000 & symbol) >> 16;
+}
+
+std::set<Point> ArrowWatchdog::get_region_for_watchdog(Point pos) {
+	std::set<Point> region;
+	std::vector<Point> check;
+	check.push_back(pos);
+	region.insert(pos);
+	while (check.size() > 0) {
+		Point p = check[check.size() - 1];
+		check.pop_back();
+		for (Point dir : { Point(0, 1), Point(0, -1), Point(1, 0), Point(-1, 0) }) {
+			Point p1 = p + dir;
+			if ((p1.first == 0 || p1.first + 1 == width) || p1.second == 0 || p1.second + 1 == height) continue;
+			if (grid[p1.first][p1.second] == PATH || grid[p1.first][p1.second] == OPEN) continue;
+			Point p2 = p + dir * 2;
+			if ((grid[p2.first][p2.second] & Decoration::Empty) == Decoration::Empty) continue;
+			if (region.insert(p2).second) {
+				check.push_back(p2);
+			}
+		}
+	}
+	return region;
 }
 
 bool ArrowWatchdog::checkArrowPillar(int x, int y)
