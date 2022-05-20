@@ -135,6 +135,7 @@ private:
 	bool place_triangles(int color, int amount, int targetCount);
 	int count_sides(Point pos);
 	bool place_arrows(int color, int amount, int targetCount);
+	bool place_newsymbols(int color, int amount);
 	int count_crossings(Point pos, Point dir);
 	bool place_erasers(const std::vector<int>& colors, const std::vector<int>& eraseSymbols);
 	bool combine_shapes(std::vector<Shape>& shapes);

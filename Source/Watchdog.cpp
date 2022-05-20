@@ -51,13 +51,13 @@ void ArrowWatchdog::action() {
 		for (int x = 1; x < width; x++) {
 			for (int y = 1; y < height; y++) {
 				if (!checkArrow(x, y)) {
-					//OutputDebugStringW(L"No");
+					OutputDebugStringW(L"No");
 					WritePanelData<int>(id, STYLE_FLAGS, { style | Panel::Style::HAS_TRIANGLES });
 					return;
 				}
 			}
 		}
-		//OutputDebugStringW(L"Yes");
+		OutputDebugStringW(L"Yes");
 		WritePanelData<int>(id, STYLE_FLAGS, { style & ~Panel::Style::HAS_TRIANGLES });
 	}
 }

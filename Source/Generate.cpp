@@ -610,6 +610,10 @@ bool Generate::place_all_symbols(PuzzleSymbols & symbols)
 		return false;
 	for (std::pair<int, int> s : symbols[Decoration::Arrow]) if (!place_arrows(s.first & 0xf, s.second, s.first >> 12))
 		return false;
+	//Added_Start
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbols]) if (!place_newsymbols(s.first & 0xf, s.second))
+		return false;
+	//Added_End
 	for (std::pair<int, int> s : symbols[Decoration::Star]) if (!place_stars(s.first & 0xf, s.second))
 		return false;
 	if (symbols.style == Panel::Style::HAS_STARS && hasFlag(Generate::Config::TreehouseLayout) && !checkStarZigzag(_panel))
@@ -1702,6 +1706,28 @@ bool Generate::place_arrows(int color, int amount, int targetCount)
 	}
 	return true;
 }
+
+//’Ç‰Á‚µ‚æ‚¤‚Æ‰æô‚µ‚Ä‚¢‚éŠÖ”B
+bool Generate::place_newsymbols(int color, int amount)
+{
+	std::set<Point> open = _openpos;
+	while (amount > 0) {
+		if (open.size() == 0)
+			return false;
+		Point pos = pick_random(open);
+		open.erase(pos);
+		int fails = 0;
+		while (fails++ < 20) { //Keep picking random directions until one works
+			int choice = (_parity == -1 ? Random::rand() % 8 : Random::rand() % 4);
+			set(pos, Decoration::NewSymbols | color | (choice << 16));//0x10(choice¨equals direction)000(color)
+			_openpos.erase(pos);
+			amount--;
+			break;
+		}
+	}
+	return true;
+}
+
 
 //Count the number of times the given vector is passed through (for the arrows)
 int Generate::count_crossings(Point pos, Point dir)

@@ -7,6 +7,28 @@
 #include "Quaternion.h"
 #include "../App/Version.h"
 
+void Special::generateSymmetryDespair(int id, Panel::Symmetry sym) {
+	generator->setFlagOnce(Generate::Config::WriteInvisible);
+	WritePanelData(id, PATTERN_POINT_COLOR, { 0.5f, 1, 0.5f, 1 });
+	WritePanelData(id, PATTERN_POINT_COLOR_A, { 0, 1, 1, 1 });
+	WritePanelData(id, PATTERN_POINT_COLOR_B, { 1, 1, 0, 1 });
+	WritePanelData(id, ACTIVE_COLOR, { 0, 1, 1, 1 });
+	WritePanelData(id, REFLECTION_PATH_COLOR, { 1, 1, 0, 1 });
+	generator->setGridSize(9, 9);
+	generator->setSymmetry(sym);
+	generator->setSymbol(Decoration::Exit, 0, 16); generator->setSymbol(Decoration::Exit, 18, 2);
+	generator->setSymbol(Decoration::Start, 0, 0); generator->setSymbol(Decoration::Start, 18, 18);
+	generator->setSymbol(Decoration::Exit, 2, 0); generator->setSymbol(Decoration::Exit, 16, 18);
+	generator->setSymbol(Decoration::Start, 18, 0); generator->setSymbol(Decoration::Start, 0, 18);
+	if (sym == Panel::Symmetry::Rotational) {
+		generator->generate(id, Decoration::Dot, 12, Decoration::Dot | Decoration::Color::Cyan, 6, Decoration::Dot | Decoration::Color::Yellow, 6,Decoration::Gap, 18);
+	}
+	else {
+		generator->generate(id, Decoration::Dot_Intersection, 12, Decoration::Dot_Intersection | Decoration::Color::Cyan, 6, Decoration::Dot_Intersection | Decoration::Color::Yellow, 6, Decoration::Triangle, 10);
+	}
+	generator->resetConfig();
+}
+
 void Special::generateSpecialSymMaze(std::shared_ptr<Generate> gen, int id) {
 	do {
 		gen->setFlagOnce(Generate::Config::DisableWrite);
