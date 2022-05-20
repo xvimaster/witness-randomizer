@@ -28,7 +28,12 @@ void Randomizer::GenerateNormal(HWND loadingHandle) {
 	puzzles->setLoadingHandle(loadingHandle);
 	puzzles->setSeed(seed, seedIsRNG, colorblind);
 	puzzles->GenerateAllN();
-	if (doubleMode) ShufflePanels(false);
+	if (doubleMode) ShufflePanels(true);
+	SetWindowText(loadingHandle, L"Starting watchdogs...");
+	Panel::StartArrowWatchdogs(_shuffleMapping);
+	SetWindowText(loadingHandle, L"Done!");
+	if (!Special::hasBeenRandomized())
+		MessageBox(GetActiveWindow(), L"Welcome to the abyss.", L"Go.", MB_OK);
 }
 
 void Randomizer::GenerateHard(HWND loadingHandle) {

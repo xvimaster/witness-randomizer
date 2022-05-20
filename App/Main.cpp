@@ -463,6 +463,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	CreateWindow(L"STATIC", L"Choose Difficuty:",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | SS_LEFT,
 		10, 15, 120, 16, hwnd, NULL, hInstance, NULL);
+	hwndNormal = CreateWindow(L"BUTTON", L"SYMBOLS - Original Symbols",
+		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON | BS_MULTILINE,
+		10, 35, 570, 35, hwnd, (HMENU)IDC_DIFFICULTY_NORMAL, hInstance, NULL);
 	hwndExpert = CreateWindow(L"BUTTON", L"DESPAIR - Let's enjoy it. Or just die.",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON | BS_MULTILINE,
 		10, 75, 570, 35, hwnd, (HMENU)IDC_DIFFICULTY_EXPERT, hInstance, NULL);

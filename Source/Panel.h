@@ -493,10 +493,6 @@ private:
 		};
 	};
 
-	std::vector<float>render_newsymbols(int x, int y, int num) {
-
-	};
-
 	std::shared_ptr<Memory> _memory;
 
 	int _width, _height;

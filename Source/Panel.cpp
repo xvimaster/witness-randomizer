@@ -291,6 +291,10 @@ void Panel::WriteDecorations() {
 				_style |= HAS_TRIANGLES | HAS_STONES;
 				arrows = true;
 			}
+			if ((_grid[x][y] & 0x1000700) == Decoration::Shape::NewSymbols) {
+				_style |= HAS_TRIANGLES | HAS_STONES;
+				arrows = true;
+			}
 		}
 	}
 	if (arrows) {

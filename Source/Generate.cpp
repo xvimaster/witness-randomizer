@@ -1707,7 +1707,6 @@ bool Generate::place_arrows(int color, int amount, int targetCount)
 	return true;
 }
 
-//’Ç‰Á‚µ‚æ‚¤‚Æ‰æô‚µ‚Ä‚¢‚éŠÖ”B
 bool Generate::place_newsymbols(int color, int amount)
 {
 	std::set<Point> open = _openpos;

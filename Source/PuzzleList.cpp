@@ -9,21 +9,21 @@ void PuzzleList::GenerateAllN()
 {
 	generator->setLoadingData(349);
 	CopyTargets();
-	GenerateTutorialH();
-	GenerateSymmetryH();
-	GenerateQuarryH();
-	//GenerateBunkerH(); //Can't randomize because panels refuse to render the symbols
-	GenerateSwampH();
-	GenerateTreehouseH();
-	GenerateTownH();
-	GenerateVaultsH();
-	GenerateTrianglePanelsH();
-	GenerateOrchardH();
-	GenerateDesertH();
-	GenerateKeepH();
-	GenerateJungleH();
-	GenerateMountainH();
-	GenerateCavesH();
+	GenerateTutorialN();
+	GenerateSymmetryN();
+	GenerateQuarryN();
+	//GenerateBunkerN(); //Can't randomize because panels refuse to render the symbols
+	GenerateSwampN();
+	GenerateTreehouseN();
+	GenerateTownN();
+	GenerateVaultsN();
+	GenerateTrianglePanelsN();
+	GenerateOrchardN();
+	GenerateDesertN();
+	GenerateKeepN();
+	GenerateJungleN();
+	GenerateMountainN();
+	GenerateCavesN();
 	SetWindowText(_handle, L"Done!");
 	//GenerateShadowsH(); //Can't randomize
 	//GenerateMonasteryH(); //Can't randomize
@@ -85,9 +85,8 @@ void PuzzleList::GenerateTutorialN()
 	Special::drawSeedAndDifficulty(0x00064, seed, false, !seedIsRNG, false);
 	Special::drawGoodLuckPanel(0x00182);
 	//Mazes
-	generator->setFlag(Generate::Config::FullGaps);
 	generator->setGridSize(6, 6);
-	generator->generateMaze(0x00293);
+	generator->generate(0x00293, Decoration::Start, 1, Decoration::NewSymbols, 20, Decoration::Exit, 1);
 	generator->setGridSize(9, 9);
 	generator->generateMaze(0x00295, 1, 1);
 	generator->setGridSize(12, 12);
@@ -1044,10 +1043,7 @@ void PuzzleList::GenerateTutorialH()
 	specialCase->modifyGate(0x03629);
 	//Secret back area
 	generator->setGridSize(6, 6);
-	generator->setSymbol(Decoration::Start, 0, 12);
-	generator->setSymbol(Decoration::Exit, 12, 0);
-	generator->generate(0x0A171,Decoration::NewSymbols, 20, Decoration::Arrow, 1, Decoration::Stone | Decoration::Color::Black, 4, Decoration::Stone | Decoration::Color::White, 4);
-	//generator->generate(0x0A171, Decoration::Dot_Intersection, 49, Decoration::Triangle | Decoration::Color::Orange, 18, Decoration::Start, 2);
+	generator->generate(0x0A171, Decoration::Dot_Intersection, 49, Decoration::Triangle | Decoration::Color::Orange, 18, Decoration::Start, 2);
 	generator->setGridSize(6, 6);
 	generator->generate(0x04CA4, Decoration::Dot_Intersection, 49, Decoration::Poly | Decoration::Color::Yellow | Decoration::Can_Rotate, 2, Decoration::Poly | Decoration::Color::Yellow, 2, Decoration::Gap, 8);
 	//Dots Tutorial
