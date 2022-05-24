@@ -291,10 +291,13 @@ void Panel::WriteDecorations() {
 				_style |= HAS_TRIANGLES | HAS_STONES;
 				arrows = true;
 			}
-			if ((_grid[x][y] & 0x1000700) == Decoration::Shape::NewSymbols) {
-				_style |= HAS_TRIANGLES | HAS_STONES;
-				arrows = true;
-			}
+			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols) arrows = true;
+			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols2) arrows = true;
+			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols3) arrows = true;
+			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols4) arrows = true;
+			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols5) arrows = true;
+			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols6) arrows = true;
+			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols7) arrows = true;
 		}
 	}
 	if (arrows) {
@@ -631,10 +634,59 @@ void Panel::WriteIntersections() {
 	//NewSymbols (if applicable)
 	for (int y = 1; y < _height; y += 2) {
 		for (int x = 1; x < _width; x += 2) {
-			if ((_grid[x][y] & 0x1000700) == Decoration::NewSymbols)
+			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols)
 				render_newsymbols(x, y, (_grid[x][y] & 0xf0000) >> 16 , intersections, intersectionFlags, polygons);
 		}
 	}
+
+	//NewSymbols2 (if applicable)
+	for (int y = 1; y < _height; y += 2) {
+		for (int x = 1; x < _width; x += 2) {
+			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols2)
+				render_newsymbols2(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+		}
+	}
+
+	//NewSymbols3 (if applicable)
+	for (int y = 1; y < _height; y += 2) {
+		for (int x = 1; x < _width; x += 2) {
+			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols3)
+				render_newsymbols3(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+		}
+	}
+
+	//NewSymbols4 (if applicable)
+	for (int y = 1; y < _height; y += 2) {
+		for (int x = 1; x < _width; x += 2) {
+			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols4)
+				render_newsymbols4(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+		}
+	}
+
+	//NewSymbols5 (if applicable)
+	for (int y = 1; y < _height; y += 2) {
+		for (int x = 1; x < _width; x += 2) {
+			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols5)
+				render_newsymbols5(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+		}
+	}
+
+	//NewSymbols6 (if applicable)
+	for (int y = 1; y < _height; y += 2) {
+		for (int x = 1; x < _width; x += 2) {
+			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols6)
+				render_newsymbols6(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+		}
+	}
+
+	//NewSymbols7 (if applicable)
+	for (int y = 1; y < _height; y += 2) {
+		for (int x = 1; x < _width; x += 2) {
+			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols7)
+				render_newsymbols7(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+		}
+	}
+
 
 	//Symmetry Data
 	if (id == 0x01D3F && symmetry == Symmetry::None || id == 0x00076 && symmetry == Symmetry::None) {

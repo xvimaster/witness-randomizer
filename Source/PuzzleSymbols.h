@@ -32,7 +32,13 @@ struct PuzzleSymbols {
 		for (std::pair<int, int> s : symbolVec) {
 			if (s.first == Decoration::Gap || s.first == Decoration::Start || s.first == Decoration::Exit) symbols[s.first].push_back(s);
 			else if (s.first & Decoration::Dot) symbols[Decoration::Dot].push_back(s);
-			else if (s.first & Decoration::NewSymbols) symbols[Decoration::NewSymbols].push_back(s);
+			else if (s.first == Decoration::NewSymbols) symbols[Decoration::NewSymbols].push_back(s);
+			else if (s.first == Decoration::NewSymbols7) symbols[Decoration::NewSymbols7].push_back(s);
+			else if (s.first == Decoration::NewSymbols6) symbols[Decoration::NewSymbols6].push_back(s);
+			else if (s.first == Decoration::NewSymbols5) symbols[Decoration::NewSymbols5].push_back(s);
+			else if (s.first == Decoration::NewSymbols4) symbols[Decoration::NewSymbols4].push_back(s);
+			else if (s.first == Decoration::NewSymbols3) symbols[Decoration::NewSymbols3].push_back(s);
+			else if (s.first == Decoration::NewSymbols2) symbols[Decoration::NewSymbols2].push_back(s);
 			else symbols[s.first & 0x700].push_back(s);
 		}
 		style = 0;
@@ -43,6 +49,7 @@ struct PuzzleSymbols {
 		if (any(Decoration::Triangle)) style |= Panel::Style::HAS_TRIANGLES;
 		if (any(Decoration::Arrow)) style |= Panel::Style::HAS_TRIANGLES;
 		if (any(Decoration::NewSymbols)) style |= Panel::Style::HAS_TRIANGLES;
+		if (any(Decoration::NewSymbols2)) style |= Panel::Style::HAS_TRIANGLES;
 	}
 };
 

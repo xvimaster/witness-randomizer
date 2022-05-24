@@ -69,7 +69,15 @@ public:
 	void initPath();
 	bool checkArrow(int x, int y);
 	bool checkNewSymbols(int x, int y, int symbol);
+	bool checkNewSymbols2(int x, int y, int symbol);
+	void DebugLog(int i);
+	bool checkNewSymbols3(int x, int y, int symbol);
+	bool checkNewSymbols4(int x, int y, int symbol);
+	bool checkNewSymbols5(int x, int y, int symbol);
+	bool checkNewSymbols6(int x, int y, int symbol);
+	bool checkNewSymbols7(int x, int y, int symbol);
 	std::set<Point> get_region_for_watchdog(Point pos);
+	std::set<int> get_symbols_in_region_for_watchdog(const std::set<Point>& region);
 	bool checkArrowPillar(int x, int y);
 
 	int id;

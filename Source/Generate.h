@@ -140,6 +140,15 @@ private:
 	bool place_erasers(const std::vector<int>& colors, const std::vector<int>& eraseSymbols);
 	bool combine_shapes(std::vector<Shape>& shapes);
 
+	bool place_newsymbols2(int color, int amount);
+	bool place_newsymbols3(int color, int amount);
+	bool place_newsymbols4(int color, int amount);
+	bool place_newsymbols5(int color, int amount);
+	std::set<Point> get_region_points(Point pos);
+	std::vector<int> get_region_grid_patterns(std::set<Point> points);
+	bool place_newsymbols6(int color, int amount);
+	bool place_newsymbols7(int color, int amount);
+
 	std::shared_ptr<Panel> _panel;
 	std::vector<std::vector<int>> _custom_grid;
 	int _width, _height;

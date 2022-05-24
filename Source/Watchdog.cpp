@@ -5,6 +5,8 @@
 #include "Watchdog.h"
 #include "Quaternion.h"
 #include <thread>
+#include <iostream>
+#include <stdlib.h>
 
 void Watchdog::start()
 {
@@ -129,8 +131,26 @@ bool ArrowWatchdog::checkArrow(int x, int y)
 		if (grid[x][y + 1] == PATH) count++;
 		return count == (symbol >> 16);
 	}
-	if ((symbol & 0x1000700) == Decoration::NewSymbols) {
+	if ((symbol & 0xF000700) == Decoration::NewSymbols) {
 		return checkNewSymbols(x, y,symbol);
+	}
+	else if ((symbol & 0xF000700) == Decoration::NewSymbols2) {
+		return checkNewSymbols2(x, y, symbol);
+	}
+	else if ((symbol & 0xF000700) == Decoration::NewSymbols3) {
+		return checkNewSymbols3(x, y, symbol);
+	}
+	else if ((symbol & 0xF000700) == Decoration::NewSymbols4) {
+		return checkNewSymbols4(x, y, symbol);
+	}
+	else if ((symbol & 0xF000700) == Decoration::NewSymbols5) {
+		return checkNewSymbols5(x, y, symbol);
+	}
+	else if ((symbol & 0xF000700) == Decoration::NewSymbols6) {
+		return checkNewSymbols6(x, y, symbol);
+	}
+	else if ((symbol & 0xF000700) == Decoration::NewSymbols7) {
+		return checkNewSymbols7(x, y, symbol);
 	}
 	if ((symbol & 0x700) != Decoration::Arrow)
 		return true;
@@ -149,6 +169,183 @@ bool ArrowWatchdog::checkArrow(int x, int y)
 }
 
 bool ArrowWatchdog::checkNewSymbols(int x, int y,int symbol) {
+	Point pos = Point(x, y);
+	std::set<Point> region = get_region_for_watchdog(Point(x, y));
+	std::set<Point> nearby = {
+			pos + Point(2,0),pos + Point(0,2),pos + Point(0,-2), pos + Point(-2,0),
+			pos + Point(2,2), pos + Point(-2,2), pos + Point(-2,-2), pos + Point(2,-2),
+	};
+	int num = 0;
+	for (Point a : nearby) {
+		for (Point b : region) {
+			if (a.first == b.first && a.second == b.second) {
+				num += 1;
+			}
+		}
+	}
+	if ((pos.first == 1 || pos.first == width - 2) && (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 3 - num;
+	}
+	else if ((pos.first == 1 || pos.first == width - 2) || (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 5 - num;
+	}
+	else
+	{
+		num = 8 - num;
+	}
+	return num == (0xf0000 & symbol) >> 16;
+}
+
+bool ArrowWatchdog::checkNewSymbols2(int x, int y, int symbol) {
+	if ((symbol & 0xf0000) >> 16 == 9) return true;
+	std::vector<Point> _8dir = { Point(0, 2), Point(0, -2), Point(2, 0), Point(-2, 0), Point(2, 2), Point(2, -2), Point(-2, -2), Point(-2, 2) };
+	Point dir = _8dir[(symbol & 0xf0000) >> 16];
+	OutputDebugStringW(L"ç¿ïW:(");
+	DebugLog(x);
+	OutputDebugStringW(L",");
+	DebugLog(y);
+	OutputDebugStringW(L") ï˚å¸:(");
+	DebugLog(dir.first);
+	OutputDebugStringW(L",");
+	DebugLog(dir.second);
+	OutputDebugStringW(L")\n");
+	std::set<Point> rival = {};
+	for (Point p : get_region_for_watchdog(Point(x, y))) {
+		OutputDebugStringW(L"åÛï‚:(");
+		DebugLog(p.first);
+		OutputDebugStringW(L",");
+		DebugLog(p.second);
+		OutputDebugStringW(L") ID:");
+		DebugLog(grid[p.first][p.second]);
+		OutputDebugStringW(L"\n");
+		if (((dir.first == 0 || (p.first - x) * dir.first >  0) && (dir.second == 0 || (p.second - y) * dir.second > 0))) {
+			if (!(grid[p.first][p.second] == 0x2090000 || grid[p.first][p.second]  == 0x600 || grid[p.first][p.second] == 0x0 || grid[p.first][p.second] == 0xA00)) return false;
+		}//ãÛîíîªíËÇ™ê≥ämÇ≈Ç»Ç¢
+	}
+	return true;
+}
+
+void ArrowWatchdog::DebugLog(int i) {
+	std::string s = std::to_string(i);
+	const char* mbs = s.data();
+	wchar_t* wcs;
+	size_t ret;
+	mbstowcs_s(&ret, nullptr, 0, mbs, s.length());
+	std::wstring ws(ret, 0);
+	mbstowcs_s(&ret, &ws[0], ret, mbs, s.length());
+	ws.resize(ret - 1);
+	OutputDebugStringW(ws.data());
+}
+
+bool ArrowWatchdog::checkNewSymbols3(int x, int y, int symbol) {
+	std::vector<Point> DIRECTIONS = { Point(0, 2), Point(0, -2), Point(2, 0), Point(-2, 0) };
+	for (Point dir : DIRECTIONS) {
+		int local_x = x + dir.first / 2;
+		int local_y = y + dir.second / 2;
+		bool flag = false;
+		while ((local_x >= 0 && local_x < width && local_y >= 0 && local_y < height) && !flag) {
+			if (grid[local_x][local_y] == PATH) flag = true;
+			local_x += dir.first; local_y += dir.second;
+		}
+		if (!flag) return false;
+	}
+	
+	return true;
+}
+
+bool ArrowWatchdog::checkNewSymbols4(int x, int y, int symbol) {
+	Point pos = Point(x, y);
+	std::set<Point> region = get_region_for_watchdog(Point(x, y));
+	std::set<Point> nearby = {
+			pos + Point(2,0),pos + Point(0,2),pos + Point(0,-2), pos + Point(-2,0),
+			pos + Point(2,2), pos + Point(-2,2), pos + Point(-2,-2), pos + Point(2,-2),
+	};
+	int num = 0;
+	for (Point a : nearby) {
+		for (Point b : region) {
+			if (a.first == b.first && a.second == b.second) {
+				num += 1;
+			}
+		}
+	}
+	if ((pos.first == 1 || pos.first == width - 2) && (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 3 - num;
+	}
+	else if ((pos.first == 1 || pos.first == width - 2) || (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 5 - num;
+	}
+	else
+	{
+		num = 8 - num;
+	}
+	return num == (0xf0000 & symbol) >> 16;
+}
+
+bool ArrowWatchdog::checkNewSymbols5(int x, int y, int symbol) {
+	Point pos = Point(x, y);
+	std::set<Point> region = get_region_for_watchdog(Point(x, y));
+	std::set<Point> nearby = {
+			pos + Point(2,0),pos + Point(0,2),pos + Point(0,-2), pos + Point(-2,0),
+			pos + Point(2,2), pos + Point(-2,2), pos + Point(-2,-2), pos + Point(2,-2),
+	};
+	int num = 0;
+	for (Point a : nearby) {
+		for (Point b : region) {
+			if (a.first == b.first && a.second == b.second) {
+				num += 1;
+			}
+		}
+	}
+	if ((pos.first == 1 || pos.first == width - 2) && (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 3 - num;
+	}
+	else if ((pos.first == 1 || pos.first == width - 2) || (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 5 - num;
+	}
+	else
+	{
+		num = 8 - num;
+	}
+	return num == (0xf0000 & symbol) >> 16;
+}
+
+bool ArrowWatchdog::checkNewSymbols6(int x, int y, int symbol) {
+	Point pos = Point(x, y);
+	std::set<Point> region = get_region_for_watchdog(Point(x, y));
+	std::set<Point> nearby = {
+			pos + Point(2,0),pos + Point(0,2),pos + Point(0,-2), pos + Point(-2,0),
+			pos + Point(2,2), pos + Point(-2,2), pos + Point(-2,-2), pos + Point(2,-2),
+	};
+	int num = 0;
+	for (Point a : nearby) {
+		for (Point b : region) {
+			if (a.first == b.first && a.second == b.second) {
+				num += 1;
+			}
+		}
+	}
+	if ((pos.first == 1 || pos.first == width - 2) && (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 3 - num;
+	}
+	else if ((pos.first == 1 || pos.first == width - 2) || (pos.second == 1 || pos.second == height - 2))
+	{
+		num = 5 - num;
+	}
+	else
+	{
+		num = 8 - num;
+	}
+	return num == (0xf0000 & symbol) >> 16;
+}
+
+bool ArrowWatchdog::checkNewSymbols7(int x, int y, int symbol) {
 	Point pos = Point(x, y);
 	std::set<Point> region = get_region_for_watchdog(Point(x, y));
 	std::set<Point> nearby = {
@@ -198,6 +395,14 @@ std::set<Point> ArrowWatchdog::get_region_for_watchdog(Point pos) {
 		}
 	}
 	return region;
+}
+
+std::set<int> ArrowWatchdog::get_symbols_in_region_for_watchdog(const std::set<Point>& region) {
+	std::set<int> symbols;
+	for (Point p : region) {
+		if (grid[p.first][p.second]) symbols.insert(grid[p.first][p.second]);
+	}
+	return symbols;
 }
 
 bool ArrowWatchdog::checkArrowPillar(int x, int y)
