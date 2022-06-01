@@ -74,8 +74,21 @@ public:
 	bool checkNewSymbols3(int x, int y, int symbol);
 	bool checkNewSymbols4(int x, int y, int symbol);
 	bool checkNewSymbols5(int x, int y, int symbol);
+	std::set<Point> get_region_points_fw(Point pos);
+	std::vector<int> get_region_grid_patterns_fw(std::set<Point> points);
 	bool checkNewSymbols6(int x, int y, int symbol);
+	int get(Point p);
+	bool check_it_is_corner(Point pos);
 	bool checkNewSymbols7(int x, int y, int symbol);
+	bool checkNewSymbols8(int x, int y, int symbol);
+	bool isSurrounded(Point pos, Point dir, int type);
+	bool checkNewSymbols9(int x, int y, int symbol);
+	bool checkNewSymbolsA(int x, int y, int symbol);
+	bool checkNewSymbolsB(int x, int y, int symbol);
+	bool checkNewSymbolsC(int x, int y, int symbol);
+	bool checkNewSymbolsD(int x, int y, int symbol);
+	bool checkNewSymbolsE(int x, int y, int symbol);
+	bool checkNewSymbolsF(int x, int y, int symbol);
 	std::set<Point> get_region_for_watchdog(Point pos);
 	std::set<int> get_symbols_in_region_for_watchdog(const std::set<Point>& region);
 	bool checkArrowPillar(int x, int y);
@@ -89,6 +102,8 @@ public:
 	int style;
 	int exitPos, exitPosSym, exitPoint;
 	std::vector<Point> DIRECTIONS;
+	template<class T>
+	T pick_random_fw(const std::set<T>& set);
 };
 
 class BridgeWatchdog : public Watchdog {

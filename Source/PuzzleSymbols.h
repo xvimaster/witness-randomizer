@@ -33,8 +33,27 @@ struct PuzzleSymbols {
 			if (s.first == Decoration::Gap || s.first == Decoration::Start || s.first == Decoration::Exit) symbols[s.first].push_back(s);
 			else if (s.first & Decoration::Dot) symbols[Decoration::Dot].push_back(s);
 			else if (s.first == Decoration::NewSymbols) symbols[Decoration::NewSymbols].push_back(s);
+			else if (s.first == Decoration::NewSymbolsF) symbols[Decoration::NewSymbolsF].push_back(s);
+			else if (s.first == Decoration::NewSymbolsE) symbols[Decoration::NewSymbolsE].push_back(s);
+			else if (s.first == Decoration::NewSymbolsD) symbols[Decoration::NewSymbolsD].push_back(s);
+			else if (s.first == Decoration::NewSymbolsC) symbols[Decoration::NewSymbolsC].push_back(s);
+			else if (s.first == Decoration::NewSymbolsB) symbols[Decoration::NewSymbolsB].push_back(s);
+			else if (s.first == Decoration::NewSymbolsA) symbols[Decoration::NewSymbolsA].push_back(s);
+			else if (s.first == Decoration::NewSymbols9) symbols[Decoration::NewSymbols9].push_back(s);
+			else if (s.first == Decoration::NewSymbols8) symbols[Decoration::NewSymbols8].push_back(s);
 			else if (s.first == Decoration::NewSymbols7) symbols[Decoration::NewSymbols7].push_back(s);
 			else if (s.first == Decoration::NewSymbols6) symbols[Decoration::NewSymbols6].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_B) symbols[Decoration::NewSymbols5_B].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_A) symbols[Decoration::NewSymbols5_A].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_9) symbols[Decoration::NewSymbols5_9].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_8) symbols[Decoration::NewSymbols5_8].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_7) symbols[Decoration::NewSymbols5_7].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_6) symbols[Decoration::NewSymbols5_6].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_5) symbols[Decoration::NewSymbols5_5].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_4) symbols[Decoration::NewSymbols5_4].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_3) symbols[Decoration::NewSymbols5_3].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_2) symbols[Decoration::NewSymbols5_2].push_back(s);
+			else if (s.first == Decoration::NewSymbols5_1) symbols[Decoration::NewSymbols5_1].push_back(s);
 			else if (s.first == Decoration::NewSymbols5) symbols[Decoration::NewSymbols5].push_back(s);
 			else if (s.first == Decoration::NewSymbols4) symbols[Decoration::NewSymbols4].push_back(s);
 			else if (s.first == Decoration::NewSymbols3) symbols[Decoration::NewSymbols3].push_back(s);
@@ -48,8 +67,6 @@ struct PuzzleSymbols {
 		if (any(Decoration::Poly)) style |= Panel::Style::HAS_SHAPERS;
 		if (any(Decoration::Triangle)) style |= Panel::Style::HAS_TRIANGLES;
 		if (any(Decoration::Arrow)) style |= Panel::Style::HAS_TRIANGLES;
-		if (any(Decoration::NewSymbols)) style |= Panel::Style::HAS_TRIANGLES;
-		if (any(Decoration::NewSymbols2)) style |= Panel::Style::HAS_TRIANGLES;
 	}
 };
 

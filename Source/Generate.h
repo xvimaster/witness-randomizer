@@ -143,11 +143,22 @@ private:
 	bool place_newsymbols2(int color, int amount);
 	bool place_newsymbols3(int color, int amount);
 	bool place_newsymbols4(int color, int amount);
-	bool place_newsymbols5(int color, int amount);
+	bool place_newsymbols5(int color, int amount,int shape);
+	void DebugLog(int i);
 	std::set<Point> get_region_points(Point pos);
 	std::vector<int> get_region_grid_patterns(std::set<Point> points);
 	bool place_newsymbols6(int color, int amount);
+	bool check_it_is_corner(Point pos);
 	bool place_newsymbols7(int color, int amount);
+	bool place_newsymbols8(int color, int amount);
+	bool isSurrounded(Point pos, Point dir, int type);
+	bool place_newsymbols9(int color, int amount);
+	bool place_newsymbolsA(int color, int amount);
+	bool place_newsymbolsB(int color, int amount);
+	bool place_newsymbolsC(int color, int amount);
+	bool place_newsymbolsD(int color, int amount);
+	bool place_newsymbolsE(int color, int amount);
+	bool place_newsymbolsF(int color, int amount);
 
 	std::shared_ptr<Panel> _panel;
 	std::vector<std::vector<int>> _custom_grid;

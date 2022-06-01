@@ -613,20 +613,38 @@ bool Generate::place_all_symbols(PuzzleSymbols & symbols)
 	//Added_Start
 	for (std::pair<int, int> s : symbols[Decoration::NewSymbols]) if (!place_newsymbols(s.first & 0xf, s.second))
 		return false;
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbols2]) if (!place_newsymbols2(s.first & 0xf, s.second))
+		return false;
 	for (std::pair<int, int> s : symbols[Decoration::NewSymbols3]) if (!place_newsymbols3(s.first & 0xf, s.second))
 		return false;
 	for (std::pair<int, int> s : symbols[Decoration::NewSymbols4]) if (!place_newsymbols4(s.first & 0xf, s.second))
 		return false;
-	for (std::pair<int, int> s : symbols[Decoration::NewSymbols5]) if (!place_newsymbols5(s.first & 0xf, s.second))
-		return false;
+	for (int t : {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}) {
+		for (std::pair<int, int> s : symbols[Decoration::NewSymbols5 | (t << 16)]) if (!place_newsymbols5(s.first & 0xf, s.second, t))
+			return false;
+	}
 	for (std::pair<int, int> s : symbols[Decoration::NewSymbols6]) if (!place_newsymbols6(s.first & 0xf, s.second))
 		return false;
 	for (std::pair<int, int> s : symbols[Decoration::NewSymbols7]) if (!place_newsymbols7(s.first & 0xf, s.second))
 		return false;
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbols8]) if (!place_newsymbols8(s.first & 0xf, s.second))
+		return false;
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbols9]) if (!place_newsymbols9(s.first & 0xf, s.second))
+		return false;
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbolsA]) if (!place_newsymbolsA(s.first & 0xf, s.second))
+		return false;
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbolsB]) if (!place_newsymbolsB(s.first & 0xf, s.second))
+		return false;
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbolsC]) if (!place_newsymbolsC(s.first & 0xf, s.second))
+		return false;
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbolsD]) if (!place_newsymbolsD(s.first & 0xf, s.second))
+		return false;
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbolsE]) if (!place_newsymbolsE(s.first & 0xf, s.second))
+		return false;
+	for (std::pair<int, int> s : symbols[Decoration::NewSymbolsF]) if (!place_newsymbolsF(s.first & 0xf, s.second))
+		return false;
 	//Added_End
 	for (std::pair<int, int> s : symbols[Decoration::Star]) if (!place_stars(s.first & 0xf, s.second))
-		return false;
-	for (std::pair<int, int> s : symbols[Decoration::NewSymbols2]) if (!place_newsymbols2(s.first & 0xf, s.second))
 		return false;
 	if (symbols.style == Panel::Style::HAS_STARS && hasFlag(Generate::Config::TreehouseLayout) && !checkStarZigzag(_panel))
 		return false;
@@ -1727,6 +1745,8 @@ bool Generate::place_newsymbols(int color, int amount)
 			return false;
 		Point pos = pick_random(open);
 		open.erase(pos);
+		if (pos.first == _panel->_width / 2 || Point::pillarWidth > 0 && pos.first == _panel->_width / 2 - 1)
+			continue; //Because of a glitch additional symbols in the center column won't draw right
 
 		std::set<Point> result;
 		std::set<Point> region = get_region(pos);
@@ -1960,29 +1980,36 @@ bool Generate::place_newsymbols2(int color, int amount)
 {
 	std::set<Point> open = _openpos;
 	int fails = 0;
-	while (amount > 0 && fails++ <= 200) {
-		if (open.size() == 0)
+	while (amount > 0) {
+		fails++;
+		if (open.size() == 0 || fails >= 200)
 			return false;
 		Point pos = pick_random(open);
-		open.erase(pos);
+		if (pos.first == _panel->_width / 2 || Point::pillarWidth > 0 && pos.first == _panel->_width / 2 - 1)
+			continue; //Because of a glitch additional symbols in the center column won't draw right
+
 		int choice = (_parity != -1 ? Random::rand() % 8 : Random::rand() % 4);
 		Point dir = _8DIRECTIONS2[choice];
 		bool flag = false;
-		int empty = 0;
+		int count = 0;
 		for (Point p : get_region(pos)) {
-			if (((p.first - pos.first) == 0 || (p.first - pos.first) * dir.first > 0) && ((p.second - pos.second) == 0 || (p.second - pos.second) * dir.second > 0) && (p.first != pos.first || p.second != pos.second)) {
-				if (!(get(p) == 0xA00 || get(p) == 0x0 || get(p) == 0x600)) flag = true;
-				else empty += 1;
+			if ((dir.first == 0 || (p.first - pos.first) * dir.first > 0) && (dir.second == 0 || (p.second - pos.second) * dir.second > 0)) {
+				if (!(get(p) == 0xA00 || get(p) == 0x0 || get(p) == 0x600) && (p.first != pos.first || p.second != pos.second)) flag = true;
+				else count += 1;
 			}
 		}
-		if (!flag && 1 <= empty <= 6) {
-			set(pos, Decoration::NewSymbols2 | color | choice << 16);//0x10(num)000(color)
+		int max = 2;
+		if (_width <= _height && _width >= 2) max = _width; else if(_height >= 2) max = _height;
+		if (!flag && 1 <= count && count < max) {
+			set(pos, Decoration::NewSymbols2 | color | choice << 16);
 			for (Point p : get_region(pos)) {
-				if ((dir.first == 0 || (p.first - pos.first) * dir.first > 0) && (dir.second == 0 || (p.second - pos.second) * dir.second > 0)) {
-					if ((get(p) == 0xA00 || get(p) == 0x0 || get(p) == 0x600)) set(p, Decoration::NewSymbols2 | color | 9 << 16);//0x10(num)000(color)
+				if ((dir.first == 0 || (p.first - pos.first) * dir.first > 0) && (dir.second == 0 || (p.second - pos.second) * dir.second > 0) && (p.first != pos.first || p.second != pos.second)) {
+					if ((get(p) == 0xA00 || get(p) == 0x0 || get(p) == 0x600)) set(p, Decoration::NewSymbols2 | 9 << 16);
+					open.erase(p);
 					_openpos.erase(p);
 				}
 			}
+			open.erase(pos);
 			_openpos.erase(pos);
 			amount--;
 		}
@@ -1997,6 +2024,10 @@ bool Generate::place_newsymbols3(int color, int amount)
 		if (open.size() == 0)
 			return false;
 		Point pos = pick_random(open);
+		open.erase(pos);
+		if (pos.first == _panel->_width / 2 || Point::pillarWidth > 0 && pos.first == _panel->_width / 2 - 1)
+			continue; //Because of a glitch additional symbols in the center column won't draw right
+
 		open.erase(pos);
 		int fails = 0;
 		while (fails++ < 30) {
@@ -2016,89 +2047,122 @@ bool Generate::place_newsymbols3(int color, int amount)
 
 bool Generate::place_newsymbols4(int color, int amount)
 {
-	std::set<Point> open = _openpos;
+	std::set<Point> open;
+	for (int x = 1; x < _width; x += 2) {
+		for (int y = 1; y < _height; y += 2) {
+			open.emplace(Point(x, y));
+		}
+	}
 	while (amount > 0) {
 		if (open.size() == 0)
 			return false;
 		Point pos = pick_random(open);
-		open.erase(pos);
-
-		std::set<Point> result;
-		std::set<Point> region = get_region(pos);
-		std::set<Point> nearby = {
-			pos + Point(2,0),pos + Point(0,2),pos + Point(0,-2), pos + Point(-2,0),
-			pos + Point(2,2), pos + Point(-2,2), pos + Point(-2,-2), pos + Point(2,-2),
-		};
-
-		int num = 0;
-		for (Point a : nearby) {
-			for (Point b : region) {
-				if (a.first == b.first && a.second == b.second) {
-					num += 1;
+		DebugLog(_openpos.count(pos));
+		if (_openpos.count(pos) >= 1) {
+			set(pos, Decoration::NewSymbols4 | color | amount << 16);
+		}
+		else{
+			bool flag = false;
+			for (Point p : get_region(pos)) {
+				if (_openpos.count(p) >= 1) {
+					flag = true;
 				}
+			};
+			if (flag) {
+				open.erase(pos);
+				continue;
+			}
+			else {
+				return false;
 			}
 		}
-		if ((pos.first == 1 || pos.first == _panel->_width - 2) && (pos.second == 1 || pos.second == _panel->_height - 2))
-		{
-			num = 3 - num;
-		}
-		else if ((pos.first == 1 || pos.first == _panel->_width - 2) || (pos.second == 1 || pos.second == _panel->_height - 2))
-		{
-			num = 5 - num;
-		}
-		else
-		{
-			num = 8 - num;
-		}
-		set(pos, Decoration::NewSymbols4 | color | num << 16);//0x10(num)000(color)
+		for (Point p :get_region(pos)) {
+			open.erase(p);
+		};
 		_openpos.erase(pos);
 		amount--;
 	}
-	return true;
+	return open.size() == 0;
 }
 
-bool Generate::place_newsymbols5(int color, int amount)
+bool Generate::place_newsymbols5(int color, int amount,int shape)
 {
 	std::set<Point> open = _openpos;
+	int fails = 0;
 	while (amount > 0) {
+		if (fails++ >= 50)
+			return false;
 		if (open.size() == 0)
 			return false;
 		Point pos = pick_random(open);
-		int pattern = Random::rand() % 13 + 1;
+		if (pos.first == _panel->_width / 2 || Point::pillarWidth > 0 && pos.first == _panel->_width / 2 - 1)
+			continue; //Because of a glitch additional symbols in the center column won't draw right
+		int pattern = Random::rand() % 11 + 1;
+		if (shape != 0) pattern = shape;
 		//0:X(null) 1:┗(OOCC) 2:┏(COOC) 3:┓(CCOO) 4:┛(OCCO) 5:┳(COOO) 6:┫(OCOO) 7:┻(OOCO) 8:┣(OOOC) 9:╋(OOOO) A:┃(OCOC) B:━(COCO) C:Gap_Column D:Gap_Row
 		std::set<Point> empty_region;
+		empty_region.insert(pos);
 		std::vector<int> region_data = get_region_grid_patterns(get_region_points(pos));
-		std::set<Point> symbols_data = get_region(pos);
-		for (Point p : symbols_data) {
-			if ((get(p) & 0xF000000) == Decoration::NewSymbols5) {
+		for (Point p : get_region(pos)) {
+			if ((get(p) & 0xF000700) == Decoration::NewSymbols5) {
 				region_data[(get(p) & 0xF0000) >> 16] -= 1;
 			}
-			else if ((get(p) == 0xA00 || get(p) == 0x0 || get(p) == 0x600)) {
+			else if ((get(p) == 0xA00 || get(p) == 0 || get(p) == 0x600) && !(p.first == _panel->_width / 2 || Point::pillarWidth > 0 && p.first == _panel->_width / 2 - 1)) {
 				empty_region.insert(p);
 			}
 		}
 
-		if (1 <= region_data[pattern] && region_data[pattern] <= amount) {
+		if (region_data[pattern] <= empty_region.size() && empty_region.size() <= amount) {
+			/*
+			OutputDebugStringW(L"パターン番号:");
+			DebugLog(pattern);
+
+			OutputDebugStringW(L",領域にあるパターンの数:");
+			DebugLog(region_data[pattern]);
+
+			OutputDebugStringW(L",領域にある空白の数:");
+			DebugLog(empty_region.size());
+
+			OutputDebugStringW(L",残りの記号数:");
+			*/
 			int count = region_data[pattern];
 			while (count > 0) {
 				Point position = pick_random(empty_region);
 				set(position, Decoration::NewSymbols5 | color | pattern << 16);//0x10(num)000(color)
+				empty_region.erase(position);
 				_openpos.erase(position);
+				open.erase(position);
 				amount--;
 				count--;
+				/*
+				OutputDebugStringW(L"座標:(");
+				DebugLog(position.first);
+				OutputDebugStringW(L",");
+				DebugLog(position.second);
+				OutputDebugStringW(L")");
+				*/
 			}
 		}
 	}
 	return true;
 }
 
+void Generate::DebugLog(int i) {
+	std::string s = std::to_string(i);
+	const char* mbs = s.data();
+	size_t ret;
+	mbstowcs_s(&ret, nullptr, 0, mbs, s.length());
+	std::wstring ws(ret, 0);
+	mbstowcs_s(&ret, &ws[0], ret, mbs, s.length());
+	ws.resize(ret - 1);
+	OutputDebugStringW(ws.data());
+}
+
 std::set<Point> Generate::get_region_points(Point pos) {
 	std::set<Point> result;
-	for (Point a : get_region_points(pos)) {
+	for (Point a : get_region(pos)) {
 		for (Point dir : _8DIRECTIONS1) {
-			if (get(a + dir) == OPEN) {
-				result.insert(a + dir);
-			}
+			result.insert(a + dir);
 		}
 	}
 	return result;
@@ -2139,10 +2203,13 @@ std::vector<int> Generate::get_region_grid_patterns(std::set<Point> points) {
 			{ true, true, true, false },
 			{ true, true, true, true },
 		};
-		int count = 0;
 
-		for (Point dir : _DIRECTIONS1) {
-			if (get(p + dir) == OPEN) {
+		int count = 0;
+		for (Point dir : {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)}) {
+			if ((p + dir).first < 0 || (p + dir).second < 0 || (p + dir).first >= _width || (p + dir).second >= _height || get(p) == PATH)
+			{
+				_4dir[count] = false;
+			}else if (get(p + dir) != PATH) {
 				_4dir[count] = true;
 			}
 			count++;
@@ -2159,6 +2226,7 @@ std::vector<int> Generate::get_region_grid_patterns(std::set<Point> points) {
 	return result;
 }
 
+//Anti-triangle 
 bool Generate::place_newsymbols6(int color, int amount)
 {
 	std::set<Point> open = _openpos;
@@ -2167,39 +2235,57 @@ bool Generate::place_newsymbols6(int color, int amount)
 			return false;
 		Point pos = pick_random(open);
 		open.erase(pos);
-
-		std::set<Point> result;
-		std::set<Point> region = get_region(pos);
-		std::set<Point> nearby = {
-			pos + Point(2,0),pos + Point(0,2),pos + Point(0,-2), pos + Point(-2,0),
-			pos + Point(2,2), pos + Point(-2,2), pos + Point(-2,-2), pos + Point(2,-2),
-		};
-
+		if (pos.first == _panel->_width / 2 || Point::pillarWidth > 0 && pos.first == _panel->_width / 2 - 1)
+			continue; //Because of a glitch additional symbols in the center column won't draw right
 		int num = 0;
-		for (Point a : nearby) {
-			for (Point b : region) {
-				if (a.first == b.first && a.second == b.second) {
-					num += 1;
-				}
+		for (Point c : {Point(1, 1), Point(1, -1), Point(-1, -1), Point(-1, 1)}) {
+
+			if (check_it_is_corner(pos + c)) {
+				num += 1;
 			}
 		}
-		if ((pos.first == 1 || pos.first == _panel->_width - 2) && (pos.second == 1 || pos.second == _panel->_height - 2))
-		{
-			num = 3 - num;
+		if (num >= 1) {
+			set(pos, Decoration::NewSymbols6 | color | num << 16);//0x10(num)000(color)
+			_openpos.erase(pos);
+			amount--;
 		}
-		else if ((pos.first == 1 || pos.first == _panel->_width - 2) || (pos.second == 1 || pos.second == _panel->_height - 2))
-		{
-			num = 5 - num;
-		}
-		else
-		{
-			num = 8 - num;
-		}
-		set(pos, Decoration::NewSymbols6 | color | num << 16);//0x10(num)000(color)
-		_openpos.erase(pos);
-		amount--;
 	}
 	return true;
+}
+
+bool Generate::check_it_is_corner(Point pos) {
+	std::vector<bool> _4dir = { false,false,false,false };
+	int i = 0;
+	for (Point c : {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)}) {
+		if ((pos + c).first < 0 || (pos + c).second < 0 || (pos + c).first >= _width || (pos + c).second >= _height)
+		{
+			_4dir[i] = false;
+		}
+		else if (get(pos + c) == PATH) {
+			_4dir[i] = true;
+		}
+		i++;
+	}
+
+	std::vector<std::vector<bool>> data = {
+		{ true, true, false, false },
+		{ false, true, true, false },
+		{ false, false, true, true },
+		{ true, false, false, true },
+		{ false, true, true, true },
+		{ true, false, true, true },
+		{ true, true, false, true },
+		{ true, true, true, false },
+		{ true, true, true, true },
+	};
+
+	for (std::vector<bool> d : data) {
+		if (_4dir == d)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool Generate::place_newsymbols7(int color, int amount)
@@ -2210,38 +2296,115 @@ bool Generate::place_newsymbols7(int color, int amount)
 			return false;
 		Point pos = pick_random(open);
 		open.erase(pos);
+		if (pos.first == _panel->_width / 2 || Point::pillarWidth > 0 && pos.first == _panel->_width / 2 - 1)
+			continue; //Because of a glitch additional symbols in the center column won't draw right
 
-		std::set<Point> result;
-		std::set<Point> region = get_region(pos);
-		std::set<Point> nearby = {
-			pos + Point(2,0),pos + Point(0,2),pos + Point(0,-2), pos + Point(-2,0),
-			pos + Point(2,2), pos + Point(-2,2), pos + Point(-2,-2), pos + Point(2,-2),
-		};
-
-		int num = 0;
-		for (Point a : nearby) {
-			for (Point b : region) {
-				if (a.first == b.first && a.second == b.second) {
-					num += 1;
+		int targetCount = 0;
+		int direct_num = Random::rand() % 8;
+		Point dir = _8DIRECTIONS2[direct_num];
+		std::set<Point> pointset = get_region(pos);
+		int x = pos.first;
+		int y = pos.second;
+		while (x >= 0 && x < _width && y >= 0 && y < _height) {
+			x += dir.first; y += dir.second;
+			for (Point p : pointset) {
+				if (p == Point(x, y)) {
+					targetCount += 1;
 				}
 			}
 		}
-		if ((pos.first == 1 || pos.first == _panel->_width - 2) && (pos.second == 1 || pos.second == _panel->_height - 2))
-		{
-			num = 3 - num;
+		if (1 <= targetCount && targetCount <= 4) {
+			set(pos, Decoration::NewSymbols7 | targetCount << 16 | direct_num << 12 | color);//0x70(num)(dir)00(color)
+			_openpos.erase(pos);
+			amount--;
 		}
-		else if ((pos.first == 1 || pos.first == _panel->_width - 2) || (pos.second == 1 || pos.second == _panel->_height - 2))
-		{
-			num = 5 - num;
-		}
-		else
-		{
-			num = 8 - num;
-		}
-		set(pos, Decoration::NewSymbols7 | color | num << 16);//0x10(num)000(color)
-		_openpos.erase(pos);
-		amount--;
 	}
 	return true;
 }
 
+bool Generate::place_newsymbols8(int color, int amount)
+{
+	std::set<Point> open = _openpos;
+	int fails = 0;
+	while (amount > 0) {
+		if (open.size() == 0)
+			return false;
+		Point pos = pick_random(open);
+		open.erase(pos);
+		if (pos.first == _panel->_width / 2 || Point::pillarWidth > 0 && pos.first == _panel->_width / 2 - 1)
+			continue; //Because of a glitch additional symbols in the center column won't draw right
+		int choice = (_parity != -1 ? Random::rand() % 8 : Random::rand() % 4);
+		Point dir = _8DIRECTIONS1[choice];
+		bool flag = false;
+
+		if (isSurrounded(pos, dir, 2)) {
+			set(pos, Decoration::NewSymbols8 | color | choice << 16);
+			_openpos.erase(pos);
+			amount--;
+		}
+	}
+	return true;
+}
+
+bool Generate::isSurrounded(Point pos, Point dir,int type) {
+	std::vector<Point> spread;
+	if (dir.first == 0) {
+		spread = { {-1, 0} , {1, 0} };
+	}
+	else {
+		spread = { {0, -1} , {0, 1} };
+	}
+	if (!(pos.first >= 0 && pos.first < _width && pos.second >= 0 && pos.second < _height)) {
+		return false;
+	}
+	for (int i : {0, 1}) {
+		if (get(pos + spread[i]) != PATH && (type == i || type == 2)) {
+			if (!isSurrounded(pos + (spread[i] * 2), dir, i)) {
+				return false;
+			}
+		}
+	}
+
+	if (get(pos + dir) != PATH) {
+		if (!isSurrounded(pos + (dir * 2), dir, 2)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool Generate::place_newsymbols9(int color, int amount)
+{
+	return true;
+}
+
+bool Generate::place_newsymbolsA(int color, int amount)
+{
+	return true;
+}
+
+bool Generate::place_newsymbolsB(int color, int amount)
+{
+	return true;
+}
+
+bool Generate::place_newsymbolsC(int color, int amount)
+{
+	return true;
+}
+
+bool Generate::place_newsymbolsD(int color, int amount)
+{
+	return true;
+}
+
+bool Generate::place_newsymbolsE(int color, int amount)
+{
+	return true;
+}
+
+bool Generate::place_newsymbolsF(int color, int amount)
+{
+	return true;
+}

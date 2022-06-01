@@ -291,13 +291,13 @@ void Panel::WriteDecorations() {
 				_style |= HAS_TRIANGLES | HAS_STONES;
 				arrows = true;
 			}
-			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols) arrows = true;
-			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols2) arrows = true;
-			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols3) arrows = true;
-			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols4) arrows = true;
-			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols5) arrows = true;
-			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols6) arrows = true;
-			if ((_grid[x][y] & 0xF000700) == Decoration::Shape::NewSymbols7) arrows = true;
+
+			for (int symbol : {Decoration::Shape::NewSymbols, Decoration::Shape::NewSymbols2, Decoration::Shape::NewSymbols3, Decoration::Shape::NewSymbols4, Decoration::Shape::NewSymbols5, Decoration::Shape::NewSymbols6, Decoration::Shape::NewSymbols7, Decoration::Shape::NewSymbols8, Decoration::Shape::NewSymbols9, Decoration::Shape::NewSymbolsA, Decoration::Shape::NewSymbolsB, Decoration::Shape::NewSymbolsC, Decoration::Shape::NewSymbolsD, Decoration::Shape::NewSymbolsE, Decoration::Shape::NewSymbolsF}) {
+				if ((_grid[x][y] & 0xF000700) == symbol) {
+					_style |= HAS_TRIANGLES | HAS_STONES;
+					arrows = true;
+				}
+			}
 		}
 	}
 	if (arrows) {
@@ -623,6 +623,21 @@ void Panel::WriteIntersections() {
 		}
 	}
 
+	for (int y = 1; y < _height; y += 2) {
+		for (int x = 1; x < _width; x += 2) {
+			std::string s = std::to_string(_grid[x][y]);
+			const char* mbs = s.data();
+			size_t ret;
+			mbstowcs_s(&ret, nullptr, 0, mbs, s.length());
+			std::wstring ws(ret, 0);
+			mbstowcs_s(&ret, &ws[0], ret, mbs, s.length());
+			ws.resize(ret - 1);
+			OutputDebugStringW(ws.data());
+			OutputDebugStringW(L",");
+		}
+	}
+
+
 	//Arrows (if applicable)
 	for (int y = 1; y < _height; y += 2) {
 		for (int x = 1; x < _width; x += 2) {
@@ -659,7 +674,7 @@ void Panel::WriteIntersections() {
 	for (int y = 1; y < _height; y += 2) {
 		for (int x = 1; x < _width; x += 2) {
 			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols4)
-				render_newsymbols4(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+				render_newsymbols4(x, y, (_grid[x][y] & 0xff0000) >> 16, intersections, intersectionFlags, polygons);
 		}
 	}
 
@@ -683,10 +698,17 @@ void Panel::WriteIntersections() {
 	for (int y = 1; y < _height; y += 2) {
 		for (int x = 1; x < _width; x += 2) {
 			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols7)
-				render_newsymbols7(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+				render_newsymbols7(x, y, (_grid[x][y] & 0xf0000) >> 16, (_grid[x][y] & 0x0f000) >> 12, intersections, intersectionFlags, polygons);
 		}
 	}
 
+	//NewSymbols8 (if applicable)
+	for (int y = 1; y < _height; y += 2) {
+		for (int x = 1; x < _width; x += 2) {
+			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols8)
+				render_newsymbols8(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+		}
+	}
 
 	//Symmetry Data
 	if (id == 0x01D3F && symmetry == Symmetry::None || id == 0x00076 && symmetry == Symmetry::None) {
