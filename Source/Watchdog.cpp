@@ -512,7 +512,40 @@ bool ArrowWatchdog::isSurrounded(Point pos, Point dir, int type) {
 	}
 
 bool ArrowWatchdog::checkNewSymbols9(int x, int y, int symbol) {
-	return true;
+	int a = 0;
+	std::vector<int> distance = { INT_MAX, INT_MAX , INT_MAX , INT_MAX };
+	for (Point dir : {Point(2, 0), Point(-2, 0), Point(0, 2), Point(0, -2) }) {//DASW
+		int count = 0;
+		int x_tmp = x + dir.first / 2;
+		int y_tmp = y + dir.second / 2;
+		while (x_tmp >= 0 && x_tmp < width && y_tmp >= 0 && y_tmp < height && distance[a] == INT_MAX) {
+			if (get(Point(x_tmp, y_tmp)) == PATH) {
+				distance[a] = count;
+			}
+			x_tmp += dir.first; y_tmp += dir.second; count++;
+		}
+		a++;
+	}
+	std::vector<int> minbool = { 0, 0, 0, 0 };
+	int min = INT_MAX;
+	for (int v : distance) {
+		if (v <= min) min = v;
+	}
+	if (min == INT_MAX) return false;
+	a = 0;
+	for (int v : distance) {
+		if (v == min) {
+			minbool[a] = 1;
+		}
+		a++;
+	}
+
+	int num = minbool[0] * 8 + minbool[1] * 4 + minbool[2] * 2 + minbool[3];
+
+	if (num == 0) {
+		num = 15;
+	}
+	return num == ((symbol & 0xf0000) >> 16);
 }
 
 bool ArrowWatchdog::checkNewSymbolsA(int x, int y, int symbol) {

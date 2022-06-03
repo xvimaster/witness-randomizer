@@ -1108,8 +1108,85 @@ private:
 		};
 	};
 
-	void render_newsymbols9(int x, int y, int dir, std::vector<float>& intersections, std::vector<int>& intersectionFlags, std::vector<int>& polygons) {
+	void render_newsymbols9(int x, int y, int type, std::vector<float>& intersections, std::vector<int>& intersectionFlags, std::vector<int>& polygons) {
+		std::vector<float> positions = {};
+		std::vector<int> polys = {};
+		std::vector<float> up = { 
+			0.5f, 0.9f,
+			0.6f, 0.8f,
+			0.4f, 0.8f,
+			0.55f, 0.8f,
+			0.45f, 0.8f,
+			0.55f, 0.45f,
+			0.45f, 0.45f,
+			};
+		std::vector<float> down = {
+			0.5f, 0.1f,
+			0.6f, 0.2f,
+			0.4f, 0.2f,
+			0.55f, 0.2f,
+			0.45f, 0.2f,
+			0.55f, 0.55f,
+			0.45f, 0.55f,
+		};
+		std::vector<float> left = {
+			0.1f, 0.5f,
+			0.2f, 0.6f,
+			0.2f, 0.4f,
+			0.2f, 0.55f,
+			0.2f, 0.45f,
+			0.55f, 0.55f,
+			0.55f, 0.45f,
+		};
+		std::vector<float> right = {
+			0.9f, 0.5f,
+			0.8f, 0.6f,
+			0.8f, 0.4f,
+			0.8f, 0.55f,
+			0.8f, 0.45f,
+			0.45f, 0.55f,
+			0.45f, 0.45f,
+		};
+		std::vector<int> polys_basic = { 0, 1, 2, 0, 3, 4, 6, 0, 3, 5, 6, 0};
+		std::vector<std::vector<float>> positions_list = { up,down,left,right };
 
+		//shouldn't touch it.
+		for (int i = 0; i < 4; i++) {
+			if ((type >> i) % 2 == 1) {
+				positions.insert(positions.end(), positions_list[i].begin(), positions_list[i].end());
+			};
+		};
+		for (int i = 0; i < positions.size() / 2; i += 7)
+		{
+			for (int j = 0; j < polys_basic.size(); j++) {
+				if (j % 4 == 3) {
+					polys.push_back(0);
+				}
+				else {
+					polys.push_back(polys_basic[j] + i);
+				}
+			}
+		}
+		for (int i = 0; i < positions.size(); i += 2) {
+			//Translate to center
+			positions[i] -= 0.5f;
+			positions[i + 1] -= 0.5f;
+			//Scale
+			positions[i] *= unitHeight * 1.5f;
+			positions[i + 1] *= unitHeight * 1.5f;
+			//Translate to correct position
+			positions[i] += intersections[xy_to_loc(x, y) * 2] + unitWidth;
+			positions[i + 1] += intersections[xy_to_loc(x, y) * 2 + 1] - unitWidth;
+		};
+		int baseIndex = static_cast<int>(intersectionFlags.size());
+
+		for (int i = 0; i < positions.size(); i++) {
+			intersections.push_back(positions[i]);
+			if (i % 2 == 0) intersectionFlags.push_back(IntersectionFlags::NO_POINT);
+		};
+		for (int i = 0; i < polys.size(); i++) {
+			polygons.push_back(polys[i] + baseIndex);
+		};
 	};	
 	
 	void render_newsymbolsA(int x, int y, int dir, std::vector<float>& intersections, std::vector<int>& intersectionFlags, std::vector<int>& polygons) {

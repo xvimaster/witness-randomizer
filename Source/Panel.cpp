@@ -710,6 +710,14 @@ void Panel::WriteIntersections() {
 		}
 	}
 
+	//NewSymbols9 (if applicable)
+	for (int y = 1; y < _height; y += 2) {
+		for (int x = 1; x < _width; x += 2) {
+			if ((_grid[x][y] & 0xF000700) == Decoration::NewSymbols9)
+				render_newsymbols9(x, y, (_grid[x][y] & 0xf0000) >> 16, intersections, intersectionFlags, polygons);
+		}
+	}
+
 	//Symmetry Data
 	if (id == 0x01D3F && symmetry == Symmetry::None || id == 0x00076 && symmetry == Symmetry::None) {
 		_style &= ~Style::SYMMETRICAL;

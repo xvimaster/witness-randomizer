@@ -2053,11 +2053,14 @@ bool Generate::place_newsymbols4(int color, int amount)
 			open.emplace(Point(x, y));
 		}
 	}
-	while (amount > 0) {
+
+	int fails = 0;
+	while (amount > 0 && fails++ <= 200) {
 		if (open.size() == 0)
 			return false;
 		Point pos = pick_random(open);
-		DebugLog(_openpos.count(pos));
+		if (pos.first == _panel->_width / 2 || Point::pillarWidth > 0 && pos.first == _panel->_width / 2 - 1)
+			continue; //Because of a glitch additional symbols in the center column won't draw right
 		if (_openpos.count(pos) >= 1) {
 			set(pos, Decoration::NewSymbols4 | color | amount << 16);
 		}
@@ -2376,6 +2379,48 @@ bool Generate::isSurrounded(Point pos, Point dir,int type) {
 
 bool Generate::place_newsymbols9(int color, int amount)
 {
+	std::set<Point> open = _openpos;
+	while (amount > 0) {
+		if (open.size() == 0)
+			return false;
+		Point pos = pick_random(open);
+		open.erase(pos);
+		if (pos.first == _panel->_width / 2 || Point::pillarWidth > 0 && pos.first == _panel->_width / 2 - 1)
+			continue; //Because of a glitch additional symbols in the center column won't draw right
+		int a = 0;
+		std::vector<int> distance = { INT_MAX, INT_MAX , INT_MAX , INT_MAX };
+		for (Point dir : {Point(2, 0), Point(-2, 0), Point(0, 2), Point(0, -2) }){//DASW
+			int count = 0;
+			int x = pos.first + dir.first / 2;
+			int y = pos.second + dir.second / 2;
+			while (x >= 0 && x < _width && y >= 0 && y < _height && distance[a] == INT_MAX) {
+				if (get(Point(x, y)) == PATH) {
+					distance[a] = count;
+				}
+				x += dir.first; y += dir.second; count++;
+			}
+			a++;
+		}
+		std::vector<int> minbool = { 0, 0, 0, 0 };
+		int min = INT_MAX;
+		for (int v : distance) {
+			if (v <= min) min = v;
+		}
+		if(min == INT_MAX) continue;
+		a = 0;
+		for (int v : distance) {
+			if (v == min) {
+				minbool[a] = 1;
+			}
+			a++;
+		}
+
+		int num = minbool[0] * 8 + minbool[1] * 4 + minbool[2] * 2 + minbool[3];
+		if (num == 0) continue;
+		set(pos, Decoration::NewSymbols9 | color | num << 16);//0x10(num)000(color)
+		_openpos.erase(pos);
+		amount--;
+	}
 	return true;
 }
 
