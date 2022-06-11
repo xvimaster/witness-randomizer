@@ -1,6 +1,6 @@
 # Witness Random Puzzle Generator
 
-### [Click Here to Download (ver 1.1.0)](https://github.com/chuukunn/witness-randomizer/releases/download/1.1.0/despair_randomizer_1.1.zip)
+### [Click Here to Download (ver 1.1.0)](https://github.com/chuukunn/witness-randomizer/releases/download/1.1.1/despair_randomizer_1.1.1.zip)
 
 #### For those who are not satisfied with Expert, I publish a randomizer that implements an even more difficult puzzle.
  Panels with left-right rotation, very many tetris, and arrows. I have created a difficulty level that will make all people despair.

@@ -102,11 +102,7 @@ void PuzzleList::GenerateTutorialN()
 	generator->setGridSize(6, 6);
 	generator->setSymbol(Decoration::Start, 0, 12);
 	generator->setSymbol(Decoration::Exit, 12, 0);
-	generator->generate(0x0A3B2, { { Decoration::Dot_Intersection, 49 },{ Decoration::Poly | Decoration::Color::Magenta, 1 },{ Decoration::Poly | Decoration::Color::Blue, 1 },
-		{ Decoration::Poly | Decoration::Negative | Decoration::Color::Blue, 2 },{ Decoration::Poly | Decoration::Negative | Decoration::Color::Magenta, 1 },
-		{ Decoration::Star | Decoration::Color::Magenta, 4 },{ Decoration::Star | Decoration::Color::Blue, 3 },
-		{ Decoration::Triangle | Decoration::Color::Magenta, 2 },{ Decoration::Triangle | Decoration::Color::Blue, 1 },
-		{ Decoration::Stone | Decoration::Color::Magenta, 1 },{ Decoration::Stone | Decoration::Color::Blue, 2 }, { Decoration::Eraser | Decoration::Color::White, 1 } });
+	generator->generate(0x0A3B2, Decoration::Arrow, 8);
 	//2 exits maze
 	//generator->setGridSize(6, 6);
 	//generator->setSymbol(Decoration::Start, 0, 0);
@@ -140,12 +136,30 @@ void PuzzleList::GenerateTutorialN()
 	generator->generate(0x00061, Decoration::NewSymbols3, 4, Decoration::Triangle | Decoration::Color::Black, 2, Decoration::Triangle | Decoration::Color::White, 2, Decoration::Star | Decoration::Color::Black, 2, Decoration::Star | Decoration::Color::White, 2, Decoration::Stone | Decoration::Color::Black, 1, Decoration::Stone | Decoration::Color::White, 1);
 	//Stones Tutorial
 	generator->resetConfig();
-	generator->setGridSize(2, 2);
-	generator->generate(0x018AF, Decoration::NewSymbols2, 1, Decoration::Stone | Decoration::Color::White, 2);
-	generator->setGridSize(3, 3);
-	generator->generate(0x0001B, Decoration::NewSymbols2, 1, Decoration::Stone | Decoration::Color::White, 2);
-	generator->generate(0x012C9, Decoration::NewSymbols2, 2, Decoration::Stone | Decoration::Color::White, 3);
 	generator->setGridSize(4, 4);
+	generator->setSymbol(Decoration::Start, 0, 8);
+	generator->setSymbol(Decoration::Exit, 8, 0);
+	generator->initPanel(0x018AF);
+	generator->clear();
+	generator->set(1, 1, Decoration::Stone | Decoration::Color::White);
+	generator->set(7, 7, Decoration::NewSymbols2 | 0x10000);
+	generator->write(0x018AF);
+	generator->setSymbol(Decoration::Start, 0, 8);
+	generator->setSymbol(Decoration::Exit, 8, 0);
+	generator->initPanel(0x0001B);
+	generator->clear();
+	generator->set(1, 1, Decoration::NewSymbols2 | 0x10000);
+	generator->set(3, 3, Decoration::NewSymbols2 | 0x10000);
+	generator->set(5, 5, Decoration::NewSymbols2 | 0x10000);
+	generator->set(7, 7, Decoration::NewSymbols2 | 0x10000);
+	generator->write(0x0001B);
+	generator->setSymbol(Decoration::Start, 0, 8);
+	generator->setSymbol(Decoration::Exit, 8, 0);
+	generator->initPanel(0x012C9);
+	generator->clear();
+	generator->set(7, 7, Decoration::Stone | Decoration::Color::White);
+	generator->set(1, 1, Decoration::NewSymbols2 | 0x10000);
+	generator->write(0x012C9);
 	generator->generate(0x0001C, Decoration::NewSymbols2, 4, Decoration::Stone | Decoration::Color::White, 3);
 	generator->setGridSize(5, 5);
 	generator->pathWidth = 0.6f;
